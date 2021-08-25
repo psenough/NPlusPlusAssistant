@@ -31,14 +31,16 @@ namespace N__Assistant
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.linkLabel3 = new System.Windows.Forms.LinkLabel();
-            this.label3 = new System.Windows.Forms.Label();
+            this.screenshotsDir = new System.Windows.Forms.LinkLabel();
+            this.ScreenshotsLabel = new System.Windows.Forms.Label();
+            this.backupsDir = new System.Windows.Forms.LinkLabel();
+            this.nppAssistantLabel = new System.Windows.Forms.Label();
             this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
-            this.button2 = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.linkLabel2 = new System.Windows.Forms.LinkLabel();
-            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.backupNow = new System.Windows.Forms.Button();
+            this.gameProfileLabel = new System.Windows.Forms.Label();
+            this.steamInstallDirLabel = new System.Windows.Forms.Label();
+            this.profileDir = new System.Windows.Forms.LinkLabel();
+            this.steamInstallDir = new System.Windows.Forms.LinkLabel();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.button1 = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
@@ -67,14 +69,16 @@ namespace N__Assistant
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.linkLabel3);
-            this.tabPage1.Controls.Add(this.label3);
+            this.tabPage1.Controls.Add(this.screenshotsDir);
+            this.tabPage1.Controls.Add(this.ScreenshotsLabel);
+            this.tabPage1.Controls.Add(this.backupsDir);
+            this.tabPage1.Controls.Add(this.nppAssistantLabel);
             this.tabPage1.Controls.Add(this.checkedListBox1);
-            this.tabPage1.Controls.Add(this.button2);
-            this.tabPage1.Controls.Add(this.label2);
-            this.tabPage1.Controls.Add(this.label1);
-            this.tabPage1.Controls.Add(this.linkLabel2);
-            this.tabPage1.Controls.Add(this.linkLabel1);
+            this.tabPage1.Controls.Add(this.backupNow);
+            this.tabPage1.Controls.Add(this.gameProfileLabel);
+            this.tabPage1.Controls.Add(this.steamInstallDirLabel);
+            this.tabPage1.Controls.Add(this.profileDir);
+            this.tabPage1.Controls.Add(this.steamInstallDir);
             this.tabPage1.Location = new System.Drawing.Point(4, 25);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -83,25 +87,45 @@ namespace N__Assistant
             this.tabPage1.Text = "Status";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // linkLabel3
+            // screenshotsDir
             // 
-            this.linkLabel3.AutoSize = true;
-            this.linkLabel3.Location = new System.Drawing.Point(158, 89);
-            this.linkLabel3.Name = "linkLabel3";
-            this.linkLabel3.Size = new System.Drawing.Size(72, 17);
-            this.linkLabel3.TabIndex = 7;
-            this.linkLabel3.TabStop = true;
-            this.linkLabel3.Text = "linkLabel3";
-            this.linkLabel3.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel3_LinkClicked);
+            this.screenshotsDir.AutoSize = true;
+            this.screenshotsDir.Location = new System.Drawing.Point(158, 89);
+            this.screenshotsDir.Name = "screenshotsDir";
+            this.screenshotsDir.Size = new System.Drawing.Size(39, 17);
+            this.screenshotsDir.TabIndex = 9;
+            this.screenshotsDir.TabStop = true;
+            this.screenshotsDir.Text = "temp";
+            this.screenshotsDir.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel4_LinkClicked);
             // 
-            // label3
+            // ScreenshotsLabel
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(7, 89);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(152, 17);
-            this.label3.TabIndex = 6;
-            this.label3.Text = "N++Assistant Directory";
+            this.ScreenshotsLabel.AutoSize = true;
+            this.ScreenshotsLabel.Location = new System.Drawing.Point(7, 89);
+            this.ScreenshotsLabel.Name = "ScreenshotsLabel";
+            this.ScreenshotsLabel.Size = new System.Drawing.Size(148, 17);
+            this.ScreenshotsLabel.TabIndex = 8;
+            this.ScreenshotsLabel.Text = "Screenshots Directory";
+            // 
+            // backupsDir
+            // 
+            this.backupsDir.AutoSize = true;
+            this.backupsDir.Location = new System.Drawing.Point(158, 122);
+            this.backupsDir.Name = "backupsDir";
+            this.backupsDir.Size = new System.Drawing.Size(39, 17);
+            this.backupsDir.TabIndex = 7;
+            this.backupsDir.TabStop = true;
+            this.backupsDir.Text = "temp";
+            this.backupsDir.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel3_LinkClicked);
+            // 
+            // nppAssistantLabel
+            // 
+            this.nppAssistantLabel.AutoSize = true;
+            this.nppAssistantLabel.Location = new System.Drawing.Point(7, 122);
+            this.nppAssistantLabel.Name = "nppAssistantLabel";
+            this.nppAssistantLabel.Size = new System.Drawing.Size(156, 17);
+            this.nppAssistantLabel.TabIndex = 6;
+            this.nppAssistantLabel.Text = "N++ Assistant Directory";
             // 
             // checkedListBox1
             // 
@@ -111,61 +135,63 @@ namespace N__Assistant
             "profile",
             "soundpack",
             "editor levels",
-            "attract files"});
-            this.checkedListBox1.Location = new System.Drawing.Point(19, 275);
+            "attract files",
+            "palettes",
+            "game levels"});
+            this.checkedListBox1.Location = new System.Drawing.Point(10, 174);
             this.checkedListBox1.Name = "checkedListBox1";
-            this.checkedListBox1.Size = new System.Drawing.Size(170, 89);
+            this.checkedListBox1.Size = new System.Drawing.Size(170, 123);
             this.checkedListBox1.TabIndex = 5;
             // 
-            // button2
+            // backupNow
             // 
-            this.button2.Location = new System.Drawing.Point(237, 275);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(98, 28);
-            this.button2.TabIndex = 4;
-            this.button2.Text = "Backup Now";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.backupNow.Location = new System.Drawing.Point(203, 174);
+            this.backupNow.Name = "backupNow";
+            this.backupNow.Size = new System.Drawing.Size(205, 28);
+            this.backupNow.TabIndex = 4;
+            this.backupNow.Text = "Backup Now";
+            this.backupNow.UseVisualStyleBackColor = true;
+            this.backupNow.Click += new System.EventHandler(this.button2_Click);
             // 
-            // label2
+            // gameProfileLabel
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(7, 56);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(151, 17);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Game Profile Directory";
+            this.gameProfileLabel.AutoSize = true;
+            this.gameProfileLabel.Location = new System.Drawing.Point(7, 56);
+            this.gameProfileLabel.Name = "gameProfileLabel";
+            this.gameProfileLabel.Size = new System.Drawing.Size(151, 17);
+            this.gameProfileLabel.TabIndex = 3;
+            this.gameProfileLabel.Text = "Game Profile Directory";
             // 
-            // label1
+            // steamInstallDirLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(7, 21);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(147, 17);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Game Install Directory";
+            this.steamInstallDirLabel.AutoSize = true;
+            this.steamInstallDirLabel.Location = new System.Drawing.Point(7, 21);
+            this.steamInstallDirLabel.Name = "steamInstallDirLabel";
+            this.steamInstallDirLabel.Size = new System.Drawing.Size(149, 17);
+            this.steamInstallDirLabel.TabIndex = 2;
+            this.steamInstallDirLabel.Text = "Steam Install Directory";
             // 
-            // linkLabel2
+            // profileDir
             // 
-            this.linkLabel2.AutoSize = true;
-            this.linkLabel2.Location = new System.Drawing.Point(158, 56);
-            this.linkLabel2.Name = "linkLabel2";
-            this.linkLabel2.Size = new System.Drawing.Size(72, 17);
-            this.linkLabel2.TabIndex = 1;
-            this.linkLabel2.TabStop = true;
-            this.linkLabel2.Text = "linkLabel2";
-            this.linkLabel2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
+            this.profileDir.AutoSize = true;
+            this.profileDir.Location = new System.Drawing.Point(158, 56);
+            this.profileDir.Name = "profileDir";
+            this.profileDir.Size = new System.Drawing.Size(39, 17);
+            this.profileDir.TabIndex = 1;
+            this.profileDir.TabStop = true;
+            this.profileDir.Text = "temp";
+            this.profileDir.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
             // 
-            // linkLabel1
+            // steamInstallDir
             // 
-            this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(158, 21);
-            this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(72, 17);
-            this.linkLabel1.TabIndex = 0;
-            this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "linkLabel1";
-            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            this.steamInstallDir.AutoSize = true;
+            this.steamInstallDir.Location = new System.Drawing.Point(158, 21);
+            this.steamInstallDir.Name = "steamInstallDir";
+            this.steamInstallDir.Size = new System.Drawing.Size(39, 17);
+            this.steamInstallDir.TabIndex = 0;
+            this.steamInstallDir.TabStop = true;
+            this.steamInstallDir.Text = "temp";
+            this.steamInstallDir.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // tabPage2
             // 
@@ -253,21 +279,23 @@ namespace N__Assistant
 
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.LinkLabel steamInstallDir;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.TabPage tabPage5;
         private System.Windows.Forms.TabPage tabPage6;
-        private System.Windows.Forms.LinkLabel linkLabel2;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.LinkLabel profileDir;
+        private System.Windows.Forms.Label gameProfileLabel;
+        private System.Windows.Forms.Label steamInstallDirLabel;
         private System.Windows.Forms.CheckedListBox checkedListBox1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button backupNow;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ListBox listBox1;
-        private System.Windows.Forms.LinkLabel linkLabel3;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.LinkLabel backupsDir;
+        private System.Windows.Forms.Label nppAssistantLabel;
+        private System.Windows.Forms.LinkLabel screenshotsDir;
+        private System.Windows.Forms.Label ScreenshotsLabel;
     }
 }
 
