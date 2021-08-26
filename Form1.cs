@@ -23,6 +23,8 @@ namespace N__Assistant
         string screenshotsPath = @"C:\Program Files (x86)\Steam\userdata\64929984\760\remote\230270\screenshots";
         string savePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\N++Assistant";
 
+        BackgroundWorker bgwBackupNow = new BackgroundWorker();
+
         public Form1()
         {
             InitializeComponent();
@@ -57,6 +59,24 @@ namespace N__Assistant
             checkedListBox1.SetItemChecked(0, true);
             // set checkbox on level editor backup default on
             checkedListBox1.SetItemChecked(2, true);
+
+            // initialize background worker for backup now button
+            bgwBackupNow.DoWork += new DoWorkEventHandler(bgwBackupNow_DoWork);
+            bgwBackupNow.ProgressChanged += new ProgressChangedEventHandler(bgwBackupNow_ProgressChanged);
+            bgwBackupNow.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bgwBackupNow_RunWorkerCompleted);
+            bgwBackupNow.WorkerReportsProgress = true;
+
+            tabControl1.Selecting += new TabControlCancelEventHandler(tabControl1_Selecting);
+        }
+
+        void tabControl1_Selecting(object sender, TabControlCancelEventArgs e)
+        {
+            TabPage current = (sender as TabControl).SelectedTab;
+
+            if (current == tabPage2)
+            {
+                PopulateListBox(profileList, savePath + @"\Profiles", "*.zip");
+            }
 
         }
 
@@ -98,6 +118,14 @@ namespace N__Assistant
 
         private void button2_Click(object sender, EventArgs e)
         {
+            backupNow.Enabled = false;
+            progressBar1.Show();
+            bgwBackupNow.RunWorkerAsync();
+        }
+
+        void bgwBackupNow_DoWork(object sender, DoWorkEventArgs e)
+        {
+            bgwBackupNow.ReportProgress(0, "Zipping nprofile");
             if (checkedListBox1.GetItemCheckState(0) == CheckState.Checked)
             {
                 // backup profile
@@ -107,36 +135,53 @@ namespace N__Assistant
                     arch.CreateEntryFromFile(profilePath + @"\nprofile", "nprofile");
                 }
             }
+            bgwBackupNow.ReportProgress(15,"Zipping Soundpack");
             if (checkedListBox1.GetItemCheckState(1) == CheckState.Checked)
             {
                 // backup soundpack
                 ZipFile.CreateFromDirectory(steamPath + @"\NPP\Sounds", savePath + @"\Sounds\Sounds" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".zip");
             }
+            bgwBackupNow.ReportProgress(30, "Zipping Editor Levels");
             if (checkedListBox1.GetItemCheckState(2) == CheckState.Checked)
             {
                 // backup editor levels
                 ZipFile.CreateFromDirectory(profilePath + @"\levels", savePath + @"\EditorLevels\EditorLevels" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".zip");
             }
+            bgwBackupNow.ReportProgress(40, "Zipping Replays (attract files)");
             if (checkedListBox1.GetItemCheckState(3) == CheckState.Checked)
             {
                 // backup replays (attract files)
                 ZipFile.CreateFromDirectory(profilePath + @"\attract", savePath + @"\Replays\Replays" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".zip");
             }
+            bgwBackupNow.ReportProgress(60, "Zipping Palettes");
             if (checkedListBox1.GetItemCheckState(4) == CheckState.Checked)
             {
                 // backup palettes
                 ZipFile.CreateFromDirectory(steamPath + @"\NPP\Palettes", savePath + @"\Palettes\Palettes" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".zip");
             }
-            if (checkedListBox1.GetItemCheckState(4) == CheckState.Checked)
+            bgwBackupNow.ReportProgress(80, "Zipping Game Levels");
+            if (checkedListBox1.GetItemCheckState(5) == CheckState.Checked)
             {
                 // backup gamelevels
                 ZipFile.CreateFromDirectory(steamPath + @"\NPP\Levels", savePath + @"\GameLevels\GameLevels" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".zip");
             }
+            bgwBackupNow.ReportProgress(100, "Done with backup!");
 
-            //TODO: show progress bar and notify when it's done (to prevent button click spamming of clueless user)
-            // https://stackoverflow.com/questions/18029658/progress-bar-start-and-stop-on-button-click-using-thread
         }
 
+        void bgwBackupNow_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            progressBar1.Value = e.ProgressPercentage;
+            progressLabel.Text = String.Format("{0}", e.UserState);
+            //label2.Text = String.Format("Total items transfered: {0}", e.UserState);
+        }
+
+        void bgwBackupNow_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            progressLabel.Text = "Done with backup!";
+            progressBar1.Hide();
+            backupNow.Enabled = true;
+        }
         private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             if (Directory.Exists(savePath))
@@ -172,5 +217,16 @@ namespace N__Assistant
                 MessageBox.Show(string.Format("{0} Directory does not exist!", screenshotsPath));
             }
         }
+
+        private void PopulateListBox(ListBox lsb, string Folder, string FileType)
+        {
+            DirectoryInfo dinfo = new DirectoryInfo(Folder);
+            FileInfo[] Files = dinfo.GetFiles(FileType);
+            foreach (FileInfo file in Files)
+            {
+                lsb.Items.Add(file.Name + " (" + file.Length/1024 + "Kb)");
+            }
+        }
+
     }
 }
