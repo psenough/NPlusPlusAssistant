@@ -1,36 +1,66 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
-using System.Globalization;
+using System.Windows.Forms;
 
 namespace N__Assistant
 {
     public partial class Form1 : Form
     {
-        //TODO: more robust autodetect (in case people are using non default installation directories)
-        string steamPath = @"C:\Program Files (x86)\Steam\steamapps\common\N++";
-        string profilePath = Environment.ExpandEnvironmentVariables("%HOMEDRIVE%%HOMEPATH%") + @"\Documents\Metanet\N++";
-        string screenshotsPath = @"C:\Program Files (x86)\Steam\userdata\64929984\760\remote\230270\screenshots";
-        string savePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\N++Assistant";
+        //TODO: more robust autodetect added by YupdanielThatsMe#6492
+        private string steamGamePath;
 
-        BackgroundWorker bgwBackupNow = new BackgroundWorker();
+        private string profilePath = Environment.ExpandEnvironmentVariables("%HOMEDRIVE%%HOMEPATH%") + @"\Documents\Metanet\N++";
+        private string screenshotsPath = @"\userdata\64929984\760\remote\230270\screenshots";
+        private string savePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\N++Assistant";
+
+        private BackgroundWorker bgwBackupNow = new BackgroundWorker();
 
         public Form1()
         {
+            string steampath = (string)Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\Valve\\Steam", "InstallPath", "null");
+            if (steampath == "null")
+            {
+                steampath = (string)Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Valve\\Steam", "InstallPath", "null");
+            }
+            if (steampath == "null")
+            {
+                throw new FileNotFoundException("Steam Not Found, WTF Bro is your pc good?");
+            }
+            if (!Directory.Exists(steampath + "\\steamapps\\"))
+            {
+                throw new FileNotFoundException("steamapps Not Found");
+            }
+            screenshotsPath = steampath + screenshotsPath;
+            string[] configLines = File.ReadAllLines(steampath + "\\steamapps\\libraryfolders.vdf");
+            List<string> possiblepaths = new List<string>() { steampath };
+            foreach (string configline in configLines)
+            {
+                if (configline.Contains("\t\t\"path\"\t\t\""))
+                {
+                    possiblepaths.Add(configline.Replace("\t\t\"path\"\t\t\"", "").Replace("\\\\", "\\").Replace("\"", ""));
+                }
+            }
+            foreach (string possiblepath in possiblepaths)
+            {
+                if (Directory.Exists(possiblepath + "\\steamapps\\common\\N++"))
+                {
+                    steamGamePath = possiblepath + "\\steamapps\\common\\N++";
+                    break;
+                }
+            }
+            if (steamGamePath == "")
+            {
+                throw new FileNotFoundException("N++ not installed in steam");
+            }
             InitializeComponent();
 
             // rename linked labels
-            steamInstallDir.Text = steamPath;
+            steamInstallDir.Text = steamGamePath;
             profileDir.Text = profilePath;
             screenshotsDir.Text = screenshotsPath;
             backupsDir.Text = savePath;
@@ -46,7 +76,7 @@ namespace N__Assistant
             if (!Directory.Exists(savePath + @"\GameLevels")) Directory.CreateDirectory(savePath + @"\GameLevels");
 
             // create palettes directory in game if it doesnt exist (it's needed to place custom palettes)
-            if (!Directory.Exists(steamPath + @"\NPP\Palettes")) Directory.CreateDirectory(steamPath + @"\NPP\Palettes");
+            if (!Directory.Exists(steamGamePath + @"\NPP\Palettes")) Directory.CreateDirectory(steamGamePath + @"\NPP\Palettes");
 
             // mark backup now checklist items as checked by default
             //TODO: save user settings and reload the same on launch
@@ -78,7 +108,7 @@ namespace N__Assistant
             deleteProfile.Enabled = false;
         }
 
-        void tabControl1_Selecting(object sender, TabControlCancelEventArgs e)
+        private void tabControl1_Selecting(object sender, TabControlCancelEventArgs e)
         {
             TabPage current = (sender as TabControl).SelectedTab;
 
@@ -113,16 +143,15 @@ namespace N__Assistant
                 // allpalettes.zip (supposedly contains all community palettes, updated whenever)
                 // https://drive.google.com/file/d/1Ly3g_4VKcMsTLwXJpY3jPk-IlAGZ5RJG/view?usp=sharing
             }
-
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            if (Directory.Exists(steamPath))
+            if (Directory.Exists(steamGamePath))
             {
                 ProcessStartInfo startInfo = new ProcessStartInfo
                 {
-                    Arguments = steamPath,
+                    Arguments = steamGamePath,
                     FileName = "explorer.exe"
                 };
 
@@ -130,7 +159,7 @@ namespace N__Assistant
             }
             else
             {
-                MessageBox.Show(string.Format("{0} Directory does not exist!", steamPath));
+                MessageBox.Show(string.Format("{0} Directory does not exist!", steamGamePath));
             }
         }
 
@@ -164,7 +193,7 @@ namespace N__Assistant
             bgwBackupNow.RunWorkerAsync();
         }
 
-        void bgwBackupNow_DoWork(object sender, DoWorkEventArgs e)
+        private void bgwBackupNow_DoWork(object sender, DoWorkEventArgs e)
         {
             bgwBackupNow.ReportProgress(0, "Zipping nprofile");
             if (checkedListBox1.GetItemCheckState(0) == CheckState.Checked)
@@ -176,11 +205,11 @@ namespace N__Assistant
                     arch.CreateEntryFromFile(profilePath + @"\nprofile", "nprofile");
                 }
             }
-            bgwBackupNow.ReportProgress(15,"Zipping Soundpack");
+            bgwBackupNow.ReportProgress(15, "Zipping Soundpack");
             if (checkedListBox1.GetItemCheckState(1) == CheckState.Checked)
             {
                 // backup soundpack
-                ZipFile.CreateFromDirectory(steamPath + @"\NPP\Sounds", savePath + @"\Sounds\Sounds" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".zip");
+                ZipFile.CreateFromDirectory(steamGamePath + @"\NPP\Sounds", savePath + @"\Sounds\Sounds" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".zip");
             }
             bgwBackupNow.ReportProgress(30, "Zipping Editor Levels");
             if (checkedListBox1.GetItemCheckState(2) == CheckState.Checked)
@@ -198,31 +227,31 @@ namespace N__Assistant
             if (checkedListBox1.GetItemCheckState(4) == CheckState.Checked)
             {
                 // backup palettes
-                ZipFile.CreateFromDirectory(steamPath + @"\NPP\Palettes", savePath + @"\Palettes\Palettes" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".zip");
+                ZipFile.CreateFromDirectory(steamGamePath + @"\NPP\Palettes", savePath + @"\Palettes\Palettes" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".zip");
             }
             bgwBackupNow.ReportProgress(80, "Zipping Game Levels");
             if (checkedListBox1.GetItemCheckState(5) == CheckState.Checked)
             {
                 // backup gamelevels
-                ZipFile.CreateFromDirectory(steamPath + @"\NPP\Levels", savePath + @"\GameLevels\GameLevels" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".zip");
+                ZipFile.CreateFromDirectory(steamGamePath + @"\NPP\Levels", savePath + @"\GameLevels\GameLevels" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".zip");
             }
             bgwBackupNow.ReportProgress(100, "Done with backup!");
-
         }
 
-        void bgwBackupNow_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        private void bgwBackupNow_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             progressBar1.Value = e.ProgressPercentage;
             progressLabel.Text = String.Format("{0}", e.UserState);
             //label2.Text = String.Format("Total items transfered: {0}", e.UserState);
         }
 
-        void bgwBackupNow_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        private void bgwBackupNow_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             progressLabel.Text = "Done with backup!";
             progressBar1.Hide();
             backupNow.Enabled = true;
         }
+
         private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             if (Directory.Exists(savePath))
@@ -265,7 +294,7 @@ namespace N__Assistant
             FileInfo[] Files = dinfo.GetFiles(FileType);
             foreach (FileInfo file in Files)
             {
-                lsb.Items.Add(file.Name + " (" + file.Length/1024 + "Kb)");
+                lsb.Items.Add(file.Name + " (" + file.Length / 1024 + "Kb)");
             }
         }
 
@@ -288,7 +317,7 @@ namespace N__Assistant
                 arch.CreateEntryFromFile(profilePath + @"\nprofile", "nprofile");
             }
             profileBackupLabel.Text = "Profile backup completed!";
-            
+
             profileList.Items.Clear();
             PopulateListBox(profileList, savePath + @"\Profiles", "*.zip");
         }
@@ -301,15 +330,17 @@ namespace N__Assistant
 
         private void deleteProfile_Click(object sender, EventArgs e)
         {
-            try {
+            try
+            {
                 File.Delete(savePath + @"\Profiles\" + profileList.SelectedItem.ToString().Split(' ')[0]);
                 profileList.Items.Remove(profileList.SelectedItem);
                 loadProfile.Enabled = false;
                 deleteProfile.Enabled = false;
-            } catch (Exception exc) {
+            }
+            catch (Exception exc)
+            {
                 MessageBox.Show(exc.Message);
             }
-            
         }
     }
 }
