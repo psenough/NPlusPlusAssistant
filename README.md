@@ -12,7 +12,7 @@ Needs Visual Studio Community 2019 with C# .Net stuff installed to compile from 
 
 * detect if npp is running
 
-* list all profiles listed and select one to replace current one
+* list all profiles on backup and select one to replace current one or delete
 
 ## Stuff it'll eventually do:
 
@@ -24,6 +24,8 @@ Needs Visual Studio Community 2019 with C# .Net stuff installed to compile from 
 
 * install/revert community map packs
 
-* edit nppconf
+* edit nppconf (useful for troubleshooting some launch problems)
 
 * have an n++ icon
+
+* display nprofile road to 100% completion details / corruption checks
