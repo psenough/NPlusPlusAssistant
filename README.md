@@ -1,9 +1,8 @@
 # NPlusPlusAssistant
-N++ Assistant helps with backups and installing community mod stuff
 
+N++ Assistant helps with backups and installing community mod stuff for the videogame [N++](https://store.steampowered.com/app/230270/N_NPLUSPLUS/). Only for the Steam Windows version.
 
-Needs Visual Studio Community 2019 with C# .Net stuff installed to compile.
-
+Needs Visual Studio Community 2019 with C# .Net stuff installed to compile from source.
 
 ## Stuff it already does:
 
@@ -13,12 +12,11 @@ Needs Visual Studio Community 2019 with C# .Net stuff installed to compile.
 
 * detect if npp is running
 
+* list all profiles listed and select one to replace current one
 
 ## Stuff it'll eventually do:
 
-* list all profiles listed and select one to replace current one
-
-* download soundpacks and select one to replace current one
+* download soundpacks and select one to replace the current one
 
 * download palettes and select which ones to install
 
@@ -27,3 +25,5 @@ Needs Visual Studio Community 2019 with C# .Net stuff installed to compile.
 * install/revert community map packs
 
 * edit nppconf
+
+* have an n++ icon

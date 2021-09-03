@@ -82,12 +82,36 @@ namespace N__Assistant
         {
             TabPage current = (sender as TabControl).SelectedTab;
 
+            // switch to profile tab
             if (current == tabPage2)
             {
                 profileList.Items.Clear();
                 PopulateListBox(profileList, savePath + @"\Profiles", "*.zip");
                 loadProfile.Enabled = false;
                 deleteProfile.Enabled = false;
+            }
+
+            // switch to soundpacks tab
+            if (current == tabPage3)
+            {
+                // spreadsheet of new sound packs
+                // https://docs.google.com/spreadsheets/d/18PshamVuDNyH396a7U3YDFQmCw18s4gIVZ_WrFODRd4/edit#gid=0
+
+                // latest google sheets api example code
+                // https://github.com/popcron/sheets
+            }
+
+            // switch to palettes tab
+            if (current == tabPage4)
+            {
+                // all official palettes
+                // https://cdn.discordapp.com/attachments/197793786389200896/592821804746276864/Palettes.zip
+
+                // spreadsheet of new palettes
+                // https://docs.google.com/spreadsheets/d/1I2f87Qhfs6rxzZq5dQRDbLKYyaGLqTdCkLqfNfrw1Mk/edit#gid=0
+
+                // allpalettes.zip (supposedly contains all community palettes, updated whenever)
+                // https://drive.google.com/file/d/1Ly3g_4VKcMsTLwXJpY3jPk-IlAGZ5RJG/view?usp=sharing
             }
 
         }
