@@ -44,12 +44,16 @@ namespace N__Assistant
             this.profileDir = new System.Windows.Forms.LinkLabel();
             this.steamInstallDir = new System.Windows.Forms.LinkLabel();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.button1 = new System.Windows.Forms.Button();
+            this.backupProfile = new System.Windows.Forms.Button();
             this.profileList = new System.Windows.Forms.ListBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.loadProfile = new System.Windows.Forms.Button();
+            this.profileBackupLabel = new System.Windows.Forms.Label();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.deleteProfile = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -229,36 +233,42 @@ namespace N__Assistant
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.button1);
+            this.tabPage2.Controls.Add(this.deleteProfile);
+            this.tabPage2.Controls.Add(this.richTextBox1);
+            this.tabPage2.Controls.Add(this.profileBackupLabel);
+            this.tabPage2.Controls.Add(this.loadProfile);
+            this.tabPage2.Controls.Add(this.backupProfile);
             this.tabPage2.Controls.Add(this.profileList);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Margin = new System.Windows.Forms.Padding(2);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPage2.Size = new System.Drawing.Size(438, 247);
+            this.tabPage2.Size = new System.Drawing.Size(556, 247);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Profile";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // backupProfile
             // 
-            this.button1.Location = new System.Drawing.Point(221, 49);
-            this.button1.Margin = new System.Windows.Forms.Padding(2);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(56, 19);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
+            this.backupProfile.Location = new System.Drawing.Point(4, 15);
+            this.backupProfile.Margin = new System.Windows.Forms.Padding(2);
+            this.backupProfile.Name = "backupProfile";
+            this.backupProfile.Size = new System.Drawing.Size(213, 30);
+            this.backupProfile.TabIndex = 1;
+            this.backupProfile.Text = "Backup Current Profile";
+            this.backupProfile.UseVisualStyleBackColor = true;
+            this.backupProfile.Click += new System.EventHandler(this.backupProfile_Click);
             // 
             // profileList
             // 
             this.profileList.FormattingEnabled = true;
-            this.profileList.Location = new System.Drawing.Point(4, 49);
+            this.profileList.Location = new System.Drawing.Point(4, 62);
             this.profileList.Margin = new System.Windows.Forms.Padding(2);
             this.profileList.Name = "profileList";
             this.profileList.ScrollAlwaysVisible = true;
-            this.profileList.Size = new System.Drawing.Size(213, 186);
+            this.profileList.Size = new System.Drawing.Size(213, 173);
             this.profileList.TabIndex = 0;
+            this.profileList.SelectedIndexChanged += new System.EventHandler(this.profileList_SelectedIndexChanged);
             // 
             // tabPage3
             // 
@@ -300,6 +310,43 @@ namespace N__Assistant
             this.tabPage6.Text = "Map Packs";
             this.tabPage6.UseVisualStyleBackColor = true;
             // 
+            // loadProfile
+            // 
+            this.loadProfile.Location = new System.Drawing.Point(233, 201);
+            this.loadProfile.Name = "loadProfile";
+            this.loadProfile.Size = new System.Drawing.Size(120, 34);
+            this.loadProfile.TabIndex = 2;
+            this.loadProfile.Text = "Load to N++";
+            this.loadProfile.UseVisualStyleBackColor = true;
+            // 
+            // profileBackupLabel
+            // 
+            this.profileBackupLabel.AutoSize = true;
+            this.profileBackupLabel.Location = new System.Drawing.Point(230, 24);
+            this.profileBackupLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.profileBackupLabel.Name = "profileBackupLabel";
+            this.profileBackupLabel.Size = new System.Drawing.Size(0, 13);
+            this.profileBackupLabel.TabIndex = 13;
+            // 
+            // richTextBox1
+            // 
+            this.richTextBox1.Enabled = false;
+            this.richTextBox1.Location = new System.Drawing.Point(233, 62);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(309, 123);
+            this.richTextBox1.TabIndex = 14;
+            this.richTextBox1.Text = "";
+            // 
+            // deleteProfile
+            // 
+            this.deleteProfile.Location = new System.Drawing.Point(443, 201);
+            this.deleteProfile.Name = "deleteProfile";
+            this.deleteProfile.Size = new System.Drawing.Size(99, 34);
+            this.deleteProfile.TabIndex = 15;
+            this.deleteProfile.Text = "Delete";
+            this.deleteProfile.UseVisualStyleBackColor = true;
+            this.deleteProfile.Click += new System.EventHandler(this.deleteProfile_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -313,6 +360,7 @@ namespace N__Assistant
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -332,7 +380,7 @@ namespace N__Assistant
         private System.Windows.Forms.Label steamInstallDirLabel;
         private System.Windows.Forms.CheckedListBox checkedListBox1;
         private System.Windows.Forms.Button backupNow;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button backupProfile;
         private System.Windows.Forms.ListBox profileList;
         private System.Windows.Forms.LinkLabel backupsDir;
         private System.Windows.Forms.Label nppAssistantLabel;
@@ -340,6 +388,10 @@ namespace N__Assistant
         private System.Windows.Forms.Label ScreenshotsLabel;
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.Label progressLabel;
+        private System.Windows.Forms.Button loadProfile;
+        private System.Windows.Forms.Label profileBackupLabel;
+        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.Button deleteProfile;
     }
 }
 

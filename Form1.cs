@@ -73,6 +73,9 @@ namespace N__Assistant
             {
                 Console.WriteLine(p.ProcessName); // N++
             }*/
+
+            loadProfile.Enabled = false;
+            deleteProfile.Enabled = false;
         }
 
         void tabControl1_Selecting(object sender, TabControlCancelEventArgs e)
@@ -81,7 +84,10 @@ namespace N__Assistant
 
             if (current == tabPage2)
             {
+                profileList.Items.Clear();
                 PopulateListBox(profileList, savePath + @"\Profiles", "*.zip");
+                loadProfile.Enabled = false;
+                deleteProfile.Enabled = false;
             }
 
         }
@@ -246,6 +252,40 @@ namespace N__Assistant
                 return false;
             else
                 return true;
+        }
+
+        private void backupProfile_Click(object sender, EventArgs e)
+        {
+            profileBackupLabel.Text = "Profile backup started!";
+            // backup profile
+            using (FileStream fs = new FileStream(savePath + @"\Profiles\nprofile" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".zip", FileMode.Create))
+            using (ZipArchive arch = new ZipArchive(fs, ZipArchiveMode.Create))
+            {
+                arch.CreateEntryFromFile(profilePath + @"\nprofile", "nprofile");
+            }
+            profileBackupLabel.Text = "Profile backup completed!";
+            
+            profileList.Items.Clear();
+            PopulateListBox(profileList, savePath + @"\Profiles", "*.zip");
+        }
+
+        private void profileList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            loadProfile.Enabled = true;
+            deleteProfile.Enabled = true;
+        }
+
+        private void deleteProfile_Click(object sender, EventArgs e)
+        {
+            try {
+                File.Delete(savePath + @"\Profiles\" + profileList.SelectedItem.ToString().Split(' ')[0]);
+                profileList.Items.Remove(profileList.SelectedItem);
+                loadProfile.Enabled = false;
+                deleteProfile.Enabled = false;
+            } catch (Exception exc) {
+                MessageBox.Show(exc.Message);
+            }
+            
         }
     }
 }
