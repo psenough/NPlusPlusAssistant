@@ -67,7 +67,7 @@ namespace N__Assistant
             this.tabControl1.Margin = new System.Windows.Forms.Padding(2);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(446, 273);
+            this.tabControl1.Size = new System.Drawing.Size(564, 273);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPage1
@@ -88,7 +88,7 @@ namespace N__Assistant
             this.tabPage1.Margin = new System.Windows.Forms.Padding(2);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPage1.Size = new System.Drawing.Size(438, 247);
+            this.tabPage1.Size = new System.Drawing.Size(556, 247);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Status";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -304,7 +304,7 @@ namespace N__Assistant
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(466, 292);
+            this.ClientSize = new System.Drawing.Size(584, 292);
             this.Controls.Add(this.tabControl1);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";

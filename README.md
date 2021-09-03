@@ -11,10 +11,10 @@ Needs Visual Studio Community 2019 with C# .Net stuff installed to compile.
 
 * backup profile, editor levels, replays, sounds, palettes and game levels
 
+* detect if npp is running
+
 
 ## Stuff it'll eventually do:
-
-* autodetect if npp is running
 
 * list all profiles listed and select one to replace current one
 

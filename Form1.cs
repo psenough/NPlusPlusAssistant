@@ -67,6 +67,12 @@ namespace N__Assistant
             bgwBackupNow.WorkerReportsProgress = true;
 
             tabControl1.Selecting += new TabControlCancelEventHandler(tabControl1_Selecting);
+
+            /*Process[] processCollection = Process.GetProcesses();
+            foreach (Process p in processCollection)
+            {
+                Console.WriteLine(p.ProcessName); // N++
+            }*/
         }
 
         void tabControl1_Selecting(object sender, TabControlCancelEventArgs e)
@@ -118,6 +124,11 @@ namespace N__Assistant
 
         private void button2_Click(object sender, EventArgs e)
         {
+            if (DetectNPPRunning() == true)
+            {
+                MessageBox.Show("Please close N++ before doing backup");
+                return;
+            }
             backupNow.Enabled = false;
             progressBar1.Show();
             bgwBackupNow.RunWorkerAsync();
@@ -228,5 +239,13 @@ namespace N__Assistant
             }
         }
 
+        private bool DetectNPPRunning()
+        {
+            Process[] pname = Process.GetProcessesByName("N++");
+            if (pname.Length == 0)
+                return false;
+            else
+                return true;
+        }
     }
 }
