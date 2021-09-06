@@ -80,11 +80,6 @@ namespace N__Assistant
 
             // mark backup now checklist items as checked by default
             //TODO: save user settings and reload the same on launch
-            // default should probably be just profile and editor levels, not everything
-            /*for (int i = 0; i < checkedListBox1.Items.Count; i++)
-            {
-                checkedListBox1.SetItemChecked(i, true);
-            }*/
             // set checkbox on profile backup default on
             checkedListBox1.SetItemChecked(0, true);
             // set checkbox on level editor backup default on
@@ -98,12 +93,6 @@ namespace N__Assistant
 
             tabControl1.Selecting += new TabControlCancelEventHandler(tabControl1_Selecting);
 
-            /*Process[] processCollection = Process.GetProcesses();
-            foreach (Process p in processCollection)
-            {
-                Console.WriteLine(p.ProcessName); // N++
-            }*/
-
             loadProfile.Enabled = false;
             deleteProfile.Enabled = false;
         }
@@ -116,7 +105,7 @@ namespace N__Assistant
             if (current == tabPage2)
             {
                 profileList.Items.Clear();
-                PopulateListBox(profileList, savePath + @"\Profiles", "*.zip");
+                PopulateListBoxWithFileType(profileList, savePath + @"\Profiles", "*.zip");
                 loadProfile.Enabled = false;
                 deleteProfile.Enabled = false;
             }
@@ -142,6 +131,12 @@ namespace N__Assistant
 
                 // allpalettes.zip (supposedly contains all community palettes, updated whenever)
                 // https://drive.google.com/file/d/1Ly3g_4VKcMsTLwXJpY3jPk-IlAGZ5RJG/view?usp=sharing
+
+                // list installed palettes
+                palettesInstalled.Items.Clear();
+                PopulateListBoxWithSubDirectories(palettesInstalled, steamGamePath + @"\NPP\Palettes");
+                uninstallPalette.Enabled = false;
+                backupPalette.Enabled = false;
             }
         }
 
@@ -288,13 +283,23 @@ namespace N__Assistant
             }
         }
 
-        private void PopulateListBox(ListBox lsb, string Folder, string FileType)
+        private void PopulateListBoxWithFileType(ListBox lsb, string Folder, string FileType)
         {
             DirectoryInfo dinfo = new DirectoryInfo(Folder);
             FileInfo[] Files = dinfo.GetFiles(FileType);
             foreach (FileInfo file in Files)
             {
                 lsb.Items.Add(file.Name + " (" + file.Length / 1024 + "Kb)");
+            }
+        }
+
+        private void PopulateListBoxWithSubDirectories(ListBox lsb, string Folder)
+        {
+            DirectoryInfo dinfo = new DirectoryInfo(Folder);
+            DirectoryInfo[] dirs = dinfo.GetDirectories();
+            foreach (DirectoryInfo dir in dirs)
+            {
+                lsb.Items.Add(dir.Name + " (" + dir.LastWriteTime.ToShortDateString() + ")");
             }
         }
 
@@ -319,7 +324,7 @@ namespace N__Assistant
             profileBackupLabel.Text = "Profile backup completed!";
 
             profileList.Items.Clear();
-            PopulateListBox(profileList, savePath + @"\Profiles", "*.zip");
+            PopulateListBoxWithFileType(profileList, savePath + @"\Profiles", "*.zip");
         }
 
         private void profileList_SelectedIndexChanged(object sender, EventArgs e)
@@ -330,6 +335,7 @@ namespace N__Assistant
 
         private void deleteProfile_Click(object sender, EventArgs e)
         {
+            //TODO: confirmation box
             try
             {
                 File.Delete(savePath + @"\Profiles\" + profileList.SelectedItem.ToString().Split(' ')[0]);
@@ -340,6 +346,53 @@ namespace N__Assistant
             catch (Exception exc)
             {
                 MessageBox.Show(exc.Message);
+            }
+        }
+
+        private void uninstallPalette_Click(object sender, EventArgs e)
+        {
+            //TODO: confirmation box
+            try
+            {
+                Directory.Delete(steamGamePath + @"\NPP\Palettes\" + palettesInstalled.SelectedItem.ToString().Split(' ')[0], true);
+                //palettesInstalled.Items.Remove(palettesInstalled.SelectedItem);
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+            }
+
+            palettesInstalled.Items.Clear();
+            PopulateListBoxWithSubDirectories(palettesInstalled, steamGamePath + @"\NPP\Palettes");
+            uninstallPalette.Enabled = false;
+        }
+
+        private void palettesInstalled_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            uninstallPalette.Enabled = true;
+            //backupPalette.Enabled = true;
+        }
+
+        private void backupPalette_Click(object sender, EventArgs e)
+        {
+            //TODO: backup the selected palette only
+        }
+
+        private void palettesInstalledLinkedLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if (Directory.Exists(steamGamePath + @"\NPP\Palettes\"))
+            {
+                ProcessStartInfo startInfo = new ProcessStartInfo
+                {
+                    Arguments = steamGamePath + @"\NPP\Palettes\",
+                    FileName = "explorer.exe"
+                };
+
+                Process.Start(startInfo);
+            }
+            else
+            {
+                MessageBox.Show(string.Format("{0} Directory does not exist!", steamGamePath + @"\NPP\Palettes\"));
             }
         }
     }
