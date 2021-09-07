@@ -6,14 +6,15 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Windows.Forms;
+using Newtonsoft.Json;
+using Popcron.Sheets;
 
 namespace N__Assistant
 {
     public partial class Form1 : Form
     {
-        //TODO: more robust autodetect added by YupdanielThatsMe#6492
+        // more robust autodetect added by YupdanielThatsMe#6492
         private string steamGamePath;
-
         private string profilePath = Environment.ExpandEnvironmentVariables("%HOMEDRIVE%%HOMEPATH%") + @"\Documents\Metanet\N++";
         private string screenshotsPath = @"\userdata\64929984\760\remote\230270\screenshots";
         private string savePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\N++Assistant";
@@ -22,17 +23,15 @@ namespace N__Assistant
 
         public Form1()
         {
+            // get steam path
             string steampath = (string)Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\Valve\\Steam", "InstallPath", "null");
-            if (steampath == "null")
-            {
+            if (steampath == "null") {
                 steampath = (string)Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Valve\\Steam", "InstallPath", "null");
             }
-            if (steampath == "null")
-            {
+            if (steampath == "null") {
                 throw new FileNotFoundException("Steam Not Found, WTF Bro is your pc good?");
             }
-            if (!Directory.Exists(steampath + "\\steamapps\\"))
-            {
+            if (!Directory.Exists(steampath + "\\steamapps\\")) {
                 throw new FileNotFoundException("steamapps Not Found");
             }
             screenshotsPath = steampath + screenshotsPath;
@@ -40,21 +39,17 @@ namespace N__Assistant
             List<string> possiblepaths = new List<string>() { steampath };
             foreach (string configline in configLines)
             {
-                if (configline.Contains("\t\t\"path\"\t\t\""))
-                {
+                if (configline.Contains("\t\t\"path\"\t\t\"")) {
                     possiblepaths.Add(configline.Replace("\t\t\"path\"\t\t\"", "").Replace("\\\\", "\\").Replace("\"", ""));
                 }
             }
-            foreach (string possiblepath in possiblepaths)
-            {
-                if (Directory.Exists(possiblepath + "\\steamapps\\common\\N++"))
-                {
+            foreach (string possiblepath in possiblepaths) {
+                if (Directory.Exists(possiblepath + "\\steamapps\\common\\N++")) {
                     steamGamePath = possiblepath + "\\steamapps\\common\\N++";
                     break;
                 }
             }
-            if (steamGamePath == "")
-            {
+            if (steamGamePath == "") {
                 throw new FileNotFoundException("N++ not installed in steam");
             }
             InitializeComponent();
@@ -95,6 +90,7 @@ namespace N__Assistant
 
             loadProfile.Enabled = false;
             deleteProfile.Enabled = false;
+            GetSpreadsheetData("1I2f87Qhfs6rxzZq5dQRDbLKYyaGLqTdCkLqfNfrw1Mk", new APIKey().key);
         }
 
         private void tabControl1_Selecting(object sender, TabControlCancelEventArgs e)
@@ -265,7 +261,7 @@ namespace N__Assistant
             }
         }
 
-        private void linkLabel4_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void screenshotsPathLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             if (Directory.Exists(screenshotsPath))
             {
@@ -393,6 +389,52 @@ namespace N__Assistant
             else
             {
                 MessageBox.Show(string.Format("{0} Directory does not exist!", steamGamePath + @"\NPP\Palettes\"));
+            }
+        }
+
+        public class JSONSerializer : SheetsSerializer
+        {
+            public override T DeserializeObject<T>(string data)
+            {
+                return JsonConvert.DeserializeObject<T>(data);
+            }
+
+            public override string SerializeObject(object data)
+            {
+                return JsonConvert.SerializeObject(data);
+            }
+        }
+
+        private async void GetSpreadsheetData(string spreadsheetId, string key)
+        {
+            // test url https://sheets.googleapis.com/v4/spreadsheets/spreadsheetid?key=key
+
+            try
+            {
+                SheetsSerializer.Serializer = new JSONSerializer();
+
+                Authorization authorization = await Authorization.Authorize(key);
+                Spreadsheet spreadsheet = await Spreadsheet.Get(spreadsheetId, authorization);
+
+                Debug.Print("URL: " + spreadsheet.URL);
+                Debug.Print("Title: " + spreadsheet.Title);
+
+                Sheet sheet = spreadsheet.Sheets[0];
+                Debug.Print("Rows: " + sheet.Rows);
+                Debug.Print("Columns: " + sheet.Columns);
+
+                Cell[,] data = sheet.Data;
+                for (int x = 0; x < sheet.Columns; x++)
+                {
+                    for (int y = 0; y < sheet.Rows; y++)
+                    {
+                        Debug.Print(data[x, y].Value);
+                    }
+                }
+            }
+            catch (System.Net.WebException webexc)
+            {
+                MessageBox.Show(webexc.Message);
             }
         }
     }

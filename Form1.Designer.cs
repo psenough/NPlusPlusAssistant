@@ -141,7 +141,7 @@ namespace N__Assistant
             this.screenshotsDir.TabIndex = 9;
             this.screenshotsDir.TabStop = true;
             this.screenshotsDir.Text = "temp";
-            this.screenshotsDir.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel4_LinkClicked);
+            this.screenshotsDir.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.screenshotsPathLabel_LinkClicked);
             // 
             // ScreenshotsLabel
             // 
