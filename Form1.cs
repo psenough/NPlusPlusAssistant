@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using System;
+using System.Net;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -11,6 +12,16 @@ using Popcron.Sheets;
 
 namespace N__Assistant
 {
+    public class sheetMap
+    {
+        public sheetMap(string sId, Sheet sD) {
+            sheetId = sId;
+            sheetData = sD;
+        }
+        public string sheetId { get; set; }
+        public Sheet sheetData { get; set; }
+    }
+
     public partial class Form1 : Form
     {
         // more robust autodetect added by YupdanielThatsMe#6492
@@ -20,6 +31,10 @@ namespace N__Assistant
         private string savePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\N++Assistant";
 
         private BackgroundWorker bgwBackupNow = new BackgroundWorker();
+
+        // there is probably a better way to map this but fuck me if i know C# properly
+        private List<sheetMap> sheetMapList = new List<sheetMap>();
+        private string COMMUNITY_PALETTES = "1I2f87Qhfs6rxzZq5dQRDbLKYyaGLqTdCkLqfNfrw1Mk";
 
         public Form1()
         {
@@ -132,7 +147,7 @@ namespace N__Assistant
                 // populate community palettes from spreadsheet link
                 // https://docs.google.com/spreadsheets/d/1I2f87Qhfs6rxzZq5dQRDbLKYyaGLqTdCkLqfNfrw1Mk/edit#gid=0
                 communityPalettesList.Items.Clear();
-                PopulateListBoxWithSpreadsheetData(communityPalettesList, 0, "1I2f87Qhfs6rxzZq5dQRDbLKYyaGLqTdCkLqfNfrw1Mk", new APIKey().key);
+                PopulateListBoxWithSpreadsheetData(communityPalettesList, 0, COMMUNITY_PALETTES, new APIKey().key);
                 installCommunityPalette.Enabled = false;
 
                 //TODO: list all palettes in local backup dir
@@ -423,7 +438,7 @@ namespace N__Assistant
             try
             {
                 SheetsSerializer.Serializer = new JSONSerializer();
-                Authorization authorization = await Authorization.Authorize(key);
+                Popcron.Sheets.Authorization authorization = await Popcron.Sheets.Authorization.Authorize(key);
                 Spreadsheet spreadsheet = await Spreadsheet.Get(spreadsheetId, authorization);
                 Sheet sheet = spreadsheet.Sheets[sheetsId];
                 //Debug.Print("Rows: " + sheet.Rows);
@@ -435,6 +450,20 @@ namespace N__Assistant
                 {
                     string parsedDate = data[2, y].Value.Split('/')[2] + "/" + data[2, y].Value.Split('/')[1] + "/" + data[2, y].Value.Split('/')[0];
                     lsb.Items.Add(data[0, y].Value + " by " + data[1, y].Value + " (" + parsedDate + ")");
+                }
+
+                bool exists = false;
+                foreach (var mapSheet in sheetMapList)
+                {
+                    if (mapSheet.sheetId.Equals(COMMUNITY_PALETTES) == true)
+                    {
+                        mapSheet.sheetData = sheet;
+                        exists = true;
+                    }
+                }
+                if (exists == false)
+                {
+                    sheetMapList.Add(new sheetMap(COMMUNITY_PALETTES, sheet));
                 }
 
             }
@@ -465,7 +494,38 @@ namespace N__Assistant
 
         private void installCommunityPalette_Click(object sender, EventArgs e)
         {
+            try { 
+                string myStringWebResource = null;
+                WebClient myWebClient = new WebClient();
+                
+                // get the url
+                foreach (var mapSheet in sheetMapList)
+                {
+                    if (mapSheet.sheetId.Equals(COMMUNITY_PALETTES) == true)
+                    {
+                        Cell[,] data = mapSheet.sheetData.Data;
+                        myStringWebResource = data[3, communityPalettesList.SelectedIndex+1].Value;
+                    }
+                }
 
+                // download the file and save it into the current filesystem folder.
+                string filename = steamGamePath + @"\NPP\Palettes\" + "nppassisttemppal.zip";
+                myWebClient.DownloadFile(myStringWebResource, filename);
+                
+                // TODO: check if palette has subdir in zip or not (if not create dir and install there instead of Palettes root)
+                // extract temp file
+                ZipFile.ExtractToDirectory(filename, steamGamePath + @"\NPP\Palettes");
+                File.Delete(filename);
+
+                // refresh installed palettes directory
+                palettesInstalled.Items.Clear();
+                PopulateListBoxWithSubDirectories(palettesInstalled, steamGamePath + @"\NPP\Palettes");
+                installCommunityPalette.Enabled = false;
+
+            } catch(Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+            }
         }
 
         private void installBackupPalette_Click(object sender, EventArgs e)
