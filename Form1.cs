@@ -23,6 +23,8 @@ namespace N__Assistant
 
         public Form1()
         {
+            InitializeComponent();
+
             // get steam path
             string steampath = (string)Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\Valve\\Steam", "InstallPath", "null");
             if (steampath == "null") {
@@ -52,7 +54,6 @@ namespace N__Assistant
             if (steamGamePath == "") {
                 throw new FileNotFoundException("N++ not installed in steam");
             }
-            InitializeComponent();
 
             // rename linked labels
             steamInstallDir.Text = steamGamePath;
@@ -60,7 +61,7 @@ namespace N__Assistant
             screenshotsDir.Text = screenshotsPath;
             backupsDir.Text = savePath;
 
-            // create backup directory if it doesnt exist
+            // create backup directories if they dont exist
             if (!Directory.Exists(savePath)) Directory.CreateDirectory(savePath);
             if (!Directory.Exists(savePath + @"\Profiles")) Directory.CreateDirectory(savePath + @"\Profiles");
             if (!Directory.Exists(savePath + @"\Sounds")) Directory.CreateDirectory(savePath + @"\Sounds");
@@ -70,10 +71,9 @@ namespace N__Assistant
             if (!Directory.Exists(savePath + @"\Palettes")) Directory.CreateDirectory(savePath + @"\Palettes");
             if (!Directory.Exists(savePath + @"\GameLevels")) Directory.CreateDirectory(savePath + @"\GameLevels");
 
-            // create palettes directory in game if it doesnt exist (it's needed to place custom palettes)
+            // create palettes directory in game dir if it doesnt exist (it's needed to place custom palettes)
             if (!Directory.Exists(steamGamePath + @"\NPP\Palettes")) Directory.CreateDirectory(steamGamePath + @"\NPP\Palettes");
 
-            // mark backup now checklist items as checked by default
             //TODO: save user settings and reload the same on launch
             // set checkbox on profile backup default on
             checkedListBox1.SetItemChecked(0, true);
@@ -90,12 +90,17 @@ namespace N__Assistant
 
             loadProfile.Enabled = false;
             deleteProfile.Enabled = false;
-            GetSpreadsheetData("1I2f87Qhfs6rxzZq5dQRDbLKYyaGLqTdCkLqfNfrw1Mk", new APIKey().key);
         }
 
         private void tabControl1_Selecting(object sender, TabControlCancelEventArgs e)
         {
             TabPage current = (sender as TabControl).SelectedTab;
+
+            // switch to status / home tab
+            if (current == tabPage1)
+            {
+               
+            }
 
             // switch to profile tab
             if (current == tabPage2)
@@ -119,14 +124,20 @@ namespace N__Assistant
             // switch to palettes tab
             if (current == tabPage4)
             {
-                // all official palettes
+                // TODO: populate official metanet palettes (useful only for auto-unlock and references when creating palettes)
                 // https://cdn.discordapp.com/attachments/197793786389200896/592821804746276864/Palettes.zip
 
-                // spreadsheet of new palettes
-                // https://docs.google.com/spreadsheets/d/1I2f87Qhfs6rxzZq5dQRDbLKYyaGLqTdCkLqfNfrw1Mk/edit#gid=0
+                installMetanetPalette.Enabled = false;
 
-                // allpalettes.zip (supposedly contains all community palettes, updated whenever)
-                // https://drive.google.com/file/d/1Ly3g_4VKcMsTLwXJpY3jPk-IlAGZ5RJG/view?usp=sharing
+                // populate community palettes from spreadsheet link
+                // https://docs.google.com/spreadsheets/d/1I2f87Qhfs6rxzZq5dQRDbLKYyaGLqTdCkLqfNfrw1Mk/edit#gid=0
+                communityPalettesList.Items.Clear();
+                PopulateListBoxWithSpreadsheetData(communityPalettesList, 0, "1I2f87Qhfs6rxzZq5dQRDbLKYyaGLqTdCkLqfNfrw1Mk", new APIKey().key);
+                installCommunityPalette.Enabled = false;
+
+                //TODO: list all palettes in local backup dir
+                installBackupPalette.Enabled = false;
+                deleteBackupPalette.Enabled = false;
 
                 // list installed palettes
                 palettesInstalled.Items.Clear();
@@ -405,37 +416,67 @@ namespace N__Assistant
             }
         }
 
-        private async void GetSpreadsheetData(string spreadsheetId, string key)
+        private async void PopulateListBoxWithSpreadsheetData(ListBox lsb, int sheetsId, string spreadsheetId, string key)
         {
             // test url https://sheets.googleapis.com/v4/spreadsheets/spreadsheetid?key=key
 
             try
             {
                 SheetsSerializer.Serializer = new JSONSerializer();
-
                 Authorization authorization = await Authorization.Authorize(key);
                 Spreadsheet spreadsheet = await Spreadsheet.Get(spreadsheetId, authorization);
-
-                Debug.Print("URL: " + spreadsheet.URL);
-                Debug.Print("Title: " + spreadsheet.Title);
-
-                Sheet sheet = spreadsheet.Sheets[0];
-                Debug.Print("Rows: " + sheet.Rows);
-                Debug.Print("Columns: " + sheet.Columns);
+                Sheet sheet = spreadsheet.Sheets[sheetsId];
+                //Debug.Print("Rows: " + sheet.Rows);
+                //Debug.Print("Columns: " + sheet.Columns);
 
                 Cell[,] data = sheet.Data;
-                for (int x = 0; x < sheet.Columns; x++)
+                
+                for (int y = 1; y < sheet.Rows; y++)
                 {
-                    for (int y = 0; y < sheet.Rows; y++)
-                    {
-                        Debug.Print(data[x, y].Value);
-                    }
+                    string parsedDate = data[2, y].Value.Split('/')[2] + "/" + data[2, y].Value.Split('/')[1] + "/" + data[2, y].Value.Split('/')[0];
+                    lsb.Items.Add(data[0, y].Value + " by " + data[1, y].Value + " (" + parsedDate + ")");
                 }
+
             }
             catch (System.Net.WebException webexc)
             {
                 MessageBox.Show(webexc.Message);
             }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+            }
         }
+
+        private void metanetPalettesList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            installMetanetPalette.Enabled = true;
+        }
+
+        private void installMetanetPalette_Click(object sender, EventArgs e)
+        {
+            // TODO
+        }
+
+        private void communityPalettesList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            installCommunityPalette.Enabled = true;
+        }
+
+        private void installCommunityPalette_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void installBackupPalette_Click(object sender, EventArgs e)
+        {
+            // TODO
+        }
+
+        private void deleteBackupPalette_Click(object sender, EventArgs e)
+        {
+            // TODO
+        }
+
     }
 }
