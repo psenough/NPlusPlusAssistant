@@ -56,20 +56,20 @@ namespace N__Assistant
             this.label2 = new System.Windows.Forms.Label();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.metanetPalettes = new System.Windows.Forms.TabPage();
+            this.installMetanetPalette = new System.Windows.Forms.Button();
             this.metanetPalettesList = new System.Windows.Forms.ListBox();
             this.communityPalettes = new System.Windows.Forms.TabPage();
             this.installCommunityPalette = new System.Windows.Forms.Button();
             this.communityPalettesList = new System.Windows.Forms.ListBox();
             this.localBackupPalettes = new System.Windows.Forms.TabPage();
+            this.deleteBackupPalette = new System.Windows.Forms.Button();
+            this.installBackupPalette = new System.Windows.Forms.Button();
             this.localBackupPalettesList = new System.Windows.Forms.ListBox();
             this.backupPalette = new System.Windows.Forms.Button();
             this.uninstallPalette = new System.Windows.Forms.Button();
-            this.palettesInstalled = new System.Windows.Forms.ListBox();
+            this.palettesInstalledList = new System.Windows.Forms.ListBox();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.tabPage6 = new System.Windows.Forms.TabPage();
-            this.installMetanetPalette = new System.Windows.Forms.Button();
-            this.installBackupPalette = new System.Windows.Forms.Button();
-            this.deleteBackupPalette = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -89,7 +89,7 @@ namespace N__Assistant
             this.tabControl1.Controls.Add(this.tabPage5);
             this.tabControl1.Controls.Add(this.tabPage6);
             this.tabControl1.Location = new System.Drawing.Point(9, 10);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabControl1.Margin = new System.Windows.Forms.Padding(2);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(566, 401);
@@ -110,9 +110,9 @@ namespace N__Assistant
             this.tabPage1.Controls.Add(this.profileDir);
             this.tabPage1.Controls.Add(this.steamInstallDir);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage1.Margin = new System.Windows.Forms.Padding(2);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(2);
             this.tabPage1.Size = new System.Drawing.Size(558, 375);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Status";
@@ -130,7 +130,7 @@ namespace N__Assistant
             // progressBar1
             // 
             this.progressBar1.Location = new System.Drawing.Point(152, 216);
-            this.progressBar1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.progressBar1.Margin = new System.Windows.Forms.Padding(2);
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(154, 19);
             this.progressBar1.TabIndex = 10;
@@ -192,15 +192,15 @@ namespace N__Assistant
             "palettes",
             "game levels"});
             this.checkedListBox1.Location = new System.Drawing.Point(8, 141);
-            this.checkedListBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkedListBox1.Margin = new System.Windows.Forms.Padding(2);
             this.checkedListBox1.Name = "checkedListBox1";
-            this.checkedListBox1.Size = new System.Drawing.Size(128, 79);
+            this.checkedListBox1.Size = new System.Drawing.Size(128, 94);
             this.checkedListBox1.TabIndex = 5;
             // 
             // backupNow
             // 
             this.backupNow.Location = new System.Drawing.Point(152, 141);
-            this.backupNow.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.backupNow.Margin = new System.Windows.Forms.Padding(2);
             this.backupNow.Name = "backupNow";
             this.backupNow.Size = new System.Drawing.Size(154, 23);
             this.backupNow.TabIndex = 4;
@@ -261,9 +261,9 @@ namespace N__Assistant
             this.tabPage2.Controls.Add(this.backupProfile);
             this.tabPage2.Controls.Add(this.profileList);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage2.Margin = new System.Windows.Forms.Padding(2);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(2);
             this.tabPage2.Size = new System.Drawing.Size(558, 375);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Profile";
@@ -309,7 +309,7 @@ namespace N__Assistant
             // backupProfile
             // 
             this.backupProfile.Location = new System.Drawing.Point(4, 15);
-            this.backupProfile.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.backupProfile.Margin = new System.Windows.Forms.Padding(2);
             this.backupProfile.Name = "backupProfile";
             this.backupProfile.Size = new System.Drawing.Size(213, 30);
             this.backupProfile.TabIndex = 1;
@@ -321,7 +321,7 @@ namespace N__Assistant
             // 
             this.profileList.FormattingEnabled = true;
             this.profileList.Location = new System.Drawing.Point(4, 62);
-            this.profileList.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.profileList.Margin = new System.Windows.Forms.Padding(2);
             this.profileList.Name = "profileList";
             this.profileList.ScrollAlwaysVisible = true;
             this.profileList.Size = new System.Drawing.Size(213, 173);
@@ -331,7 +331,7 @@ namespace N__Assistant
             // tabPage3
             // 
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage3.Margin = new System.Windows.Forms.Padding(2);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Size = new System.Drawing.Size(558, 375);
             this.tabPage3.TabIndex = 2;
@@ -345,9 +345,9 @@ namespace N__Assistant
             this.tabPage4.Controls.Add(this.tabControl2);
             this.tabPage4.Controls.Add(this.backupPalette);
             this.tabPage4.Controls.Add(this.uninstallPalette);
-            this.tabPage4.Controls.Add(this.palettesInstalled);
+            this.tabPage4.Controls.Add(this.palettesInstalledList);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
-            this.tabPage4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage4.Margin = new System.Windows.Forms.Padding(2);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Size = new System.Drawing.Size(558, 375);
             this.tabPage4.TabIndex = 3;
@@ -382,7 +382,7 @@ namespace N__Assistant
             this.tabControl2.Controls.Add(this.communityPalettes);
             this.tabControl2.Controls.Add(this.localBackupPalettes);
             this.tabControl2.Location = new System.Drawing.Point(10, 26);
-            this.tabControl2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabControl2.Margin = new System.Windows.Forms.Padding(2);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
             this.tabControl2.Size = new System.Drawing.Size(256, 337);
@@ -393,131 +393,13 @@ namespace N__Assistant
             this.metanetPalettes.Controls.Add(this.installMetanetPalette);
             this.metanetPalettes.Controls.Add(this.metanetPalettesList);
             this.metanetPalettes.Location = new System.Drawing.Point(4, 22);
-            this.metanetPalettes.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.metanetPalettes.Margin = new System.Windows.Forms.Padding(2);
             this.metanetPalettes.Name = "metanetPalettes";
-            this.metanetPalettes.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.metanetPalettes.Padding = new System.Windows.Forms.Padding(2);
             this.metanetPalettes.Size = new System.Drawing.Size(248, 311);
             this.metanetPalettes.TabIndex = 0;
             this.metanetPalettes.Text = "Metanet";
             this.metanetPalettes.UseVisualStyleBackColor = true;
-            // 
-            // metanetPalettesList
-            // 
-            this.metanetPalettesList.FormattingEnabled = true;
-            this.metanetPalettesList.Location = new System.Drawing.Point(2, 3);
-            this.metanetPalettesList.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.metanetPalettesList.Name = "metanetPalettesList";
-            this.metanetPalettesList.Size = new System.Drawing.Size(242, 264);
-            this.metanetPalettesList.TabIndex = 1;
-            this.metanetPalettesList.SelectedIndexChanged += new System.EventHandler(this.metanetPalettesList_SelectedIndexChanged);
-            // 
-            // communityPalettes
-            // 
-            this.communityPalettes.Controls.Add(this.installCommunityPalette);
-            this.communityPalettes.Controls.Add(this.communityPalettesList);
-            this.communityPalettes.Location = new System.Drawing.Point(4, 22);
-            this.communityPalettes.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.communityPalettes.Name = "communityPalettes";
-            this.communityPalettes.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.communityPalettes.Size = new System.Drawing.Size(248, 311);
-            this.communityPalettes.TabIndex = 1;
-            this.communityPalettes.Text = "Community";
-            this.communityPalettes.UseVisualStyleBackColor = true;
-            // 
-            // installCommunityPalette
-            // 
-            this.installCommunityPalette.Location = new System.Drawing.Point(72, 271);
-            this.installCommunityPalette.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.installCommunityPalette.Name = "installCommunityPalette";
-            this.installCommunityPalette.Size = new System.Drawing.Size(96, 34);
-            this.installCommunityPalette.TabIndex = 8;
-            this.installCommunityPalette.Text = "Install Palette";
-            this.installCommunityPalette.UseVisualStyleBackColor = true;
-            this.installCommunityPalette.Click += new System.EventHandler(this.installCommunityPalette_Click);
-            // 
-            // communityPalettesList
-            // 
-            this.communityPalettesList.FormattingEnabled = true;
-            this.communityPalettesList.Location = new System.Drawing.Point(2, 3);
-            this.communityPalettesList.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.communityPalettesList.Name = "communityPalettesList";
-            this.communityPalettesList.Size = new System.Drawing.Size(242, 264);
-            this.communityPalettesList.TabIndex = 2;
-            this.communityPalettesList.SelectedIndexChanged += new System.EventHandler(this.communityPalettesList_SelectedIndexChanged);
-            // 
-            // localBackupPalettes
-            // 
-            this.localBackupPalettes.Controls.Add(this.deleteBackupPalette);
-            this.localBackupPalettes.Controls.Add(this.installBackupPalette);
-            this.localBackupPalettes.Controls.Add(this.localBackupPalettesList);
-            this.localBackupPalettes.Location = new System.Drawing.Point(4, 22);
-            this.localBackupPalettes.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.localBackupPalettes.Name = "localBackupPalettes";
-            this.localBackupPalettes.Size = new System.Drawing.Size(248, 311);
-            this.localBackupPalettes.TabIndex = 2;
-            this.localBackupPalettes.Text = "Local Backups";
-            this.localBackupPalettes.UseVisualStyleBackColor = true;
-            // 
-            // localBackupPalettesList
-            // 
-            this.localBackupPalettesList.FormattingEnabled = true;
-            this.localBackupPalettesList.Location = new System.Drawing.Point(2, 3);
-            this.localBackupPalettesList.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.localBackupPalettesList.Name = "localBackupPalettesList";
-            this.localBackupPalettesList.Size = new System.Drawing.Size(244, 264);
-            this.localBackupPalettesList.TabIndex = 2;
-            // 
-            // backupPalette
-            // 
-            this.backupPalette.Location = new System.Drawing.Point(470, 50);
-            this.backupPalette.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.backupPalette.Name = "backupPalette";
-            this.backupPalette.Size = new System.Drawing.Size(76, 44);
-            this.backupPalette.TabIndex = 3;
-            this.backupPalette.Text = "Backup Palette";
-            this.backupPalette.UseVisualStyleBackColor = true;
-            this.backupPalette.Click += new System.EventHandler(this.backupPalette_Click);
-            // 
-            // uninstallPalette
-            // 
-            this.uninstallPalette.Location = new System.Drawing.Point(470, 105);
-            this.uninstallPalette.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.uninstallPalette.Name = "uninstallPalette";
-            this.uninstallPalette.Size = new System.Drawing.Size(76, 42);
-            this.uninstallPalette.TabIndex = 2;
-            this.uninstallPalette.Text = "Uninstall Palette";
-            this.uninstallPalette.UseVisualStyleBackColor = true;
-            this.uninstallPalette.Click += new System.EventHandler(this.uninstallPalette_Click);
-            // 
-            // palettesInstalled
-            // 
-            this.palettesInstalled.FormattingEnabled = true;
-            this.palettesInstalled.Location = new System.Drawing.Point(270, 50);
-            this.palettesInstalled.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.palettesInstalled.Name = "palettesInstalled";
-            this.palettesInstalled.Size = new System.Drawing.Size(197, 303);
-            this.palettesInstalled.TabIndex = 1;
-            this.palettesInstalled.SelectedIndexChanged += new System.EventHandler(this.palettesInstalled_SelectedIndexChanged);
-            // 
-            // tabPage5
-            // 
-            this.tabPage5.Location = new System.Drawing.Point(4, 22);
-            this.tabPage5.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Size = new System.Drawing.Size(558, 375);
-            this.tabPage5.TabIndex = 4;
-            this.tabPage5.Text = "Practice Maps";
-            this.tabPage5.UseVisualStyleBackColor = true;
-            // 
-            // tabPage6
-            // 
-            this.tabPage6.Location = new System.Drawing.Point(4, 22);
-            this.tabPage6.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.tabPage6.Name = "tabPage6";
-            this.tabPage6.Size = new System.Drawing.Size(558, 375);
-            this.tabPage6.TabIndex = 5;
-            this.tabPage6.Text = "Map Packs";
-            this.tabPage6.UseVisualStyleBackColor = true;
             // 
             // installMetanetPalette
             // 
@@ -530,16 +412,62 @@ namespace N__Assistant
             this.installMetanetPalette.UseVisualStyleBackColor = true;
             this.installMetanetPalette.Click += new System.EventHandler(this.installMetanetPalette_Click);
             // 
-            // installBackupPalette
+            // metanetPalettesList
             // 
-            this.installBackupPalette.Location = new System.Drawing.Point(15, 271);
-            this.installBackupPalette.Margin = new System.Windows.Forms.Padding(2);
-            this.installBackupPalette.Name = "installBackupPalette";
-            this.installBackupPalette.Size = new System.Drawing.Size(96, 34);
-            this.installBackupPalette.TabIndex = 9;
-            this.installBackupPalette.Text = "Install Palette";
-            this.installBackupPalette.UseVisualStyleBackColor = true;
-            this.installBackupPalette.Click += new System.EventHandler(this.installBackupPalette_Click);
+            this.metanetPalettesList.FormattingEnabled = true;
+            this.metanetPalettesList.Location = new System.Drawing.Point(2, 3);
+            this.metanetPalettesList.Margin = new System.Windows.Forms.Padding(2);
+            this.metanetPalettesList.Name = "metanetPalettesList";
+            this.metanetPalettesList.Size = new System.Drawing.Size(242, 264);
+            this.metanetPalettesList.TabIndex = 1;
+            this.metanetPalettesList.SelectedIndexChanged += new System.EventHandler(this.metanetPalettesList_SelectedIndexChanged);
+            // 
+            // communityPalettes
+            // 
+            this.communityPalettes.Controls.Add(this.installCommunityPalette);
+            this.communityPalettes.Controls.Add(this.communityPalettesList);
+            this.communityPalettes.Location = new System.Drawing.Point(4, 22);
+            this.communityPalettes.Margin = new System.Windows.Forms.Padding(2);
+            this.communityPalettes.Name = "communityPalettes";
+            this.communityPalettes.Padding = new System.Windows.Forms.Padding(2);
+            this.communityPalettes.Size = new System.Drawing.Size(248, 311);
+            this.communityPalettes.TabIndex = 1;
+            this.communityPalettes.Text = "Community";
+            this.communityPalettes.UseVisualStyleBackColor = true;
+            // 
+            // installCommunityPalette
+            // 
+            this.installCommunityPalette.Location = new System.Drawing.Point(72, 271);
+            this.installCommunityPalette.Margin = new System.Windows.Forms.Padding(2);
+            this.installCommunityPalette.Name = "installCommunityPalette";
+            this.installCommunityPalette.Size = new System.Drawing.Size(96, 34);
+            this.installCommunityPalette.TabIndex = 8;
+            this.installCommunityPalette.Text = "Install Palette";
+            this.installCommunityPalette.UseVisualStyleBackColor = true;
+            this.installCommunityPalette.Click += new System.EventHandler(this.installCommunityPalette_Click);
+            // 
+            // communityPalettesList
+            // 
+            this.communityPalettesList.FormattingEnabled = true;
+            this.communityPalettesList.Location = new System.Drawing.Point(2, 3);
+            this.communityPalettesList.Margin = new System.Windows.Forms.Padding(2);
+            this.communityPalettesList.Name = "communityPalettesList";
+            this.communityPalettesList.Size = new System.Drawing.Size(242, 264);
+            this.communityPalettesList.TabIndex = 2;
+            this.communityPalettesList.SelectedIndexChanged += new System.EventHandler(this.communityPalettesList_SelectedIndexChanged);
+            // 
+            // localBackupPalettes
+            // 
+            this.localBackupPalettes.Controls.Add(this.deleteBackupPalette);
+            this.localBackupPalettes.Controls.Add(this.installBackupPalette);
+            this.localBackupPalettes.Controls.Add(this.localBackupPalettesList);
+            this.localBackupPalettes.Location = new System.Drawing.Point(4, 22);
+            this.localBackupPalettes.Margin = new System.Windows.Forms.Padding(2);
+            this.localBackupPalettes.Name = "localBackupPalettes";
+            this.localBackupPalettes.Size = new System.Drawing.Size(248, 311);
+            this.localBackupPalettes.TabIndex = 2;
+            this.localBackupPalettes.Text = "Local Backups";
+            this.localBackupPalettes.UseVisualStyleBackColor = true;
             // 
             // deleteBackupPalette
             // 
@@ -552,13 +480,85 @@ namespace N__Assistant
             this.deleteBackupPalette.UseVisualStyleBackColor = true;
             this.deleteBackupPalette.Click += new System.EventHandler(this.deleteBackupPalette_Click);
             // 
+            // installBackupPalette
+            // 
+            this.installBackupPalette.Location = new System.Drawing.Point(15, 271);
+            this.installBackupPalette.Margin = new System.Windows.Forms.Padding(2);
+            this.installBackupPalette.Name = "installBackupPalette";
+            this.installBackupPalette.Size = new System.Drawing.Size(96, 34);
+            this.installBackupPalette.TabIndex = 9;
+            this.installBackupPalette.Text = "Install Palette";
+            this.installBackupPalette.UseVisualStyleBackColor = true;
+            this.installBackupPalette.Click += new System.EventHandler(this.installBackupPalette_Click);
+            // 
+            // localBackupPalettesList
+            // 
+            this.localBackupPalettesList.FormattingEnabled = true;
+            this.localBackupPalettesList.Location = new System.Drawing.Point(2, 3);
+            this.localBackupPalettesList.Margin = new System.Windows.Forms.Padding(2);
+            this.localBackupPalettesList.Name = "localBackupPalettesList";
+            this.localBackupPalettesList.Size = new System.Drawing.Size(244, 264);
+            this.localBackupPalettesList.TabIndex = 2;
+            // 
+            // backupPalette
+            // 
+            this.backupPalette.Location = new System.Drawing.Point(470, 50);
+            this.backupPalette.Margin = new System.Windows.Forms.Padding(2);
+            this.backupPalette.Name = "backupPalette";
+            this.backupPalette.Size = new System.Drawing.Size(76, 44);
+            this.backupPalette.TabIndex = 3;
+            this.backupPalette.Text = "Backup Palette";
+            this.backupPalette.UseVisualStyleBackColor = true;
+            this.backupPalette.Click += new System.EventHandler(this.backupPalette_Click);
+            // 
+            // uninstallPalette
+            // 
+            this.uninstallPalette.Location = new System.Drawing.Point(470, 105);
+            this.uninstallPalette.Margin = new System.Windows.Forms.Padding(2);
+            this.uninstallPalette.Name = "uninstallPalette";
+            this.uninstallPalette.Size = new System.Drawing.Size(76, 42);
+            this.uninstallPalette.TabIndex = 2;
+            this.uninstallPalette.Text = "Uninstall Palette";
+            this.uninstallPalette.UseVisualStyleBackColor = true;
+            this.uninstallPalette.Click += new System.EventHandler(this.uninstallPalette_Click);
+            // 
+            // palettesInstalled
+            // 
+            this.palettesInstalledList.FormattingEnabled = true;
+            this.palettesInstalledList.Location = new System.Drawing.Point(270, 50);
+            this.palettesInstalledList.Margin = new System.Windows.Forms.Padding(2);
+            this.palettesInstalledList.Name = "palettesInstalled";
+            this.palettesInstalledList.Size = new System.Drawing.Size(197, 303);
+            this.palettesInstalledList.TabIndex = 1;
+            this.palettesInstalledList.SelectedIndexChanged += new System.EventHandler(this.palettesInstalled_SelectedIndexChanged);
+            // 
+            // tabPage5
+            // 
+            this.tabPage5.Location = new System.Drawing.Point(4, 22);
+            this.tabPage5.Margin = new System.Windows.Forms.Padding(2);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Size = new System.Drawing.Size(558, 375);
+            this.tabPage5.TabIndex = 4;
+            this.tabPage5.Text = "Practice Maps";
+            this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // tabPage6
+            // 
+            this.tabPage6.Location = new System.Drawing.Point(4, 22);
+            this.tabPage6.Margin = new System.Windows.Forms.Padding(2);
+            this.tabPage6.Name = "tabPage6";
+            this.tabPage6.Size = new System.Drawing.Size(558, 375);
+            this.tabPage6.TabIndex = 5;
+            this.tabPage6.Text = "Map Packs";
+            this.tabPage6.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(584, 419);
             this.Controls.Add(this.tabControl1);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";
             this.Text = "N++ Assistant";
             this.tabControl1.ResumeLayout(false);
@@ -603,7 +603,7 @@ namespace N__Assistant
         private System.Windows.Forms.Label profileBackupLabel;
         private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.Button deleteProfile;
-        private System.Windows.Forms.ListBox palettesInstalled;
+        private System.Windows.Forms.ListBox palettesInstalledList;
         private System.Windows.Forms.Button uninstallPalette;
         private System.Windows.Forms.Button backupPalette;
         private System.Windows.Forms.LinkLabel palettesInstalledLinkedLabel;

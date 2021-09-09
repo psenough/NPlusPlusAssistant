@@ -12,16 +12,6 @@ using Popcron.Sheets;
 
 namespace N__Assistant
 {
-    public class sheetMap
-    {
-        public sheetMap(string sId, Sheet sD) {
-            sheetId = sId;
-            sheetData = sD;
-        }
-        public string sheetId { get; set; }
-        public Sheet sheetData { get; set; }
-    }
-
     public partial class Form1 : Form
     {
         // more robust autodetect added by YupdanielThatsMe#6492
@@ -86,7 +76,25 @@ namespace N__Assistant
             if (!Directory.Exists(savePath + @"\Palettes")) Directory.CreateDirectory(savePath + @"\Palettes");
             if (!Directory.Exists(savePath + @"\GameLevels")) Directory.CreateDirectory(savePath + @"\GameLevels");
 
-            // create palettes directory in game dir if it doesnt exist (it's needed to place custom palettes)
+            // download default Metanet Palettes.zip pack to backup dir
+            if (!Directory.Exists(savePath + @"\Palettes\Palettes"))
+            {
+                try
+                {
+                    string myStringWebResource = "https://cdn.discordapp.com/attachments/197793786389200896/592821804746276864/Palettes.zip";
+                    WebClient myWebClient = new WebClient();
+                    string filename = savePath + @"\Palettes\Palettes.zip";
+                    myWebClient.DownloadFile(myStringWebResource, filename);
+                    myWebClient.Dispose();
+                    //Directory.CreateDirectory(savePath + @"\Palettes\Palettes");
+                    ZipFile.ExtractToDirectory(filename, savePath + @"\Palettes");
+                    File.Delete(savePath + @"\Palettes\Palettes.zip");
+                } catch (Exception exc) {
+                    MessageBox.Show("Couldn't download Metanet Palettes pack because: " + exc.Message);
+                }
+            }
+
+            // create palettes directory in steam game dir if it doesnt exist (it's needed to install the custom palettes)
             if (!Directory.Exists(steamGamePath + @"\NPP\Palettes")) Directory.CreateDirectory(steamGamePath + @"\NPP\Palettes");
 
             //TODO: save user settings and reload the same on launch
@@ -139,9 +147,10 @@ namespace N__Assistant
             // switch to palettes tab
             if (current == tabPage4)
             {
-                // TODO: populate official metanet palettes (useful only for auto-unlock and references when creating palettes)
+                // populate metanet palettes (useful only for auto-unlock and references when creating palettes)
                 // https://cdn.discordapp.com/attachments/197793786389200896/592821804746276864/Palettes.zip
-
+                metanetPalettesList.Items.Clear();
+                PopulateListBoxWithSubDirectories(metanetPalettesList, savePath + @"\Palettes\Palettes");
                 installMetanetPalette.Enabled = false;
 
                 // populate community palettes from spreadsheet link
@@ -150,13 +159,15 @@ namespace N__Assistant
                 PopulateListBoxWithSpreadsheetData(communityPalettesList, 0, COMMUNITY_PALETTES, new APIKey().key);
                 installCommunityPalette.Enabled = false;
 
-                //TODO: list all palettes in local backup dir
+                // list all palettes in local backup dir
+                localBackupPalettesList.Items.Clear();
+                PopulateListBoxWithFileType(localBackupPalettesList, savePath + @"\Palettes", "*.zip");
                 installBackupPalette.Enabled = false;
                 deleteBackupPalette.Enabled = false;
 
                 // list installed palettes
-                palettesInstalled.Items.Clear();
-                PopulateListBoxWithSubDirectories(palettesInstalled, steamGamePath + @"\NPP\Palettes");
+                palettesInstalledList.Items.Clear();
+                PopulateListBoxWithSubDirectories(palettesInstalledList, steamGamePath + @"\NPP\Palettes");
                 uninstallPalette.Enabled = false;
                 backupPalette.Enabled = false;
             }
@@ -244,7 +255,21 @@ namespace N__Assistant
             if (checkedListBox1.GetItemCheckState(4) == CheckState.Checked)
             {
                 // backup palettes
-                ZipFile.CreateFromDirectory(steamGamePath + @"\NPP\Palettes", savePath + @"\Palettes\Palettes" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".zip");
+                //ZipFile.CreateFromDirectory(steamGamePath + @"\NPP\Palettes", savePath + @"\Palettes\Palettes" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".zip");
+                try
+                {
+                    string[] dirs = Directory.GetDirectories(steamGamePath + @"\NPP\Palettes");
+                    foreach (string dir in dirs)
+                    {
+                        string[] splits = dir.Split('\\');
+                        string palName = splits[splits.Length - 1];
+                        ZipFile.CreateFromDirectory(dir, savePath + @"\Palettes\" + palName + DateTime.Now.ToString("yyyyMMddHHmmss") + ".zip");
+                    }
+                }
+                catch (Exception exc)
+                {
+                    MessageBox.Show("Failed to zip palettes: {0}", exc.ToString());
+                }
             }
             bgwBackupNow.ReportProgress(80, "Zipping Game Levels");
             if (checkedListBox1.GetItemCheckState(5) == CheckState.Checked)
@@ -259,7 +284,6 @@ namespace N__Assistant
         {
             progressBar1.Value = e.ProgressPercentage;
             progressLabel.Text = String.Format("{0}", e.UserState);
-            //label2.Text = String.Format("Total items transfered: {0}", e.UserState);
         }
 
         private void bgwBackupNow_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -337,7 +361,7 @@ namespace N__Assistant
         private void backupProfile_Click(object sender, EventArgs e)
         {
             profileBackupLabel.Text = "Profile backup started!";
-            // backup profile
+
             using (FileStream fs = new FileStream(savePath + @"\Profiles\nprofile" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".zip", FileMode.Create))
             using (ZipArchive arch = new ZipArchive(fs, ZipArchiveMode.Create))
             {
@@ -376,7 +400,7 @@ namespace N__Assistant
             //TODO: confirmation box
             try
             {
-                Directory.Delete(steamGamePath + @"\NPP\Palettes\" + palettesInstalled.SelectedItem.ToString().Split(' ')[0], true);
+                Directory.Delete(steamGamePath + @"\NPP\Palettes\" + palettesInstalledList.SelectedItem.ToString().Split(' ')[0], true);
                 //palettesInstalled.Items.Remove(palettesInstalled.SelectedItem);
             }
             catch (Exception exc)
@@ -384,8 +408,8 @@ namespace N__Assistant
                 MessageBox.Show(exc.Message);
             }
 
-            palettesInstalled.Items.Clear();
-            PopulateListBoxWithSubDirectories(palettesInstalled, steamGamePath + @"\NPP\Palettes");
+            palettesInstalledList.Items.Clear();
+            PopulateListBoxWithSubDirectories(palettesInstalledList, steamGamePath + @"\NPP\Palettes");
             uninstallPalette.Enabled = false;
         }
 
@@ -441,9 +465,6 @@ namespace N__Assistant
                 Popcron.Sheets.Authorization authorization = await Popcron.Sheets.Authorization.Authorize(key);
                 Spreadsheet spreadsheet = await Spreadsheet.Get(spreadsheetId, authorization);
                 Sheet sheet = spreadsheet.Sheets[sheetsId];
-                //Debug.Print("Rows: " + sheet.Rows);
-                //Debug.Print("Columns: " + sheet.Columns);
-
                 Cell[,] data = sheet.Data;
                 
                 for (int y = 1; y < sheet.Rows; y++)
@@ -484,7 +505,11 @@ namespace N__Assistant
 
         private void installMetanetPalette_Click(object sender, EventArgs e)
         {
-            // TODO
+            string palName = metanetPalettesList.SelectedItem.ToString().Substring(0, metanetPalettesList.SelectedItem.ToString().Length - 13);
+            DirectoryCopy(savePath + @"\Palettes\Palettes\" + palName, steamGamePath + @"\NPP\Palettes\" + palName, false);
+            palettesInstalledList.Items.Clear();
+            PopulateListBoxWithSubDirectories(palettesInstalledList, steamGamePath + @"\NPP\Palettes");
+            installMetanetPalette.Enabled = false;
         }
 
         private void communityPalettesList_SelectedIndexChanged(object sender, EventArgs e)
@@ -518,13 +543,13 @@ namespace N__Assistant
                 File.Delete(filename);
 
                 // refresh installed palettes directory
-                palettesInstalled.Items.Clear();
-                PopulateListBoxWithSubDirectories(palettesInstalled, steamGamePath + @"\NPP\Palettes");
+                palettesInstalledList.Items.Clear();
+                PopulateListBoxWithSubDirectories(palettesInstalledList, steamGamePath + @"\NPP\Palettes");
                 installCommunityPalette.Enabled = false;
 
             } catch(Exception exc)
             {
-                MessageBox.Show(exc.Message);
+                MessageBox.Show("Couldn't install community palette because: " + exc.Message);
             }
         }
 
@@ -538,5 +563,51 @@ namespace N__Assistant
             // TODO
         }
 
+        private static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)
+        {
+            // Get the subdirectories for the specified directory.
+            DirectoryInfo dir = new DirectoryInfo(sourceDirName);
+
+            if (!dir.Exists)
+            {
+                throw new DirectoryNotFoundException(
+                    "Source directory does not exist or could not be found: "
+                    + sourceDirName);
+            }
+
+            DirectoryInfo[] dirs = dir.GetDirectories();
+
+            // If the destination directory doesn't exist, create it.       
+            Directory.CreateDirectory(destDirName);
+
+            // Get the files in the directory and copy them to the new location.
+            FileInfo[] files = dir.GetFiles();
+            foreach (FileInfo file in files)
+            {
+                string tempPath = Path.Combine(destDirName, file.Name);
+                file.CopyTo(tempPath, false);
+            }
+
+            // If copying subdirectories, copy them and their contents to new location.
+            if (copySubDirs)
+            {
+                foreach (DirectoryInfo subdir in dirs)
+                {
+                    string tempPath = Path.Combine(destDirName, subdir.Name);
+                    DirectoryCopy(subdir.FullName, tempPath, copySubDirs);
+                }
+            }
+        }
+
+    }
+    public class sheetMap
+    {
+        public sheetMap(string sId, Sheet sD)
+        {
+            sheetId = sId;
+            sheetData = sD;
+        }
+        public string sheetId { get; set; }
+        public Sheet sheetData { get; set; }
     }
 }
