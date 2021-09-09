@@ -170,6 +170,8 @@ namespace N__Assistant
                 PopulateListBoxWithSubDirectories(palettesInstalledList, steamGamePath + @"\NPP\Palettes");
                 uninstallPalette.Enabled = false;
                 backupPalette.Enabled = false;
+
+                updateCustomPalleteInstalledCounter();
             }
         }
 
@@ -209,7 +211,7 @@ namespace N__Assistant
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void backupNow_Click(object sender, EventArgs e)
         {
             if (DetectNPPRunning() == true)
             {
@@ -412,6 +414,9 @@ namespace N__Assistant
             //palettesInstalledList.Items.Clear();
             //PopulateListBoxWithSubDirectories(palettesInstalledList, steamGamePath + @"\NPP\Palettes");
             uninstallPalette.Enabled = false;
+            backupPalette.Enabled = false;
+
+            updateCustomPalleteInstalledCounter();
         }
 
         private void palettesInstalled_SelectedIndexChanged(object sender, EventArgs e)
@@ -559,6 +564,8 @@ namespace N__Assistant
                 PopulateListBoxWithSubDirectories(palettesInstalledList, steamGamePath + @"\NPP\Palettes");
                 installCommunityPalette.Enabled = false;
 
+                updateCustomPalleteInstalledCounter();
+
             } catch(Exception exc)
             {
                 MessageBox.Show("Couldn't install community palette because: " + exc.Message);
@@ -567,19 +574,55 @@ namespace N__Assistant
 
         private void installBackupPalette_Click(object sender, EventArgs e)
         {
-            // TODO: check if dir exists
-            // prompt asking if replacing existing dir or not
+            string palName = localBackupPalettesList.SelectedItem.ToString().Substring(0, localBackupPalettesList.SelectedItem.ToString().LastIndexOf('.') - 14).TrimEnd();
+            string filename = localBackupPalettesList.SelectedItem.ToString().Substring(0, localBackupPalettesList.SelectedItem.ToString().LastIndexOf(' ')).TrimEnd();
 
-            // TODO: install the palette
+            // check if destination dir exists
+            if (Directory.Exists(steamGamePath + @"\NPP\Palettes\" + palName))
+            {
+                // prompt asking if replacing existing dir or not
+                DialogResult dialogResult = MessageBox.Show("A palette with this name is already installed, do you want to replace it?","Replace Existing?", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    // delete installed palette
+                    Directory.Delete(steamGamePath + @"\NPP\Palettes\" + palName, true);
 
-            // refresh installed palettes list
-            palettesInstalledList.Items.Clear();
-            PopulateListBoxWithSubDirectories(palettesInstalledList, steamGamePath + @"\NPP\Palettes");
-            uninstallPalette.Enabled = false;
-            backupPalette.Enabled = false;
+                    // install new palette from backup
+                    Directory.CreateDirectory(steamGamePath + @"\NPP\Palettes\" + palName);
+                    ZipFile.ExtractToDirectory(savePath + @"\Palettes\" + filename, steamGamePath + @"\NPP\Palettes\" + palName);
 
-            // notify it's done
-            installBackupPalette.Enabled = false;
+                    // refresh installed palettes list
+                    palettesInstalledList.Items.Clear();
+                    PopulateListBoxWithSubDirectories(palettesInstalledList, steamGamePath + @"\NPP\Palettes");
+                    uninstallPalette.Enabled = false;
+                    backupPalette.Enabled = false;
+
+                    // notify it's done
+                    installBackupPalette.Enabled = false;
+                }
+                else if (dialogResult == DialogResult.No)
+                {
+                    // do nothing
+                }
+            }
+            else
+            {
+                // install palette
+                Directory.CreateDirectory(steamGamePath + @"\NPP\Palettes\" + palName);
+                ZipFile.ExtractToDirectory(savePath + @"\Palettes\" + filename, steamGamePath + @"\NPP\Palettes\" + palName);
+
+                // refresh installed palettes list
+                palettesInstalledList.Items.Clear();
+                PopulateListBoxWithSubDirectories(palettesInstalledList, steamGamePath + @"\NPP\Palettes");
+                uninstallPalette.Enabled = false;
+                backupPalette.Enabled = false;
+
+                // notify it's done
+                installBackupPalette.Enabled = false;
+
+                updateCustomPalleteInstalledCounter();
+            }
+         
         }
 
         private void deleteBackupPalette_Click(object sender, EventArgs e)
@@ -597,6 +640,33 @@ namespace N__Assistant
             //PopulateListBoxWithFileType(localBackupPalettesList, savePath + @"\Palettes", "*.zip");
             installBackupPalette.Enabled = false;
             deleteBackupPalette.Enabled = false;
+        }
+
+        private void updateCustomPalleteInstalledCounter()
+        {
+            int count = 0;
+            foreach (string item in palettesInstalledList.Items)
+            {
+                string f1 = item.Substring(0, item.LastIndexOf(' ')).TrimEnd();
+                bool isMetanet = false;
+                foreach (string item2 in metanetPalettesList.Items)
+                {
+                    string f2 = item2.Substring(0, item2.LastIndexOf(' ')).TrimEnd();
+                    if (f1.Equals(f2)) isMetanet = true;
+                }
+                if (!isMetanet) count++;
+            }
+            
+            countCustomPalettesInstalled.Text = "Custom: " + count.ToString();
+            if (count > 132)
+            {
+                countCustomPalettesInstalled.ForeColor = System.Drawing.Color.Red;
+                MessageBox.Show("You've reached maximum number of custom palettes the game can handle, here be dragons if you don't revert");
+            } else
+            {
+                countCustomPalettesInstalled.ForeColor = System.Drawing.Color.Black;
+            }
+            
         }
 
         private static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)
@@ -639,6 +709,11 @@ namespace N__Assistant
         {
             installBackupPalette.Enabled = true;
             deleteBackupPalette.Enabled = true;
+        }
+
+        private void onlineEditorLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://edelkas.github.io/npc-web/");
         }
     }
     public class sheetMap

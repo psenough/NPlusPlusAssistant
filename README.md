@@ -20,11 +20,9 @@ Needs Visual Studio Community 2019 with C# .Net stuff installed to compile from 
 
 * list all palettes on backup and select one to install or delete
 
+* display number of custom palettes installed (and warn of maximum when reached)
+
 ## Stuff it'll eventually do:
-
-* display maximum palette install count
-
-* link to online palette editor
 
 * download soundpacks and select one to replace the current one
 
