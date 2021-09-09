@@ -408,20 +408,32 @@ namespace N__Assistant
                 MessageBox.Show(exc.Message);
             }
 
-            palettesInstalledList.Items.Clear();
-            PopulateListBoxWithSubDirectories(palettesInstalledList, steamGamePath + @"\NPP\Palettes");
+            palettesInstalledList.Items.Remove(palettesInstalledList.SelectedItem);
+            //palettesInstalledList.Items.Clear();
+            //PopulateListBoxWithSubDirectories(palettesInstalledList, steamGamePath + @"\NPP\Palettes");
             uninstallPalette.Enabled = false;
         }
 
         private void palettesInstalled_SelectedIndexChanged(object sender, EventArgs e)
         {
             uninstallPalette.Enabled = true;
-            //backupPalette.Enabled = true;
+            backupPalette.Enabled = true;
         }
 
         private void backupPalette_Click(object sender, EventArgs e)
         {
-            //TODO: backup the selected palette only
+            // backup the selected palette only
+            string palName = palettesInstalledList.SelectedItem.ToString().Substring(0, palettesInstalledList.SelectedItem.ToString().Length - 13);
+            ZipFile.CreateFromDirectory(steamGamePath + @"\NPP\Palettes\" + palName, savePath + @"\Palettes\" + palName + DateTime.Now.ToString("yyyyMMddHHmmss") + ".zip");
+
+            // update local backup palettes list
+            localBackupPalettesList.Items.Clear();
+            PopulateListBoxWithFileType(localBackupPalettesList, savePath + @"\Palettes", "*.zip");
+            installBackupPalette.Enabled = false;
+            deleteBackupPalette.Enabled = false;
+
+            // notify backup was done
+            backupPalette.Enabled = false;
         }
 
         private void palettesInstalledLinkedLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -555,12 +567,36 @@ namespace N__Assistant
 
         private void installBackupPalette_Click(object sender, EventArgs e)
         {
-            // TODO
+            // TODO: check if dir exists
+            // prompt asking if replacing existing dir or not
+
+            // TODO: install the palette
+
+            // refresh installed palettes list
+            palettesInstalledList.Items.Clear();
+            PopulateListBoxWithSubDirectories(palettesInstalledList, steamGamePath + @"\NPP\Palettes");
+            uninstallPalette.Enabled = false;
+            backupPalette.Enabled = false;
+
+            // notify it's done
+            installBackupPalette.Enabled = false;
         }
 
         private void deleteBackupPalette_Click(object sender, EventArgs e)
         {
-            // TODO
+            //TODO: confirmation box
+
+            string palName = localBackupPalettesList.SelectedItem.ToString().Substring(0, localBackupPalettesList.SelectedItem.ToString().LastIndexOf(' ')).TrimEnd();
+            File.Delete(savePath + @"\Palettes\" + palName);
+
+            // remove item instead of refresh whole box, to keep position in view
+            localBackupPalettesList.Items.Remove(localBackupPalettesList.SelectedItem);
+
+            // refresh dir
+            //localBackupPalettesList.Items.Clear();
+            //PopulateListBoxWithFileType(localBackupPalettesList, savePath + @"\Palettes", "*.zip");
+            installBackupPalette.Enabled = false;
+            deleteBackupPalette.Enabled = false;
         }
 
         private static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)
@@ -599,6 +635,11 @@ namespace N__Assistant
             }
         }
 
+        private void localBackupPalettesList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            installBackupPalette.Enabled = true;
+            deleteBackupPalette.Enabled = true;
+        }
     }
     public class sheetMap
     {

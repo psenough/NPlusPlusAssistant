@@ -22,8 +22,6 @@ Needs Visual Studio Community 2019 with C# .Net stuff installed to compile from 
 
 ## Stuff it'll eventually do:
 
-* backup particular palette button working
-
 * display maximum palette install count
 
 * link to online palette editor
