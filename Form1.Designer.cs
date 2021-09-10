@@ -34,16 +34,14 @@ namespace N__Assistant
             this.progressLabel = new System.Windows.Forms.Label();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.screenshotsDir = new System.Windows.Forms.LinkLabel();
-            this.ScreenshotsLabel = new System.Windows.Forms.Label();
             this.backupsDir = new System.Windows.Forms.LinkLabel();
-            this.nppAssistantLabel = new System.Windows.Forms.Label();
             this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
             this.backupNow = new System.Windows.Forms.Button();
-            this.gameProfileLabel = new System.Windows.Forms.Label();
-            this.steamInstallDirLabel = new System.Windows.Forms.Label();
             this.profileDir = new System.Windows.Forms.LinkLabel();
             this.steamInstallDir = new System.Windows.Forms.LinkLabel();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.linkProfileFolder = new System.Windows.Forms.LinkLabel();
+            this.linkBackupProfileFolder = new System.Windows.Forms.LinkLabel();
             this.deleteProfile = new System.Windows.Forms.Button();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.profileBackupLabel = new System.Windows.Forms.Label();
@@ -51,7 +49,14 @@ namespace N__Assistant
             this.backupProfile = new System.Windows.Forms.Button();
             this.profileList = new System.Windows.Forms.ListBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.installSpreadsheetSoundpack = new System.Windows.Forms.Button();
+            this.deleteSoundpackBackupButton = new System.Windows.Forms.Button();
+            this.installSoundpackButton = new System.Windows.Forms.Button();
+            this.soundpackBackups = new System.Windows.Forms.ListBox();
+            this.backupSoundpack = new System.Windows.Forms.Button();
+            this.spreadsheetSoundpacks = new System.Windows.Forms.ListBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.onlineEditorLink = new System.Windows.Forms.LinkLabel();
             this.countCustomPalettesInstalled = new System.Windows.Forms.Label();
             this.palettesInstalledLinkedLabel = new System.Windows.Forms.LinkLabel();
             this.label2 = new System.Windows.Forms.Label();
@@ -71,10 +76,12 @@ namespace N__Assistant
             this.palettesInstalledList = new System.Windows.Forms.ListBox();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.tabPage6 = new System.Windows.Forms.TabPage();
-            this.onlineEditorLink = new System.Windows.Forms.LinkLabel();
+            this.previewSoundsList = new System.Windows.Forms.ListBox();
+            this.previewSoundsLabel = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.tabPage3.SuspendLayout();
             this.tabPage4.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.metanetPalettes.SuspendLayout();
@@ -102,13 +109,9 @@ namespace N__Assistant
             this.tabPage1.Controls.Add(this.progressLabel);
             this.tabPage1.Controls.Add(this.progressBar1);
             this.tabPage1.Controls.Add(this.screenshotsDir);
-            this.tabPage1.Controls.Add(this.ScreenshotsLabel);
             this.tabPage1.Controls.Add(this.backupsDir);
-            this.tabPage1.Controls.Add(this.nppAssistantLabel);
             this.tabPage1.Controls.Add(this.checkedListBox1);
             this.tabPage1.Controls.Add(this.backupNow);
-            this.tabPage1.Controls.Add(this.gameProfileLabel);
-            this.tabPage1.Controls.Add(this.steamInstallDirLabel);
             this.tabPage1.Controls.Add(this.profileDir);
             this.tabPage1.Controls.Add(this.steamInstallDir);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
@@ -123,7 +126,7 @@ namespace N__Assistant
             // progressLabel
             // 
             this.progressLabel.AutoSize = true;
-            this.progressLabel.Location = new System.Drawing.Point(155, 182);
+            this.progressLabel.Location = new System.Drawing.Point(377, 66);
             this.progressLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.progressLabel.Name = "progressLabel";
             this.progressLabel.Size = new System.Drawing.Size(0, 13);
@@ -131,7 +134,7 @@ namespace N__Assistant
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(152, 216);
+            this.progressBar1.Location = new System.Drawing.Point(374, 100);
             this.progressBar1.Margin = new System.Windows.Forms.Padding(2);
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(154, 19);
@@ -141,46 +144,26 @@ namespace N__Assistant
             // screenshotsDir
             // 
             this.screenshotsDir.AutoSize = true;
-            this.screenshotsDir.Location = new System.Drawing.Point(118, 72);
+            this.screenshotsDir.Location = new System.Drawing.Point(17, 76);
             this.screenshotsDir.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.screenshotsDir.Name = "screenshotsDir";
-            this.screenshotsDir.Size = new System.Drawing.Size(30, 13);
+            this.screenshotsDir.Size = new System.Drawing.Size(151, 13);
             this.screenshotsDir.TabIndex = 9;
             this.screenshotsDir.TabStop = true;
-            this.screenshotsDir.Text = "temp";
+            this.screenshotsDir.Text = "Steam N++ Screenshots folder";
             this.screenshotsDir.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.screenshotsPathLabel_LinkClicked);
-            // 
-            // ScreenshotsLabel
-            // 
-            this.ScreenshotsLabel.AutoSize = true;
-            this.ScreenshotsLabel.Location = new System.Drawing.Point(5, 72);
-            this.ScreenshotsLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.ScreenshotsLabel.Name = "ScreenshotsLabel";
-            this.ScreenshotsLabel.Size = new System.Drawing.Size(111, 13);
-            this.ScreenshotsLabel.TabIndex = 8;
-            this.ScreenshotsLabel.Text = "Screenshots Directory";
             // 
             // backupsDir
             // 
             this.backupsDir.AutoSize = true;
-            this.backupsDir.Location = new System.Drawing.Point(118, 99);
+            this.backupsDir.Location = new System.Drawing.Point(17, 106);
             this.backupsDir.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.backupsDir.Name = "backupsDir";
-            this.backupsDir.Size = new System.Drawing.Size(30, 13);
+            this.backupsDir.Size = new System.Drawing.Size(146, 13);
             this.backupsDir.TabIndex = 7;
             this.backupsDir.TabStop = true;
-            this.backupsDir.Text = "temp";
+            this.backupsDir.Text = "N++ Assistant Backups folder";
             this.backupsDir.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel3_LinkClicked);
-            // 
-            // nppAssistantLabel
-            // 
-            this.nppAssistantLabel.AutoSize = true;
-            this.nppAssistantLabel.Location = new System.Drawing.Point(5, 99);
-            this.nppAssistantLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.nppAssistantLabel.Name = "nppAssistantLabel";
-            this.nppAssistantLabel.Size = new System.Drawing.Size(117, 13);
-            this.nppAssistantLabel.TabIndex = 6;
-            this.nppAssistantLabel.Text = "N++ Assistant Directory";
             // 
             // checkedListBox1
             // 
@@ -193,7 +176,7 @@ namespace N__Assistant
             "attract files",
             "palettes",
             "game levels"});
-            this.checkedListBox1.Location = new System.Drawing.Point(8, 141);
+            this.checkedListBox1.Location = new System.Drawing.Point(230, 25);
             this.checkedListBox1.Margin = new System.Windows.Forms.Padding(2);
             this.checkedListBox1.Name = "checkedListBox1";
             this.checkedListBox1.Size = new System.Drawing.Size(128, 94);
@@ -201,7 +184,7 @@ namespace N__Assistant
             // 
             // backupNow
             // 
-            this.backupNow.Location = new System.Drawing.Point(152, 141);
+            this.backupNow.Location = new System.Drawing.Point(374, 25);
             this.backupNow.Margin = new System.Windows.Forms.Padding(2);
             this.backupNow.Name = "backupNow";
             this.backupNow.Size = new System.Drawing.Size(154, 23);
@@ -210,52 +193,34 @@ namespace N__Assistant
             this.backupNow.UseVisualStyleBackColor = true;
             this.backupNow.Click += new System.EventHandler(this.backupNow_Click);
             // 
-            // gameProfileLabel
-            // 
-            this.gameProfileLabel.AutoSize = true;
-            this.gameProfileLabel.Location = new System.Drawing.Point(5, 46);
-            this.gameProfileLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.gameProfileLabel.Name = "gameProfileLabel";
-            this.gameProfileLabel.Size = new System.Drawing.Size(112, 13);
-            this.gameProfileLabel.TabIndex = 3;
-            this.gameProfileLabel.Text = "Game Profile Directory";
-            // 
-            // steamInstallDirLabel
-            // 
-            this.steamInstallDirLabel.AutoSize = true;
-            this.steamInstallDirLabel.Location = new System.Drawing.Point(5, 17);
-            this.steamInstallDirLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.steamInstallDirLabel.Name = "steamInstallDirLabel";
-            this.steamInstallDirLabel.Size = new System.Drawing.Size(112, 13);
-            this.steamInstallDirLabel.TabIndex = 2;
-            this.steamInstallDirLabel.Text = "Steam Install Directory";
-            // 
             // profileDir
             // 
             this.profileDir.AutoSize = true;
-            this.profileDir.Location = new System.Drawing.Point(118, 46);
+            this.profileDir.Location = new System.Drawing.Point(17, 48);
             this.profileDir.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.profileDir.Name = "profileDir";
-            this.profileDir.Size = new System.Drawing.Size(30, 13);
+            this.profileDir.Size = new System.Drawing.Size(119, 13);
             this.profileDir.TabIndex = 1;
             this.profileDir.TabStop = true;
-            this.profileDir.Text = "temp";
-            this.profileDir.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
+            this.profileDir.Text = "N++ Game Profile folder";
+            this.profileDir.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.profileLink_LinkClicked);
             // 
             // steamInstallDir
             // 
             this.steamInstallDir.AutoSize = true;
-            this.steamInstallDir.Location = new System.Drawing.Point(118, 17);
+            this.steamInstallDir.Location = new System.Drawing.Point(17, 21);
             this.steamInstallDir.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.steamInstallDir.Name = "steamInstallDir";
-            this.steamInstallDir.Size = new System.Drawing.Size(30, 13);
+            this.steamInstallDir.Size = new System.Drawing.Size(119, 13);
             this.steamInstallDir.TabIndex = 0;
             this.steamInstallDir.TabStop = true;
-            this.steamInstallDir.Text = "temp";
-            this.steamInstallDir.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            this.steamInstallDir.Text = "Steam N++ Install folder";
+            this.steamInstallDir.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.steamGamePath_LinkClicked);
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.linkProfileFolder);
+            this.tabPage2.Controls.Add(this.linkBackupProfileFolder);
             this.tabPage2.Controls.Add(this.deleteProfile);
             this.tabPage2.Controls.Add(this.richTextBox1);
             this.tabPage2.Controls.Add(this.profileBackupLabel);
@@ -271,11 +236,33 @@ namespace N__Assistant
             this.tabPage2.Text = "Profile";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // linkProfileFolder
+            // 
+            this.linkProfileFolder.AutoSize = true;
+            this.linkProfileFolder.Location = new System.Drawing.Point(435, 24);
+            this.linkProfileFolder.Name = "linkProfileFolder";
+            this.linkProfileFolder.Size = new System.Drawing.Size(64, 13);
+            this.linkProfileFolder.TabIndex = 17;
+            this.linkProfileFolder.TabStop = true;
+            this.linkProfileFolder.Text = "profile folder";
+            this.linkProfileFolder.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkProfileFolder_LinkClicked);
+            // 
+            // linkBackupProfileFolder
+            // 
+            this.linkBackupProfileFolder.AutoSize = true;
+            this.linkBackupProfileFolder.Location = new System.Drawing.Point(289, 24);
+            this.linkBackupProfileFolder.Name = "linkBackupProfileFolder";
+            this.linkBackupProfileFolder.Size = new System.Drawing.Size(72, 13);
+            this.linkBackupProfileFolder.TabIndex = 16;
+            this.linkBackupProfileFolder.TabStop = true;
+            this.linkBackupProfileFolder.Text = "backup folder";
+            this.linkBackupProfileFolder.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkBackupProfileFolder_LinkClicked);
+            // 
             // deleteProfile
             // 
-            this.deleteProfile.Location = new System.Drawing.Point(443, 201);
+            this.deleteProfile.Location = new System.Drawing.Point(121, 324);
             this.deleteProfile.Name = "deleteProfile";
-            this.deleteProfile.Size = new System.Drawing.Size(99, 34);
+            this.deleteProfile.Size = new System.Drawing.Size(96, 34);
             this.deleteProfile.TabIndex = 15;
             this.deleteProfile.Text = "Delete";
             this.deleteProfile.UseVisualStyleBackColor = true;
@@ -286,7 +273,7 @@ namespace N__Assistant
             this.richTextBox1.Enabled = false;
             this.richTextBox1.Location = new System.Drawing.Point(233, 62);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(309, 123);
+            this.richTextBox1.Size = new System.Drawing.Size(309, 251);
             this.richTextBox1.TabIndex = 14;
             this.richTextBox1.Text = "";
             // 
@@ -301,9 +288,9 @@ namespace N__Assistant
             // 
             // loadProfile
             // 
-            this.loadProfile.Location = new System.Drawing.Point(233, 201);
+            this.loadProfile.Location = new System.Drawing.Point(4, 324);
             this.loadProfile.Name = "loadProfile";
-            this.loadProfile.Size = new System.Drawing.Size(120, 34);
+            this.loadProfile.Size = new System.Drawing.Size(101, 34);
             this.loadProfile.TabIndex = 2;
             this.loadProfile.Text = "Load to N++";
             this.loadProfile.UseVisualStyleBackColor = true;
@@ -326,12 +313,20 @@ namespace N__Assistant
             this.profileList.Margin = new System.Windows.Forms.Padding(2);
             this.profileList.Name = "profileList";
             this.profileList.ScrollAlwaysVisible = true;
-            this.profileList.Size = new System.Drawing.Size(213, 173);
+            this.profileList.Size = new System.Drawing.Size(213, 251);
             this.profileList.TabIndex = 0;
             this.profileList.SelectedIndexChanged += new System.EventHandler(this.profileList_SelectedIndexChanged);
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.previewSoundsLabel);
+            this.tabPage3.Controls.Add(this.previewSoundsList);
+            this.tabPage3.Controls.Add(this.installSpreadsheetSoundpack);
+            this.tabPage3.Controls.Add(this.deleteSoundpackBackupButton);
+            this.tabPage3.Controls.Add(this.installSoundpackButton);
+            this.tabPage3.Controls.Add(this.soundpackBackups);
+            this.tabPage3.Controls.Add(this.backupSoundpack);
+            this.tabPage3.Controls.Add(this.spreadsheetSoundpacks);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Margin = new System.Windows.Forms.Padding(2);
             this.tabPage3.Name = "tabPage3";
@@ -339,6 +334,59 @@ namespace N__Assistant
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Soundpacks";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // installSpreadsheetSoundpack
+            // 
+            this.installSpreadsheetSoundpack.Location = new System.Drawing.Point(238, 224);
+            this.installSpreadsheetSoundpack.Name = "installSpreadsheetSoundpack";
+            this.installSpreadsheetSoundpack.Size = new System.Drawing.Size(120, 40);
+            this.installSpreadsheetSoundpack.TabIndex = 6;
+            this.installSpreadsheetSoundpack.Text = "Install Soundpack";
+            this.installSpreadsheetSoundpack.UseVisualStyleBackColor = true;
+            // 
+            // deleteSoundpackBackupButton
+            // 
+            this.deleteSoundpackBackupButton.Location = new System.Drawing.Point(238, 157);
+            this.deleteSoundpackBackupButton.Name = "deleteSoundpackBackupButton";
+            this.deleteSoundpackBackupButton.Size = new System.Drawing.Size(120, 41);
+            this.deleteSoundpackBackupButton.TabIndex = 5;
+            this.deleteSoundpackBackupButton.Text = "Delete Backup";
+            this.deleteSoundpackBackupButton.UseVisualStyleBackColor = true;
+            // 
+            // installSoundpackButton
+            // 
+            this.installSoundpackButton.Location = new System.Drawing.Point(238, 77);
+            this.installSoundpackButton.Name = "installSoundpackButton";
+            this.installSoundpackButton.Size = new System.Drawing.Size(120, 43);
+            this.installSoundpackButton.TabIndex = 4;
+            this.installSoundpackButton.Text = "Install Soundpack";
+            this.installSoundpackButton.UseVisualStyleBackColor = true;
+            // 
+            // soundpackBackups
+            // 
+            this.soundpackBackups.FormattingEnabled = true;
+            this.soundpackBackups.Location = new System.Drawing.Point(22, 77);
+            this.soundpackBackups.Name = "soundpackBackups";
+            this.soundpackBackups.Size = new System.Drawing.Size(200, 121);
+            this.soundpackBackups.TabIndex = 3;
+            // 
+            // backupSoundpack
+            // 
+            this.backupSoundpack.Location = new System.Drawing.Point(22, 21);
+            this.backupSoundpack.Name = "backupSoundpack";
+            this.backupSoundpack.Size = new System.Drawing.Size(200, 38);
+            this.backupSoundpack.TabIndex = 2;
+            this.backupSoundpack.Text = "Backup Current Soundpack";
+            this.backupSoundpack.UseVisualStyleBackColor = true;
+            this.backupSoundpack.Click += new System.EventHandler(this.backupSoundpack_Click);
+            // 
+            // spreadsheetSoundpacks
+            // 
+            this.spreadsheetSoundpacks.FormattingEnabled = true;
+            this.spreadsheetSoundpacks.Location = new System.Drawing.Point(22, 224);
+            this.spreadsheetSoundpacks.Name = "spreadsheetSoundpacks";
+            this.spreadsheetSoundpacks.Size = new System.Drawing.Size(200, 95);
+            this.spreadsheetSoundpacks.TabIndex = 0;
             // 
             // tabPage4
             // 
@@ -357,6 +405,17 @@ namespace N__Assistant
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Palettes";
             this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // onlineEditorLink
+            // 
+            this.onlineEditorLink.AutoSize = true;
+            this.onlineEditorLink.Location = new System.Drawing.Point(475, 229);
+            this.onlineEditorLink.Name = "onlineEditorLink";
+            this.onlineEditorLink.Size = new System.Drawing.Size(48, 13);
+            this.onlineEditorLink.TabIndex = 9;
+            this.onlineEditorLink.TabStop = true;
+            this.onlineEditorLink.Text = "npc-web";
+            this.onlineEditorLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.onlineEditorLink_LinkClicked);
             // 
             // countCustomPalettesInstalled
             // 
@@ -566,16 +625,22 @@ namespace N__Assistant
             this.tabPage6.Text = "Map Packs";
             this.tabPage6.UseVisualStyleBackColor = true;
             // 
-            // onlineEditorLink
+            // previewSoundsList
             // 
-            this.onlineEditorLink.AutoSize = true;
-            this.onlineEditorLink.Location = new System.Drawing.Point(475, 229);
-            this.onlineEditorLink.Name = "onlineEditorLink";
-            this.onlineEditorLink.Size = new System.Drawing.Size(48, 13);
-            this.onlineEditorLink.TabIndex = 9;
-            this.onlineEditorLink.TabStop = true;
-            this.onlineEditorLink.Text = "npc-web";
-            this.onlineEditorLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.onlineEditorLink_LinkClicked);
+            this.previewSoundsList.FormattingEnabled = true;
+            this.previewSoundsList.Location = new System.Drawing.Point(376, 51);
+            this.previewSoundsList.Name = "previewSoundsList";
+            this.previewSoundsList.Size = new System.Drawing.Size(169, 303);
+            this.previewSoundsList.TabIndex = 7;
+            // 
+            // previewSoundsLabel
+            // 
+            this.previewSoundsLabel.AutoSize = true;
+            this.previewSoundsLabel.Location = new System.Drawing.Point(376, 21);
+            this.previewSoundsLabel.Name = "previewSoundsLabel";
+            this.previewSoundsLabel.Size = new System.Drawing.Size(84, 13);
+            this.previewSoundsLabel.TabIndex = 8;
+            this.previewSoundsLabel.Text = "Preview Sounds";
             // 
             // Form1
             // 
@@ -591,6 +656,8 @@ namespace N__Assistant
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
             this.tabControl2.ResumeLayout(false);
@@ -612,16 +679,12 @@ namespace N__Assistant
         private System.Windows.Forms.TabPage tabPage5;
         private System.Windows.Forms.TabPage tabPage6;
         private System.Windows.Forms.LinkLabel profileDir;
-        private System.Windows.Forms.Label gameProfileLabel;
-        private System.Windows.Forms.Label steamInstallDirLabel;
         private System.Windows.Forms.CheckedListBox checkedListBox1;
         private System.Windows.Forms.Button backupNow;
         private System.Windows.Forms.Button backupProfile;
         private System.Windows.Forms.ListBox profileList;
         private System.Windows.Forms.LinkLabel backupsDir;
-        private System.Windows.Forms.Label nppAssistantLabel;
         private System.Windows.Forms.LinkLabel screenshotsDir;
-        private System.Windows.Forms.Label ScreenshotsLabel;
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.Label progressLabel;
         private System.Windows.Forms.Button loadProfile;
@@ -646,6 +709,16 @@ namespace N__Assistant
         private System.Windows.Forms.Button installBackupPalette;
         private System.Windows.Forms.Label countCustomPalettesInstalled;
         private System.Windows.Forms.LinkLabel onlineEditorLink;
+        private System.Windows.Forms.LinkLabel linkProfileFolder;
+        private System.Windows.Forms.LinkLabel linkBackupProfileFolder;
+        private System.Windows.Forms.Button installSpreadsheetSoundpack;
+        private System.Windows.Forms.Button deleteSoundpackBackupButton;
+        private System.Windows.Forms.Button installSoundpackButton;
+        private System.Windows.Forms.ListBox soundpackBackups;
+        private System.Windows.Forms.Button backupSoundpack;
+        private System.Windows.Forms.ListBox spreadsheetSoundpacks;
+        private System.Windows.Forms.Label previewSoundsLabel;
+        private System.Windows.Forms.ListBox previewSoundsList;
     }
 }
 

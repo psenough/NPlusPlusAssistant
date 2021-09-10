@@ -61,10 +61,10 @@ namespace N__Assistant
             }
 
             // rename linked labels
-            steamInstallDir.Text = steamGamePath;
-            profileDir.Text = profilePath;
-            screenshotsDir.Text = screenshotsPath;
-            backupsDir.Text = savePath;
+            //steamInstallDir.Text = steamGamePath;
+            //profileDir.Text = profilePath;
+            //screenshotsDir.Text = screenshotsPath;
+            //backupsDir.Text = savePath;
 
             // create backup directories if they dont exist
             if (!Directory.Exists(savePath)) Directory.CreateDirectory(savePath);
@@ -175,40 +175,14 @@ namespace N__Assistant
             }
         }
 
-        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void steamGamePath_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            if (Directory.Exists(steamGamePath))
-            {
-                ProcessStartInfo startInfo = new ProcessStartInfo
-                {
-                    Arguments = steamGamePath,
-                    FileName = "explorer.exe"
-                };
-
-                Process.Start(startInfo);
-            }
-            else
-            {
-                MessageBox.Show(string.Format("{0} Directory does not exist!", steamGamePath));
-            }
+            launchExplorer(steamGamePath);
         }
 
-        private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void profileLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            if (Directory.Exists(profilePath))
-            {
-                ProcessStartInfo startInfo = new ProcessStartInfo
-                {
-                    Arguments = profilePath,
-                    FileName = "explorer.exe"
-                };
-
-                Process.Start(startInfo);
-            }
-            else
-            {
-                MessageBox.Show(string.Format("{0} Directory does not exist!", profilePath));
-            }
+            launchExplorer(profilePath);
         }
 
         private void backupNow_Click(object sender, EventArgs e)
@@ -443,20 +417,7 @@ namespace N__Assistant
 
         private void palettesInstalledLinkedLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            if (Directory.Exists(steamGamePath + @"\NPP\Palettes\"))
-            {
-                ProcessStartInfo startInfo = new ProcessStartInfo
-                {
-                    Arguments = steamGamePath + @"\NPP\Palettes\",
-                    FileName = "explorer.exe"
-                };
-
-                Process.Start(startInfo);
-            }
-            else
-            {
-                MessageBox.Show(string.Format("{0} Directory does not exist!", steamGamePath + @"\NPP\Palettes\"));
-            }
+            launchExplorer(steamGamePath + @"\NPP\Palettes\");
         }
 
         public class JSONSerializer : SheetsSerializer
@@ -714,6 +675,40 @@ namespace N__Assistant
         private void onlineEditorLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             System.Diagnostics.Process.Start("https://edelkas.github.io/npc-web/");
+        }
+
+        private void linkBackupProfileFolder_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            launchExplorer(savePath + @"\Profiles\");
+        }
+
+        private void linkProfileFolder_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            launchExplorer(profilePath);
+        }
+
+        private void launchExplorer(string folder)
+        {
+            if (Directory.Exists(folder))
+            {
+                ProcessStartInfo startInfo = new ProcessStartInfo
+                {
+                    Arguments = folder,
+                    FileName = "explorer.exe"
+                };
+
+                Process.Start(startInfo);
+            }
+            else
+            {
+                MessageBox.Show(string.Format("{0} Directory does not exist!", folder));
+            }
+        }
+
+        private void backupSoundpack_Click(object sender, EventArgs e)
+        {
+            // backup current soundpack folder
+            ZipFile.CreateFromDirectory(steamGamePath + @"\NPP\Sounds", savePath + @"\Sounds\Sounds" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".zip");
         }
     }
     public class sheetMap
