@@ -24,6 +24,10 @@ Needs Visual Studio Community 2019 with C# .Net stuff installed to compile from 
 
 ## Stuff it'll eventually do:
 
+* option to rename backups
+
+* icon to refresh lists (in case people are renaming on folder)
+
 * download soundpacks and select one to replace the current one
 
 * download metanet maps pack and select one to put on your map levels editor folder (for practice / remixes)

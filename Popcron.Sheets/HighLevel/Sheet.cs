@@ -94,13 +94,16 @@ namespace Popcron.Sheets
             for (int i = 0; i < raw.data[0].rowData.Length; i++)
             {
                 int values = 0;
-                for (int v = 0; v < raw.data[0].rowData[i].values.Length; v++)
+                if (raw.data[0].rowData[i].values != null)
                 {
-                    if (!string.IsNullOrEmpty(raw.data[0].rowData[i].values[v].formattedValue)) values++;
-                }
-                if (values > columns)
-                {
-                    columns = values;
+                    for (int v = 0; v < raw.data[0].rowData[i].values.Length; v++)
+                    {
+                        if (!string.IsNullOrEmpty(raw.data[0].rowData[i].values[v].formattedValue)) values++;
+                    }
+                    if (values > columns)
+                    {
+                        columns = values;
+                    }
                 }
             }
 
@@ -110,7 +113,7 @@ namespace Popcron.Sheets
             {
                 for (int x = 0; x < Columns; x++)
                 {
-                    if (raw.data[0].rowData.Length > y && raw.data[0].rowData[y].values.Length > x)
+                    if (raw.data[0].rowData.Length > y && raw.data[0].rowData[y].values != null && raw.data[0].rowData[y].values.Length > x)
                     {
                         data[x, y] = new Cell(raw.data[0].rowData[y].values[x]);
                     }

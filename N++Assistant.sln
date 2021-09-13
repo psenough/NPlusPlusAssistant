@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31613.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N++Assistant", "N++Assistant.csproj", "{DC854C0C-22A8-4905-835F-7E232AD514FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Popcron.Sheets", "..\..\Downloads\sheets-master\sheets-master\Popcron.Sheets\Popcron.Sheets.csproj", "{C16DECA7-0A86-4285-9B3A-99DFD499B4FD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Popcron.Sheets", "Popcron.Sheets\Popcron.Sheets.csproj", "{C16DECA7-0A86-4285-9B3A-99DFD499B4FD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

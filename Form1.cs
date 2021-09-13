@@ -25,6 +25,7 @@ namespace N__Assistant
         // there is probably a better way to map this but fuck me if i know C# properly
         private List<sheetMap> sheetMapList = new List<sheetMap>();
         private string COMMUNITY_PALETTES = "1I2f87Qhfs6rxzZq5dQRDbLKYyaGLqTdCkLqfNfrw1Mk";
+        private string COMMUNITY_SOUNDPACKS = "18PshamVuDNyH396a7U3YDFQmCw18s4gIVZ_WrFODRd4";
 
         public Form1()
         {
@@ -137,11 +138,23 @@ namespace N__Assistant
             // switch to soundpacks tab
             if (current == tabPage3)
             {
-                // spreadsheet of new sound packs
-                // https://docs.google.com/spreadsheets/d/18PshamVuDNyH396a7U3YDFQmCw18s4gIVZ_WrFODRd4/edit#gid=0
 
-                // latest google sheets api example code
-                // https://github.com/popcron/sheets
+                // list backups
+                soundpackBackups.Items.Clear();
+                PopulateListBoxWithFileType(soundpackBackups, savePath + @"\Sounds", "*.zip");
+                installSoundpackButton.Enabled = false;
+                deleteSoundpackBackupButton.Enabled = false;
+
+                // list spreadsheet of new sound packs
+                // https://docs.google.com/spreadsheets/d/18PshamVuDNyH396a7U3YDFQmCw18s4gIVZ_WrFODRd4/edit#gid=0
+                spreadsheetSoundpacks.Items.Clear();
+                PopulateListBoxWithSpreadsheetData(spreadsheetSoundpacks, 0, COMMUNITY_SOUNDPACKS, new APIKey().key);
+                installSpreadsheetSoundpack.Enabled = false;
+
+                // list preview
+                previewSoundsList.Items.Clear();
+                PopulateListBoxWithFileType(previewSoundsList, steamGamePath + @"\NPP\Sounds", "*.wav");
+
             }
 
             // switch to palettes tab
@@ -447,14 +460,19 @@ namespace N__Assistant
                 
                 for (int y = 1; y < sheet.Rows; y++)
                 {
-                    string parsedDate = data[2, y].Value.Split('/')[2] + "/" + data[2, y].Value.Split('/')[1] + "/" + data[2, y].Value.Split('/')[0];
-                    lsb.Items.Add(data[0, y].Value + " by " + data[1, y].Value + " (" + parsedDate + ")");
+                    string parsedDate = data[2, y].Value;
+                    if ((data[2, y].Value != null) && (data[2, y].Value.Split('/').Length > 3))
+                    {
+                        parsedDate = data[2, y].Value.Split('/')[2] + "/" + data[2, y].Value.Split('/')[1] + "/" + data[2, y].Value.Split('/')[0];
+                    }
+                    if (data[0, y].Value != null && data[0, y].Value != "")
+                        lsb.Items.Add(data[0, y].Value + " by " + data[1, y].Value + " (" + parsedDate + ")");
                 }
 
                 bool exists = false;
                 foreach (var mapSheet in sheetMapList)
                 {
-                    if (mapSheet.sheetId.Equals(COMMUNITY_PALETTES) == true)
+                    if (mapSheet.sheetId.Equals(spreadsheetId) == true)
                     {
                         mapSheet.sheetData = sheet;
                         exists = true;
@@ -462,7 +480,7 @@ namespace N__Assistant
                 }
                 if (exists == false)
                 {
-                    sheetMapList.Add(new sheetMap(COMMUNITY_PALETTES, sheet));
+                    sheetMapList.Add(new sheetMap(spreadsheetId, sheet));
                 }
 
             }
@@ -709,6 +727,53 @@ namespace N__Assistant
         {
             // backup current soundpack folder
             ZipFile.CreateFromDirectory(steamGamePath + @"\NPP\Sounds", savePath + @"\Sounds\Sounds" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".zip");
+            soundpackBackups.Items.Clear();
+            PopulateListBoxWithFileType(soundpackBackups, savePath + @"\Sounds", "*.zip");
+            installSoundpackButton.Enabled = false;
+            deleteSoundpackBackupButton.Enabled = false;
+        }
+
+        private void soundpackBackups_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            installSoundpackButton.Enabled = true;
+            deleteSoundpackBackupButton.Enabled = true;
+        }
+
+        private void spreadsheetSoundpacks_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            installSpreadsheetSoundpack.Enabled = true;
+        }
+
+        private void installSpreadsheetSoundpack_Click(object sender, EventArgs e)
+        {
+            //TODO: checkbox you really really wanna
+
+            //TODO: install
+
+            //TODO: give some feedback it's done
+
+            installSpreadsheetSoundpack.Enabled = false;
+        }
+
+        private void installSoundpackButton_Click(object sender, EventArgs e)
+        {
+            //TODO: checkbox you really really wanna
+
+            //TODO: install
+
+            //TODO: give some feedback it's done
+
+            //installSoundpackButton.Enabled = false;
+        }
+
+        private void deleteSoundpackBackupButton_Click(object sender, EventArgs e)
+        {
+            //TODO: checkbox you really really wanna
+
+            File.Delete(savePath + @"\Sounds\" + soundpackBackups.SelectedItem.ToString().Split(' ')[0]);
+            soundpackBackups.Items.Remove(soundpackBackups.SelectedItem);
+            installSoundpackButton.Enabled = false;
+            deleteSoundpackBackupButton.Enabled = false;
         }
     }
     public class sheetMap

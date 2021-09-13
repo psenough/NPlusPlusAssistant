@@ -49,6 +49,8 @@ namespace N__Assistant
             this.backupProfile = new System.Windows.Forms.Button();
             this.profileList = new System.Windows.Forms.ListBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.previewSoundsLabel = new System.Windows.Forms.Label();
+            this.previewSoundsList = new System.Windows.Forms.ListBox();
             this.installSpreadsheetSoundpack = new System.Windows.Forms.Button();
             this.deleteSoundpackBackupButton = new System.Windows.Forms.Button();
             this.installSoundpackButton = new System.Windows.Forms.Button();
@@ -76,8 +78,6 @@ namespace N__Assistant
             this.palettesInstalledList = new System.Windows.Forms.ListBox();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.tabPage6 = new System.Windows.Forms.TabPage();
-            this.previewSoundsList = new System.Windows.Forms.ListBox();
-            this.previewSoundsLabel = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -335,46 +335,67 @@ namespace N__Assistant
             this.tabPage3.Text = "Soundpacks";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // previewSoundsLabel
+            // 
+            this.previewSoundsLabel.AutoSize = true;
+            this.previewSoundsLabel.Location = new System.Drawing.Point(315, 21);
+            this.previewSoundsLabel.Name = "previewSoundsLabel";
+            this.previewSoundsLabel.Size = new System.Drawing.Size(84, 13);
+            this.previewSoundsLabel.TabIndex = 8;
+            this.previewSoundsLabel.Text = "Preview Sounds";
+            // 
+            // previewSoundsList
+            // 
+            this.previewSoundsList.FormattingEnabled = true;
+            this.previewSoundsList.Location = new System.Drawing.Point(318, 38);
+            this.previewSoundsList.Name = "previewSoundsList";
+            this.previewSoundsList.Size = new System.Drawing.Size(221, 316);
+            this.previewSoundsList.TabIndex = 7;
+            // 
             // installSpreadsheetSoundpack
             // 
-            this.installSpreadsheetSoundpack.Location = new System.Drawing.Point(238, 224);
+            this.installSpreadsheetSoundpack.Location = new System.Drawing.Point(12, 334);
             this.installSpreadsheetSoundpack.Name = "installSpreadsheetSoundpack";
-            this.installSpreadsheetSoundpack.Size = new System.Drawing.Size(120, 40);
+            this.installSpreadsheetSoundpack.Size = new System.Drawing.Size(114, 29);
             this.installSpreadsheetSoundpack.TabIndex = 6;
             this.installSpreadsheetSoundpack.Text = "Install Soundpack";
             this.installSpreadsheetSoundpack.UseVisualStyleBackColor = true;
+            this.installSpreadsheetSoundpack.Click += new System.EventHandler(this.installSpreadsheetSoundpack_Click);
             // 
             // deleteSoundpackBackupButton
             // 
-            this.deleteSoundpackBackupButton.Location = new System.Drawing.Point(238, 157);
+            this.deleteSoundpackBackupButton.Location = new System.Drawing.Point(194, 139);
             this.deleteSoundpackBackupButton.Name = "deleteSoundpackBackupButton";
-            this.deleteSoundpackBackupButton.Size = new System.Drawing.Size(120, 41);
+            this.deleteSoundpackBackupButton.Size = new System.Drawing.Size(90, 32);
             this.deleteSoundpackBackupButton.TabIndex = 5;
             this.deleteSoundpackBackupButton.Text = "Delete Backup";
             this.deleteSoundpackBackupButton.UseVisualStyleBackColor = true;
+            this.deleteSoundpackBackupButton.Click += new System.EventHandler(this.deleteSoundpackBackupButton_Click);
             // 
             // installSoundpackButton
             // 
-            this.installSoundpackButton.Location = new System.Drawing.Point(238, 77);
+            this.installSoundpackButton.Location = new System.Drawing.Point(12, 139);
             this.installSoundpackButton.Name = "installSoundpackButton";
-            this.installSoundpackButton.Size = new System.Drawing.Size(120, 43);
+            this.installSoundpackButton.Size = new System.Drawing.Size(104, 32);
             this.installSoundpackButton.TabIndex = 4;
             this.installSoundpackButton.Text = "Install Soundpack";
             this.installSoundpackButton.UseVisualStyleBackColor = true;
+            this.installSoundpackButton.Click += new System.EventHandler(this.installSoundpackButton_Click);
             // 
             // soundpackBackups
             // 
             this.soundpackBackups.FormattingEnabled = true;
-            this.soundpackBackups.Location = new System.Drawing.Point(22, 77);
+            this.soundpackBackups.Location = new System.Drawing.Point(12, 51);
             this.soundpackBackups.Name = "soundpackBackups";
-            this.soundpackBackups.Size = new System.Drawing.Size(200, 121);
+            this.soundpackBackups.Size = new System.Drawing.Size(272, 82);
             this.soundpackBackups.TabIndex = 3;
+            this.soundpackBackups.SelectedIndexChanged += new System.EventHandler(this.soundpackBackups_SelectedIndexChanged);
             // 
             // backupSoundpack
             // 
-            this.backupSoundpack.Location = new System.Drawing.Point(22, 21);
+            this.backupSoundpack.Location = new System.Drawing.Point(12, 11);
             this.backupSoundpack.Name = "backupSoundpack";
-            this.backupSoundpack.Size = new System.Drawing.Size(200, 38);
+            this.backupSoundpack.Size = new System.Drawing.Size(272, 33);
             this.backupSoundpack.TabIndex = 2;
             this.backupSoundpack.Text = "Backup Current Soundpack";
             this.backupSoundpack.UseVisualStyleBackColor = true;
@@ -383,10 +404,11 @@ namespace N__Assistant
             // spreadsheetSoundpacks
             // 
             this.spreadsheetSoundpacks.FormattingEnabled = true;
-            this.spreadsheetSoundpacks.Location = new System.Drawing.Point(22, 224);
+            this.spreadsheetSoundpacks.Location = new System.Drawing.Point(12, 190);
             this.spreadsheetSoundpacks.Name = "spreadsheetSoundpacks";
-            this.spreadsheetSoundpacks.Size = new System.Drawing.Size(200, 95);
+            this.spreadsheetSoundpacks.Size = new System.Drawing.Size(272, 134);
             this.spreadsheetSoundpacks.TabIndex = 0;
+            this.spreadsheetSoundpacks.SelectedIndexChanged += new System.EventHandler(this.spreadsheetSoundpacks_SelectedIndexChanged);
             // 
             // tabPage4
             // 
@@ -624,23 +646,6 @@ namespace N__Assistant
             this.tabPage6.TabIndex = 5;
             this.tabPage6.Text = "Map Packs";
             this.tabPage6.UseVisualStyleBackColor = true;
-            // 
-            // previewSoundsList
-            // 
-            this.previewSoundsList.FormattingEnabled = true;
-            this.previewSoundsList.Location = new System.Drawing.Point(376, 51);
-            this.previewSoundsList.Name = "previewSoundsList";
-            this.previewSoundsList.Size = new System.Drawing.Size(169, 303);
-            this.previewSoundsList.TabIndex = 7;
-            // 
-            // previewSoundsLabel
-            // 
-            this.previewSoundsLabel.AutoSize = true;
-            this.previewSoundsLabel.Location = new System.Drawing.Point(376, 21);
-            this.previewSoundsLabel.Name = "previewSoundsLabel";
-            this.previewSoundsLabel.Size = new System.Drawing.Size(84, 13);
-            this.previewSoundsLabel.TabIndex = 8;
-            this.previewSoundsLabel.Text = "Preview Sounds";
             // 
             // Form1
             // 
