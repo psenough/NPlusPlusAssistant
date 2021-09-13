@@ -748,9 +748,45 @@ namespace N__Assistant
         {
             //TODO: checkbox you really really wanna
 
-            //TODO: install
+            try
+            {
+                string myStringWebResource = null;
+                WebClient myWebClient = new WebClient();
 
-            //TODO: give some feedback it's done
+                // get the url
+                foreach (var mapSheet in sheetMapList)
+                {
+                    if (mapSheet.sheetId.Equals(COMMUNITY_SOUNDPACKS) == true)
+                    {
+                        Cell[,] data = mapSheet.sheetData.Data;
+                        myStringWebResource = data[3, spreadsheetSoundpacks.SelectedIndex + 1].Value;
+                    }
+                }
+
+                // download the file and save it into the current filesystem folder.
+                string filename = steamGamePath + @"\NPP\" + "nppassisttempsounds.zip";
+                myWebClient.DownloadFile(myStringWebResource, filename);
+
+                // clean \Sounds\
+                Directory.Delete(steamGamePath + @"\NPP\Sounds", true);
+                Directory.CreateDirectory(steamGamePath + @"\NPP\Sounds");
+
+                // extract temp file
+                ZipFile.ExtractToDirectory(filename, steamGamePath + @"\NPP\Sounds");
+                File.Delete(filename);
+
+                // refresh installed soundpack directory
+                previewSoundsList.Items.Clear();
+                PopulateListBoxWithFileType(previewSoundsList, steamGamePath + @"\NPP\Sounds", "*.wav");
+                installSpreadsheetSoundpack.Enabled = false;
+
+                updateCustomPalleteInstalledCounter();
+
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show("Couldn't install community palette because: " + exc.Message);
+            }
 
             installSpreadsheetSoundpack.Enabled = false;
         }
@@ -759,11 +795,19 @@ namespace N__Assistant
         {
             //TODO: checkbox you really really wanna
 
-            //TODO: install
+            // install
+            string sfxName = soundpackBackups.SelectedItem.ToString().Substring(0, soundpackBackups.SelectedItem.ToString().LastIndexOf('.') - 14).TrimEnd();
+            string filename = soundpackBackups.SelectedItem.ToString().Substring(0, soundpackBackups.SelectedItem.ToString().LastIndexOf(' ')).TrimEnd();
+            Directory.Delete(steamGamePath + @"\NPP\Sounds", true);
+            Directory.CreateDirectory(steamGamePath + @"\NPP\Sounds");
+            ZipFile.ExtractToDirectory(savePath + @"\Sounds\" + filename, steamGamePath + @"\NPP\Sounds");
 
-            //TODO: give some feedback it's done
+            // refresh soundpack preview
+            previewSoundsList.Items.Clear();
+            PopulateListBoxWithFileType(previewSoundsList, steamGamePath + @"\NPP\Sounds", "*.wav");
 
-            //installSoundpackButton.Enabled = false;
+            // give some feedback it's done
+            installSoundpackButton.Enabled = false;
         }
 
         private void deleteSoundpackBackupButton_Click(object sender, EventArgs e)

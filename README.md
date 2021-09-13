@@ -22,13 +22,15 @@ Needs Visual Studio Community 2019 with C# .Net stuff installed to compile from 
 
 * display number of custom palettes installed (and warn of maximum when reached)
 
+* list all soundpacks on backup and select one to install or delete
+
+* list community soundpacks (from google spreadsheet) and select which to install
+
 ## Stuff it'll eventually do:
 
 * option to rename backups
 
 * icon to refresh lists (in case people are renaming on folder)
-
-* download soundpacks and select one to replace the current one
 
 * download metanet maps pack and select one to put on your map levels editor folder (for practice / remixes)
 
@@ -36,6 +38,16 @@ Needs Visual Studio Community 2019 with C# .Net stuff installed to compile from 
 
 * edit nppconf (useful for troubleshooting some launch problems)
 
-* have an n++ icon
+* have an n++ icon (winning stickman?)
 
 * display nprofile road to 100% completion details / corruption checks
+
+## Known issues:
+
+* some palettes/soundpacks installation don't work because they're not packed cleanly (need to repack, code smarter extractor or create a new column on spreadsheet)
+
+* missing some confirmation checkboxes on critical stuff that can't be reverted
+
+## Credits:
+
+ps, daniel
