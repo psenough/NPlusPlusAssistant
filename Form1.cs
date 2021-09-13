@@ -775,6 +775,12 @@ namespace N__Assistant
             installSoundpackButton.Enabled = false;
             deleteSoundpackBackupButton.Enabled = false;
         }
+
+        private void previewSoundsList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            System.Media.SoundPlayer player = new System.Media.SoundPlayer(steamGamePath + @"\NPP\Sounds\" + previewSoundsList.SelectedItem.ToString().Split(' ')[0]);
+            player.Play();
+        }
     }
     public class sheetMap
     {
