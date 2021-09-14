@@ -121,13 +121,13 @@ namespace N__Assistant
             TabPage current = (sender as TabControl).SelectedTab;
 
             // switch to status / home tab
-            if (current == tabPage1)
+            if (current == tabStatus)
             {
-               
+
             }
 
             // switch to profile tab
-            if (current == tabPage2)
+            if (current == tabProfile)
             {
                 profileList.Items.Clear();
                 PopulateListBoxWithFileType(profileList, savePath + @"\Profiles", "*.zip");
@@ -136,7 +136,7 @@ namespace N__Assistant
             }
 
             // switch to soundpacks tab
-            if (current == tabPage3)
+            if (current == tabSoundpacks)
             {
 
                 // list backups
@@ -158,7 +158,7 @@ namespace N__Assistant
             }
 
             // switch to palettes tab
-            if (current == tabPage4)
+            if (current == tabPalettes)
             {
                 // populate metanet palettes (useful only for auto-unlock and references when creating palettes)
                 // https://cdn.discordapp.com/attachments/197793786389200896/592821804746276864/Palettes.zip
@@ -185,6 +185,23 @@ namespace N__Assistant
                 backupPalette.Enabled = false;
 
                 updateCustomPalleteInstalledCounter();
+            }
+
+            // switch to practice maps tab
+            if (current == tabEditorMaps)
+            {
+                //TODO: list metanetMapsList
+
+                // list editor maps
+                listEditorMaps.Items.Clear();
+                PopulateListBoxWithFileType(listEditorMaps, profilePath + @"\levels\", "*");
+                deleteSelectedMaps.Enabled = false;
+                backupSelectedMaps.Enabled = false;
+
+                // list local backups
+                localEditorLevelsBackupsList.Items.Clear();
+                PopulateListBoxWithFileType(localEditorLevelsBackupsList, savePath + @"\EditorLevels", "*.zip");
+                installBackupMap.Enabled = false;
             }
         }
 
@@ -216,7 +233,7 @@ namespace N__Assistant
             if (checkedListBox1.GetItemCheckState(0) == CheckState.Checked)
             {
                 // backup profile
-                using (FileStream fs = new FileStream(savePath + @"\Profiles\nprofile" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".zip", FileMode.Create))
+                using (FileStream fs = new FileStream(savePath + @"\Profiles\nprofile" + DateTime.Now.ToString("yyMMddHHmm") + ".zip", FileMode.Create))
                 using (ZipArchive arch = new ZipArchive(fs, ZipArchiveMode.Create))
                 {
                     arch.CreateEntryFromFile(profilePath + @"\nprofile", "nprofile");
@@ -226,25 +243,25 @@ namespace N__Assistant
             if (checkedListBox1.GetItemCheckState(1) == CheckState.Checked)
             {
                 // backup soundpack
-                ZipFile.CreateFromDirectory(steamGamePath + @"\NPP\Sounds", savePath + @"\Sounds\Sounds" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".zip");
+                ZipFile.CreateFromDirectory(steamGamePath + @"\NPP\Sounds", savePath + @"\Sounds\Sounds" + DateTime.Now.ToString("yyMMddHHmm") + ".zip");
             }
             bgwBackupNow.ReportProgress(30, "Zipping Editor Levels");
             if (checkedListBox1.GetItemCheckState(2) == CheckState.Checked)
             {
                 // backup editor levels
-                ZipFile.CreateFromDirectory(profilePath + @"\levels", savePath + @"\EditorLevels\EditorLevels" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".zip");
+                ZipFile.CreateFromDirectory(profilePath + @"\levels", savePath + @"\EditorLevels\Maps" + DateTime.Now.ToString("yyMMddHHmm") + ".zip");
             }
             bgwBackupNow.ReportProgress(40, "Zipping Replays (attract files)");
             if (checkedListBox1.GetItemCheckState(3) == CheckState.Checked)
             {
                 // backup replays (attract files)
-                ZipFile.CreateFromDirectory(profilePath + @"\attract", savePath + @"\Replays\Replays" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".zip");
+                ZipFile.CreateFromDirectory(profilePath + @"\attract", savePath + @"\Replays\Replays" + DateTime.Now.ToString("yyMMddHHmm") + ".zip");
             }
             bgwBackupNow.ReportProgress(60, "Zipping Palettes");
             if (checkedListBox1.GetItemCheckState(4) == CheckState.Checked)
             {
                 // backup palettes
-                //ZipFile.CreateFromDirectory(steamGamePath + @"\NPP\Palettes", savePath + @"\Palettes\Palettes" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".zip");
+                //ZipFile.CreateFromDirectory(steamGamePath + @"\NPP\Palettes", savePath + @"\Palettes\Palettes" + DateTime.Now.ToString("yyMMddHHmm") + ".zip");
                 try
                 {
                     string[] dirs = Directory.GetDirectories(steamGamePath + @"\NPP\Palettes");
@@ -252,7 +269,7 @@ namespace N__Assistant
                     {
                         string[] splits = dir.Split('\\');
                         string palName = splits[splits.Length - 1];
-                        ZipFile.CreateFromDirectory(dir, savePath + @"\Palettes\" + palName + DateTime.Now.ToString("yyyyMMddHHmmss") + ".zip");
+                        ZipFile.CreateFromDirectory(dir, savePath + @"\Palettes\" + palName + DateTime.Now.ToString("yyMMddHHmm") + ".zip");
                     }
                 }
                 catch (Exception exc)
@@ -264,7 +281,7 @@ namespace N__Assistant
             if (checkedListBox1.GetItemCheckState(5) == CheckState.Checked)
             {
                 // backup gamelevels
-                ZipFile.CreateFromDirectory(steamGamePath + @"\NPP\Levels", savePath + @"\GameLevels\GameLevels" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".zip");
+                ZipFile.CreateFromDirectory(steamGamePath + @"\NPP\Levels", savePath + @"\GameLevels\GameLevels" + DateTime.Now.ToString("yyMMddHHmm") + ".zip");
             }
             bgwBackupNow.ReportProgress(100, "Done with backup!");
         }
@@ -351,7 +368,7 @@ namespace N__Assistant
         {
             profileBackupLabel.Text = "Profile backup started!";
 
-            using (FileStream fs = new FileStream(savePath + @"\Profiles\nprofile" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".zip", FileMode.Create))
+            using (FileStream fs = new FileStream(savePath + @"\Profiles\nprofile" + DateTime.Now.ToString("yyMMddHHmm") + ".zip", FileMode.Create))
             using (ZipArchive arch = new ZipArchive(fs, ZipArchiveMode.Create))
             {
                 arch.CreateEntryFromFile(profilePath + @"\nprofile", "nprofile");
@@ -416,7 +433,7 @@ namespace N__Assistant
         {
             // backup the selected palette only
             string palName = palettesInstalledList.SelectedItem.ToString().Substring(0, palettesInstalledList.SelectedItem.ToString().Length - 13);
-            ZipFile.CreateFromDirectory(steamGamePath + @"\NPP\Palettes\" + palName, savePath + @"\Palettes\" + palName + DateTime.Now.ToString("yyyyMMddHHmmss") + ".zip");
+            ZipFile.CreateFromDirectory(steamGamePath + @"\NPP\Palettes\" + palName, savePath + @"\Palettes\" + palName + DateTime.Now.ToString("yyMMddHHmm") + ".zip");
 
             // update local backup palettes list
             localBackupPalettesList.Items.Clear();
@@ -726,7 +743,7 @@ namespace N__Assistant
         private void backupSoundpack_Click(object sender, EventArgs e)
         {
             // backup current soundpack folder
-            ZipFile.CreateFromDirectory(steamGamePath + @"\NPP\Sounds", savePath + @"\Sounds\Sounds" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".zip");
+            ZipFile.CreateFromDirectory(steamGamePath + @"\NPP\Sounds", savePath + @"\Sounds\Sounds" + DateTime.Now.ToString("yyMMddHHmm") + ".zip");
             soundpackBackups.Items.Clear();
             PopulateListBoxWithFileType(soundpackBackups, savePath + @"\Sounds", "*.zip");
             installSoundpackButton.Enabled = false;
@@ -824,6 +841,79 @@ namespace N__Assistant
         {
             System.Media.SoundPlayer player = new System.Media.SoundPlayer(steamGamePath + @"\NPP\Sounds\" + previewSoundsList.SelectedItem.ToString().Split(' ')[0]);
             player.Play();
+        }
+
+        private void listEditorMaps_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            backupSelectedMaps.Enabled = true;
+            deleteSelectedMaps.Enabled = true;
+        }
+
+        private void backupSelectedMaps_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using (FileStream fs = new FileStream(savePath + @"\EditorLevels\Maps" + DateTime.Now.ToString("yyMMddHHmm") + ".zip", FileMode.Create))
+                using (ZipArchive arch = new ZipArchive(fs, ZipArchiveMode.Create))
+                {
+                    foreach (var item in listEditorMaps.SelectedItems)
+                    {
+                        string filename = item.ToString().Substring(0, item.ToString().LastIndexOf(' ')).TrimEnd();
+                        arch.CreateEntryFromFile(profilePath + @"\levels\" + filename, filename);
+                    }
+                }
+
+                //TODO: list somewhere backup was done successfuly
+
+                // refresh localbackupslist
+                localEditorLevelsBackupsList.Items.Clear();
+                PopulateListBoxWithFileType(localEditorLevelsBackupsList, savePath + @"\EditorLevels", "*.zip");
+                installBackupMap.Enabled = false;
+
+                // disable the button to avoid duplicate backups
+                backupSelectedMaps.Enabled = false;
+
+            } catch (Exception exc) {
+                MessageBox.Show("something went wrong with the backup: "+ exc.Message);
+            }
+            
+        }
+
+        private void localEditorLevelsBackupsList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            localEditorMaps.Items.Clear();
+            string filename = localEditorLevelsBackupsList.SelectedItem.ToString().Substring(0, localEditorLevelsBackupsList.SelectedItem.ToString().LastIndexOf(' ')).TrimEnd();
+            string zipPath = savePath + @"\EditorLevels\" + filename;
+            using (ZipArchive archive = ZipFile.OpenRead(zipPath))
+            {
+                foreach (ZipArchiveEntry entry in archive.Entries)
+                {
+                    localEditorMaps.Items.Add(entry.FullName);
+                }
+            }
+        }
+
+        private void installBackupMap_Click(object sender, EventArgs e)
+        {
+            // disable install button to avoid dupes
+            installBackupMap.Enabled = false;
+
+            // multiple select
+            // go through all selected
+            foreach (var item in localEditorMaps.SelectedItems)
+            {
+                // check if it's dupe (prompt asking for replacement or not)
+                string filename = item.ToString().Substring(0, item.ToString().LastIndexOf(' ')).TrimEnd();
+
+                // TODO: install the levels selected
+            }
+
+            // refresh list of editor maps
+            listEditorMaps.Items.Clear();
+            PopulateListBoxWithFileType(listEditorMaps, profilePath + @"\levels\", "*");
+            deleteSelectedMaps.Enabled = false;
+            backupSelectedMaps.Enabled = false;
+
         }
     }
     public class sheetMap
