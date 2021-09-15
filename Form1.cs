@@ -33,13 +33,16 @@ namespace N__Assistant
 
             // get steam path
             string steampath = (string)Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\Valve\\Steam", "InstallPath", "null");
-            if (steampath == "null") {
+            if (steampath == "null")
+            {
                 steampath = (string)Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Valve\\Steam", "InstallPath", "null");
             }
-            if (steampath == "null") {
+            if (steampath == "null")
+            {
                 throw new FileNotFoundException("Steam Not Found, WTF Bro is your pc good?");
             }
-            if (!Directory.Exists(steampath + "\\steamapps\\")) {
+            if (!Directory.Exists(steampath + "\\steamapps\\"))
+            {
                 throw new FileNotFoundException("steamapps Not Found");
             }
             screenshotsPath = steampath + screenshotsPath;
@@ -47,17 +50,21 @@ namespace N__Assistant
             List<string> possiblepaths = new List<string>() { steampath };
             foreach (string configline in configLines)
             {
-                if (configline.Contains("\t\t\"path\"\t\t\"")) {
+                if (configline.Contains("\t\t\"path\"\t\t\""))
+                {
                     possiblepaths.Add(configline.Replace("\t\t\"path\"\t\t\"", "").Replace("\\\\", "\\").Replace("\"", ""));
                 }
             }
-            foreach (string possiblepath in possiblepaths) {
-                if (Directory.Exists(possiblepath + "\\steamapps\\common\\N++")) {
+            foreach (string possiblepath in possiblepaths)
+            {
+                if (Directory.Exists(possiblepath + "\\steamapps\\common\\N++"))
+                {
                     steamGamePath = possiblepath + "\\steamapps\\common\\N++";
                     break;
                 }
             }
-            if (steamGamePath == "") {
+            if (steamGamePath == "")
+            {
                 throw new FileNotFoundException("N++ not installed in steam");
             }
 
@@ -73,9 +80,9 @@ namespace N__Assistant
             if (!Directory.Exists(savePath + @"\Sounds")) Directory.CreateDirectory(savePath + @"\Sounds");
             if (!Directory.Exists(savePath + @"\Replays")) Directory.CreateDirectory(savePath + @"\Replays");
             if (!Directory.Exists(savePath + @"\Levels")) Directory.CreateDirectory(savePath + @"\Levels");
-            if (!Directory.Exists(savePath + @"\EditorLevels")) Directory.CreateDirectory(savePath + @"\EditorLevels");
+            if (!Directory.Exists(savePath + @"\Maps")) Directory.CreateDirectory(savePath + @"\Maps");
             if (!Directory.Exists(savePath + @"\Palettes")) Directory.CreateDirectory(savePath + @"\Palettes");
-            if (!Directory.Exists(savePath + @"\GameLevels")) Directory.CreateDirectory(savePath + @"\GameLevels");
+            if (!Directory.Exists(savePath + @"\MapPacks")) Directory.CreateDirectory(savePath + @"\MapPacks");
 
             // download default Metanet Palettes.zip pack to backup dir
             if (!Directory.Exists(savePath + @"\Palettes\Palettes"))
@@ -87,13 +94,37 @@ namespace N__Assistant
                     string filename = savePath + @"\Palettes\Palettes.zip";
                     myWebClient.DownloadFile(myStringWebResource, filename);
                     myWebClient.Dispose();
-                    //Directory.CreateDirectory(savePath + @"\Palettes\Palettes");
                     ZipFile.ExtractToDirectory(filename, savePath + @"\Palettes");
                     File.Delete(savePath + @"\Palettes\Palettes.zip");
-                } catch (Exception exc) {
+                }
+                catch (Exception exc)
+                {
                     MessageBox.Show("Couldn't download Metanet Palettes pack because: " + exc.Message);
                 }
             }
+
+            // download NPP_AllLevels.zip to backup dir
+            if (!Directory.Exists(savePath + @"\Maps\NPP_AllLevels"))
+            {
+                try
+                {
+                    string myStringWebResource = "https://cdn.discordapp.com/attachments/197765375503368192/580483404533989396/NPP_AllLevels.zip";
+                    WebClient myWebClient = new WebClient();
+                    string filename = savePath + @"\Maps\NPP_AllLevels.zip";
+                    myWebClient.DownloadFile(myStringWebResource, filename);
+                    myWebClient.Dispose();
+                    Directory.CreateDirectory(savePath + @"\Maps\NPP_AllLevels");
+                    ZipFile.ExtractToDirectory(filename, savePath + @"\Maps\NPP_AllLevels");
+                    File.Delete(savePath + @"\Maps\NPP_AllLevels.zip");
+                }
+                catch (Exception exc)
+                {
+                    MessageBox.Show("Couldn't download Metanet Palettes pack because: " + exc.Message);
+                }
+            }
+
+            // tooltip
+            // this.metanetMapsList.MouseMove += new System.Windows.Forms.MouseEventHandler(this.metanetMapsList_MouseMove);
 
             // create palettes directory in steam game dir if it doesnt exist (it's needed to install the custom palettes)
             if (!Directory.Exists(steamGamePath + @"\NPP\Palettes")) Directory.CreateDirectory(steamGamePath + @"\NPP\Palettes");
@@ -188,9 +219,30 @@ namespace N__Assistant
             }
 
             // switch to practice maps tab
-            if (current == tabEditorMaps)
+            if (current == tabMaps)
             {
-                //TODO: list metanetMapsList
+                // list metanetMapsList
+                // https://cdn.discordapp.com/attachments/197765375503368192/580483404533989396/NPP_AllLevels.zip
+                string dir = savePath + @"\Maps\NPP_AllLevels";
+                metanetMapsList.Nodes.Clear();
+                LoadFiles(dir + @"\SI", metanetMapsList.Nodes.Add("Solo Intro"));
+                LoadFiles(dir + @"\S", metanetMapsList.Nodes.Add("Solo"));
+                LoadFiles(dir + @"\S2", metanetMapsList.Nodes.Add("Solo Ultimate"));
+                LoadFiles(dir + @"\SL", metanetMapsList.Nodes.Add("Solo Legacy"));
+                LoadFiles(dir + @"\SL2", metanetMapsList.Nodes.Add("Solo Legacy Ultimate"));
+                LoadFiles(dir + @"\SS", metanetMapsList.Nodes.Add("Solo !"));
+                LoadFiles(dir + @"\SS2", metanetMapsList.Nodes.Add("Solo ?"));
+                LoadFiles(dir + @"\CI", metanetMapsList.Nodes.Add("Co-op Intro"));
+                LoadFiles(dir + @"\C", metanetMapsList.Nodes.Add("Co-op"));
+                LoadFiles(dir + @"\C2", metanetMapsList.Nodes.Add("Co-op Ultimate"));
+                LoadFiles(dir + @"\CL", metanetMapsList.Nodes.Add("Co-op Legacy"));
+                LoadFiles(dir + @"\CL2", metanetMapsList.Nodes.Add("Co-op Legacy Ultimate"));
+                LoadFiles(dir + @"\RI", metanetMapsList.Nodes.Add("Race Intro"));
+                LoadFiles(dir + @"\R", metanetMapsList.Nodes.Add("Race"));
+                LoadFiles(dir + @"\R2", metanetMapsList.Nodes.Add("Race Ultimate"));
+                LoadFiles(dir + @"\RL", metanetMapsList.Nodes.Add("Race Legacy"));
+                LoadFiles(dir + @"\RL2", metanetMapsList.Nodes.Add("Race Legacy Ultimate"));
+                installMetanetMap.Enabled = false;
 
                 // list editor maps
                 listEditorMaps.Items.Clear();
@@ -199,8 +251,8 @@ namespace N__Assistant
                 backupSelectedMaps.Enabled = false;
 
                 // list local backups
-                localEditorLevelsBackupsList.Items.Clear();
-                PopulateListBoxWithFileType(localEditorLevelsBackupsList, savePath + @"\EditorLevels", "*.zip");
+                localMapsBackupsList.Items.Clear();
+                PopulateListBoxWithFileType(localMapsBackupsList, savePath + @"\Maps", "*.zip");
                 installBackupMap.Enabled = false;
             }
         }
@@ -249,7 +301,7 @@ namespace N__Assistant
             if (checkedListBox1.GetItemCheckState(2) == CheckState.Checked)
             {
                 // backup editor levels
-                ZipFile.CreateFromDirectory(profilePath + @"\levels", savePath + @"\EditorLevels\Maps" + DateTime.Now.ToString("yyMMddHHmm") + ".zip");
+                ZipFile.CreateFromDirectory(profilePath + @"\levels", savePath + @"\Maps\Maps" + DateTime.Now.ToString("yyMMddHHmm") + ".zip");
             }
             bgwBackupNow.ReportProgress(40, "Zipping Replays (attract files)");
             if (checkedListBox1.GetItemCheckState(3) == CheckState.Checked)
@@ -280,8 +332,8 @@ namespace N__Assistant
             bgwBackupNow.ReportProgress(80, "Zipping Game Levels");
             if (checkedListBox1.GetItemCheckState(5) == CheckState.Checked)
             {
-                // backup gamelevels
-                ZipFile.CreateFromDirectory(steamGamePath + @"\NPP\Levels", savePath + @"\GameLevels\GameLevels" + DateTime.Now.ToString("yyMMddHHmm") + ".zip");
+                // backup map packs
+                ZipFile.CreateFromDirectory(steamGamePath + @"\NPP\Levels", savePath + @"\MapPacks\MapPacks" + DateTime.Now.ToString("yyMMddHHmm") + ".zip");
             }
             bgwBackupNow.ReportProgress(100, "Done with backup!");
         }
@@ -299,7 +351,7 @@ namespace N__Assistant
             backupNow.Enabled = true;
         }
 
-        private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void savePathLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             if (Directory.Exists(savePath))
             {
@@ -474,7 +526,7 @@ namespace N__Assistant
                 Spreadsheet spreadsheet = await Spreadsheet.Get(spreadsheetId, authorization);
                 Sheet sheet = spreadsheet.Sheets[sheetsId];
                 Cell[,] data = sheet.Data;
-                
+
                 for (int y = 1; y < sheet.Rows; y++)
                 {
                     string parsedDate = data[2, y].Value;
@@ -532,24 +584,25 @@ namespace N__Assistant
 
         private void installCommunityPalette_Click(object sender, EventArgs e)
         {
-            try { 
+            try
+            {
                 string myStringWebResource = null;
                 WebClient myWebClient = new WebClient();
-                
+
                 // get the url
                 foreach (var mapSheet in sheetMapList)
                 {
                     if (mapSheet.sheetId.Equals(COMMUNITY_PALETTES) == true)
                     {
                         Cell[,] data = mapSheet.sheetData.Data;
-                        myStringWebResource = data[3, communityPalettesList.SelectedIndex+1].Value;
+                        myStringWebResource = data[3, communityPalettesList.SelectedIndex + 1].Value;
                     }
                 }
 
                 // download the file and save it into the current filesystem folder.
                 string filename = steamGamePath + @"\NPP\Palettes\" + "nppassisttemppal.zip";
                 myWebClient.DownloadFile(myStringWebResource, filename);
-                
+
                 // TODO: check if palette has subdir in zip or not (if not create dir and install there instead of Palettes root)
                 // extract temp file
                 ZipFile.ExtractToDirectory(filename, steamGamePath + @"\NPP\Palettes");
@@ -562,7 +615,8 @@ namespace N__Assistant
 
                 updateCustomPalleteInstalledCounter();
 
-            } catch(Exception exc)
+            }
+            catch (Exception exc)
             {
                 MessageBox.Show("Couldn't install community palette because: " + exc.Message);
             }
@@ -577,7 +631,7 @@ namespace N__Assistant
             if (Directory.Exists(steamGamePath + @"\NPP\Palettes\" + palName))
             {
                 // prompt asking if replacing existing dir or not
-                DialogResult dialogResult = MessageBox.Show("A palette with this name is already installed, do you want to replace it?","Replace Existing?", MessageBoxButtons.YesNo);
+                DialogResult dialogResult = MessageBox.Show("A palette with this name is already installed, do you want to replace it?", "Replace Existing?", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
                     // delete installed palette
@@ -618,7 +672,7 @@ namespace N__Assistant
 
                 updateCustomPalleteInstalledCounter();
             }
-         
+
         }
 
         private void deleteBackupPalette_Click(object sender, EventArgs e)
@@ -652,17 +706,18 @@ namespace N__Assistant
                 }
                 if (!isMetanet) count++;
             }
-            
+
             countCustomPalettesInstalled.Text = "Custom: " + count.ToString();
             if (count > 132)
             {
                 countCustomPalettesInstalled.ForeColor = System.Drawing.Color.Red;
                 MessageBox.Show("You've reached maximum number of custom palettes the game can handle, here be dragons if you don't revert");
-            } else
+            }
+            else
             {
                 countCustomPalettesInstalled.ForeColor = System.Drawing.Color.Black;
             }
-            
+
         }
 
         private static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)
@@ -853,7 +908,7 @@ namespace N__Assistant
         {
             try
             {
-                using (FileStream fs = new FileStream(savePath + @"\EditorLevels\Maps" + DateTime.Now.ToString("yyMMddHHmm") + ".zip", FileMode.Create))
+                using (FileStream fs = new FileStream(savePath + @"\Maps\Maps" + DateTime.Now.ToString("yyMMddHHmm") + ".zip", FileMode.Create))
                 using (ZipArchive arch = new ZipArchive(fs, ZipArchiveMode.Create))
                 {
                     foreach (var item in listEditorMaps.SelectedItems)
@@ -866,24 +921,26 @@ namespace N__Assistant
                 //TODO: list somewhere backup was done successfuly
 
                 // refresh localbackupslist
-                localEditorLevelsBackupsList.Items.Clear();
-                PopulateListBoxWithFileType(localEditorLevelsBackupsList, savePath + @"\EditorLevels", "*.zip");
+                localMapsBackupsList.Items.Clear();
+                PopulateListBoxWithFileType(localMapsBackupsList, savePath + @"\Maps", "*.zip");
                 installBackupMap.Enabled = false;
 
                 // disable the button to avoid duplicate backups
                 backupSelectedMaps.Enabled = false;
 
-            } catch (Exception exc) {
-                MessageBox.Show("something went wrong with the backup: "+ exc.Message);
             }
-            
+            catch (Exception exc)
+            {
+                MessageBox.Show("something went wrong with the backup: " + exc.Message);
+            }
+
         }
 
-        private void localEditorLevelsBackupsList_SelectedIndexChanged(object sender, EventArgs e)
+        private void localMapsBackupsList_SelectedIndexChanged(object sender, EventArgs e)
         {
             localEditorMaps.Items.Clear();
-            string filename = localEditorLevelsBackupsList.SelectedItem.ToString().Substring(0, localEditorLevelsBackupsList.SelectedItem.ToString().LastIndexOf(' ')).TrimEnd();
-            string zipPath = savePath + @"\EditorLevels\" + filename;
+            string filename = localMapsBackupsList.SelectedItem.ToString().Substring(0, localMapsBackupsList.SelectedItem.ToString().LastIndexOf(' ')).TrimEnd();
+            string zipPath = savePath + @"\Maps\" + filename;
             using (ZipArchive archive = ZipFile.OpenRead(zipPath))
             {
                 foreach (ZipArchiveEntry entry in archive.Entries)
@@ -902,10 +959,38 @@ namespace N__Assistant
             // go through all selected
             foreach (var item in localEditorMaps.SelectedItems)
             {
-                // check if it's dupe (prompt asking for replacement or not)
-                string filename = item.ToString().Substring(0, item.ToString().LastIndexOf(' ')).TrimEnd();
+                string mapName = item.ToString();
+                string zipPath = savePath + @"\Maps\" + localMapsBackupsList.SelectedItem.ToString().Substring(0, localMapsBackupsList.SelectedItem.ToString().LastIndexOf(' ')).TrimEnd();
+                string extractPath = profilePath + @"\levels\" + mapName;
 
-                // TODO: install the levels selected
+                if (File.Exists(extractPath))
+                {
+                    DialogResult dialogResult = MessageBox.Show("A map already exists with this filename, do you want to replace it?", "Replace Existing?", MessageBoxButtons.YesNo);
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        using (ZipArchive archive = ZipFile.OpenRead(zipPath))
+                        {
+                            foreach (ZipArchiveEntry entry in archive.Entries)
+                            {
+                                if (entry.Name.Equals(mapName)) entry.ExtractToFile(extractPath, true);
+                            }
+                        }
+                    }
+                    else if (dialogResult == DialogResult.No)
+                    {
+                        // do nothing
+                    }
+                }
+                else
+                {
+                    using (ZipArchive archive = ZipFile.OpenRead(zipPath))
+                    {
+                        foreach (ZipArchiveEntry entry in archive.Entries)
+                        {
+                            if (entry.Name.Equals(mapName)) entry.ExtractToFile(extractPath);
+                        }
+                    }
+                }
             }
 
             // refresh list of editor maps
@@ -915,6 +1000,157 @@ namespace N__Assistant
             backupSelectedMaps.Enabled = false;
 
         }
+
+        private void metanetMapsList_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            if (metanetMapsList.SelectedNode.Level == 1) installMetanetMap.Enabled = true;
+            else installMetanetMap.Enabled = false;
+        }
+
+        private void LoadSubDirectories(string dir, TreeNode td)
+        {
+            // Get all subdirectories  
+            string[] subdirectoryEntries = Directory.GetDirectories(dir);
+            // Loop through them to see if they have any other subdirectories  
+            foreach (string subdirectory in subdirectoryEntries)
+            {
+                DirectoryInfo di = new DirectoryInfo(subdirectory);
+                string dirname = di.Name;
+                if (di.Name == "C")
+                {
+                    dirname = "Co-op N++";
+                }
+                if (di.Name == "C2")
+                {
+                    dirname = "Co-op Ultimate";
+                }
+                if (di.Name == "CI")
+                {
+                    dirname = "Co-op Intro";
+                }
+                if (di.Name == "CL")
+                {
+                    dirname = "Co-op Legacy";
+                }
+                if (di.Name == "CL2")
+                {
+                    dirname = "Co-op Legacy Ultimate";
+                }
+                if (di.Name == "R")
+                {
+                    dirname = "Race N++";
+                }
+                if (di.Name == "R2")
+                {
+                    dirname = "Race Ultimate";
+                }
+                if (di.Name == "RI")
+                {
+                    dirname = "Race Intro";
+                }
+                if (di.Name == "RL")
+                {
+                    dirname = "Race Legacy";
+                }
+                if (di.Name == "RL2")
+                {
+                    dirname = "Race Legacy Ultimate";
+                }
+                TreeNode tds = td.Nodes.Add(dirname);
+                tds.StateImageIndex = 0;
+                tds.Tag = di.FullName;
+                LoadFiles(subdirectory, tds);
+                LoadSubDirectories(subdirectory, tds);
+                //UpdateProgress();
+
+            }
+        }
+        private void LoadFiles(string dir, TreeNode td)
+        {
+            string[] Files = Directory.GetFiles(dir, "*.*");
+
+            // Loop through them to see files  
+            foreach (string file in Files)
+            {
+                FileInfo fi = new FileInfo(file);
+                TreeNode tds = td.Nodes.Add(fi.Name);
+                tds.Tag = fi.FullName;
+                tds.StateImageIndex = 1;
+                //UpdateProgress();
+            }
+        }
+
+        private void installMetanetMap_Click(object sender, EventArgs e)
+        {
+            //TODO: check n++ not running
+
+            string mapPath = metanetMapsList.SelectedNode.Tag.ToString();
+            string mapName = mapPath.Substring(mapPath.LastIndexOf('\\'));
+            if (File.Exists(profilePath + @"\levels\" + mapName))
+            {
+                DialogResult dialogResult = MessageBox.Show("A map already exists with this filename, do you want to replace it?", "Replace Existing?", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    File.Copy(mapPath, profilePath + @"\levels\" + mapName, true);
+                }
+                else if (dialogResult == DialogResult.No)
+                {
+                    // do nothing
+                    // File.Copy(mapPath, profilePath + @"\levels\" + mapName, false); // throws io exception file already exists
+                }
+            } else
+            {
+                File.Copy(mapPath, profilePath + @"\levels\" + mapName);
+            }
+        }
+
+        private void localEditorMaps_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            installBackupMap.Enabled = true;
+        }
+
+        private void deleteSelectedMaps_Click(object sender, EventArgs e)
+        {
+            //TODO: really sure?
+
+            foreach (var item in listEditorMaps.SelectedItems)
+            {
+                string filename = item.ToString().Substring(0, item.ToString().LastIndexOf(' ')).TrimEnd();
+                File.Delete(profilePath + @"\levels\" + filename);
+            }
+
+            var selectedItems = listEditorMaps.SelectedItems;
+            if (listEditorMaps.SelectedIndex != -1)
+            {
+                for (int i = selectedItems.Count - 1; i >= 0; i--)
+                    listEditorMaps.Items.Remove(selectedItems[i]);
+            }
+        }
+
+        private void linkMapsInEditor_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            launchExplorer(profilePath + @"\levels");
+        }
+
+        /*private void metanetMapsList_MouseMove(object sender, MouseEventArgs e)
+        {
+            // Get the node at the current mouse pointer location
+            TreeNode theNode = metanetMapsList.GetNodeAt(e.X, e.Y);
+
+            // Set a ToolTip only if the mouse pointer is actually paused on a node
+            if (theNode != null && theNode.Tag != null)
+            {
+                // Change the ToolTip only if the pointer moved to a new node
+                if (theNode.Tag.ToString() != toolTip1.GetToolTip(metanetMapsList))
+                    toolTip1.SetToolTip(metanetMapsList, theNode.Tag.ToString());
+
+            }
+            else       
+            {
+                // Pointer is not over a node so clear the ToolTip
+                toolTip1.SetToolTip(metanetMapsList, "");
+            }
+        }*/
     }
     public class sheetMap
     {
