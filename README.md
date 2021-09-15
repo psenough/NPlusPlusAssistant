@@ -26,13 +26,17 @@ Needs Visual Studio Community 2019 with C# .Net stuff installed to compile from 
 
 * list community soundpacks (from google spreadsheet) and select which to install
 
+* list metanet maps and select one to put on your map levels editor folder (for practice / remixes)
+
+* list all maps in editor and select which ones to backup or delete
+
+* list all maps in backup and select one to install to your map levels editor folder
+
 ## Stuff it'll eventually do:
 
 * option to rename backups
 
 * icon to refresh lists (in case people are renaming on folder)
-
-* download metanet maps pack and select one to put on your map levels editor folder (for practice / remixes)
 
 * install/revert community map packs
 
@@ -47,6 +51,8 @@ Needs Visual Studio Community 2019 with C# .Net stuff installed to compile from 
 * some palettes/soundpacks installation don't work because they're not packed cleanly (need to repack, code smarter extractor or create a new column on spreadsheet)
 
 * missing some confirmation checkboxes on critical stuff that can't be reverted
+
+* missing some checks if npp is running on critical stuff that requires npp to be closed to take effect
 
 ## Credits:
 
