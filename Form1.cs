@@ -106,7 +106,7 @@ namespace N__Assistant
             {
                 try
                 {
-                    string myStringWebResource = "https://cdn.discordapp.com/attachments/197765375503368192/580483404533989396/NPP_AllLevels.zip";
+                    string myStringWebResource = "https://cdn.discordapp.com/attachments/592913929630384138/890428300911050752/NPP_AllLevels.zip";
                     WebClient myWebClient = new WebClient();
                     string filename = savePath + @"\Maps\NPP_AllLevels.zip";
                     myWebClient.DownloadFile(myStringWebResource, filename);
@@ -245,16 +245,13 @@ namespace N__Assistant
                 LoadFiles(dir + @"\RL2", metanetMapsList.Nodes.Add("Race Legacy Ultimate"));
                 installMetanetMap.Enabled = false;
 
-                // list editor maps
-                listEditorMaps.Items.Clear();
-                PopulateListBoxWithFileType(listEditorMaps, profilePath + @"\levels\", "*");
-                deleteSelectedMaps.Enabled = false;
-                backupSelectedMaps.Enabled = false;
-
                 // list local backups
                 localMapsBackupsList.Items.Clear();
                 PopulateListBoxWithFileType(localMapsBackupsList, savePath + @"\Maps", "*.zip");
                 installBackupMap.Enabled = false;
+
+                // list editor maps
+                RefreshListEditorMaps();
             }
         }
 
@@ -619,6 +616,12 @@ namespace N__Assistant
 
         private void installCommunityPalette_Click(object sender, EventArgs e)
         {
+            if (DetectNPPRunning() == true)
+            {
+                MessageBox.Show("Please close N++ before installing maps to the editor");
+                return;
+            }
+
             try
             {
                 string myStringWebResource = null;
@@ -638,10 +641,60 @@ namespace N__Assistant
                 string filename = steamGamePath + @"\NPP\Palettes\" + "nppassisttemppal.zip";
                 myWebClient.DownloadFile(myStringWebResource, filename);
 
-                // TODO: check if palette has subdir in zip or not (if not create dir and install there instead of Palettes root)
-                // extract temp file
-                ZipFile.ExtractToDirectory(filename, steamGamePath + @"\NPP\Palettes");
-                File.Delete(filename);
+                // check if palette has subdir in zip or not
+                var zip = ZipFile.OpenRead(filename);
+                var names = zip.Entries[0].FullName;
+                zip.Dispose();
+                if (names.ToString().StartsWith("background.tga"))
+                {
+                    // assume the palette should have same name as archive and create + extract into that directory
+                    string dirname = myStringWebResource.Substring(myStringWebResource.LastIndexOf('/') + 1, myStringWebResource.LastIndexOf('.') - myStringWebResource.LastIndexOf('/') - 1).TrimEnd();
+
+                    // check if it already exists
+                    if (Directory.Exists(steamGamePath + @"\NPP\Palettes\" + dirname))
+                    {
+                        DialogResult dialogResult = MessageBox.Show("A palette already exists with this name, would you like to replace it?", "Replace Existing?", MessageBoxButtons.YesNo);
+                        if (dialogResult == DialogResult.Yes)
+                        {
+                            Directory.Delete(steamGamePath + @"\NPP\Palettes\" + dirname, true);
+                            Directory.CreateDirectory(steamGamePath + @"\NPP\Palettes\" + dirname);
+                            ZipFile.ExtractToDirectory(filename, steamGamePath + @"\NPP\Palettes\" + dirname);
+                            File.Delete(filename);
+                        }
+                        else
+                        {
+                            // do nothing
+                        }
+                    }
+                    else
+                    {
+                        Directory.CreateDirectory(steamGamePath + @"\NPP\Palettes\" + dirname);
+                        ZipFile.ExtractToDirectory(filename, steamGamePath + @"\NPP\Palettes\" + dirname);
+                        File.Delete(filename);
+                    }
+                } else {
+                    // assume it has a subdir with same name, extract in root of palettes
+
+                    if (Directory.Exists(steamGamePath + @"\NPP\Palettes\" + names))
+                    {
+                        DialogResult dialogResult = MessageBox.Show("A palette already exists with this name, would you like to replace it?", "Replace Existing?", MessageBoxButtons.YesNo);
+                        if (dialogResult == DialogResult.Yes)
+                        {
+                            Directory.Delete(steamGamePath + @"\NPP\Palettes\" + names, true);
+                            ZipFile.ExtractToDirectory(filename, steamGamePath + @"\NPP\Palettes");
+                            File.Delete(filename);
+                        }
+                        else
+                        {
+                            // do nothing
+                        }
+                    }
+                    else
+                    {
+                        ZipFile.ExtractToDirectory(filename, steamGamePath + @"\NPP\Palettes");
+                        File.Delete(filename);
+                    }
+                }
 
                 // refresh installed palettes directory
                 palettesInstalledList.Items.Clear();
@@ -649,7 +702,6 @@ namespace N__Assistant
                 installCommunityPalette.Enabled = false;
 
                 updateCustomPalleteInstalledCounter();
-
             }
             catch (Exception exc)
             {
@@ -1045,11 +1097,7 @@ namespace N__Assistant
             }
 
             // refresh list of editor maps
-            listEditorMaps.Items.Clear();
-            PopulateListBoxWithFileType(listEditorMaps, profilePath + @"\levels\", "*");
-            deleteSelectedMaps.Enabled = false;
-            backupSelectedMaps.Enabled = false;
-
+            RefreshListEditorMaps();
         }
 
         private void metanetMapsList_AfterSelect(object sender, TreeViewEventArgs e)
@@ -1133,7 +1181,11 @@ namespace N__Assistant
 
         private void installMetanetMap_Click(object sender, EventArgs e)
         {
-            //TODO: check n++ not running
+            if (DetectNPPRunning() == true)
+            {
+                MessageBox.Show("Please close N++ before installing maps to the editor");
+                return;
+            }
 
             string mapPath = metanetMapsList.SelectedNode.Tag.ToString();
             string mapName = mapPath.Substring(mapPath.LastIndexOf('\\'));
@@ -1143,6 +1195,7 @@ namespace N__Assistant
                 if (dialogResult == DialogResult.Yes)
                 {
                     File.Copy(mapPath, profilePath + @"\levels\" + mapName, true);
+                    RefreshListEditorMaps();
                 }
                 else if (dialogResult == DialogResult.No)
                 {
@@ -1152,7 +1205,16 @@ namespace N__Assistant
             } else
             {
                 File.Copy(mapPath, profilePath + @"\levels\" + mapName);
+                RefreshListEditorMaps();
             }
+        }
+
+        private void RefreshListEditorMaps()
+        {
+            listEditorMaps.Items.Clear();
+            PopulateListBoxWithFileType(listEditorMaps, profilePath + @"\levels\", "*");
+            deleteSelectedMaps.Enabled = false;
+            backupSelectedMaps.Enabled = false;
         }
 
         private void localEditorMaps_SelectedIndexChanged(object sender, EventArgs e)
@@ -1183,9 +1245,9 @@ namespace N__Assistant
             launchExplorer(profilePath + @"\levels");
         }
 
-        private void tabPage1_Click(object sender, EventArgs e)
+        private void linkSoundFolder_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-
+            launchExplorer(steamGamePath + @"\NPP\Sounds\");
         }
 
         /*private void metanetMapsList_MouseMove(object sender, MouseEventArgs e)
@@ -1207,6 +1269,7 @@ namespace N__Assistant
                 toolTip1.SetToolTip(metanetMapsList, "");
             }
         }*/
+
     }
     public class sheetMap
     {
