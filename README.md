@@ -58,4 +58,8 @@ Needs Visual Studio Community 2019 with C# .Net stuff installed to compile from 
 
 ## Credits:
 
-ps, daniel
+* ps main development
+
+* daniel steam detection code
+
+* cloudead beta-testing

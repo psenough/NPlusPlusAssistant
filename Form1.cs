@@ -31,6 +31,10 @@ namespace N__Assistant
         {
             InitializeComponent();
 
+            // get rid of "The request was aborted: Could not create SSL/TLS secure channel" error that happens on some versions of windows
+            ServicePointManager.Expect100Continue = true;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
             // get steam path
             string steampath = (string)Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\Valve\\Steam", "InstallPath", "null");
             if (steampath == "null")
@@ -67,12 +71,6 @@ namespace N__Assistant
             {
                 throw new FileNotFoundException("N++ not installed in steam");
             }
-
-            // rename linked labels
-            //steamInstallDir.Text = steamGamePath;
-            //profileDir.Text = profilePath;
-            //screenshotsDir.Text = screenshotsPath;
-            //backupsDir.Text = savePath;
 
             // create backup directories if they dont exist
             if (!Directory.Exists(savePath)) Directory.CreateDirectory(savePath);
