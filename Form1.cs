@@ -143,6 +143,9 @@ namespace N__Assistant
 
             tabControl1.Selecting += new TabControlCancelEventHandler(tabControl1_Selecting);
 
+            nppconfText.Text = File.ReadAllText(profilePath + @"\npp.conf");
+            npplogText.Text = File.ReadAllText(profilePath + @"\NPPLog.txt");
+
             loadProfile.Enabled = false;
             deleteProfile.Enabled = false;
         }
@@ -437,42 +440,76 @@ namespace N__Assistant
             deleteProfile.Enabled = true;
         }
 
-        private void deleteProfile_Click(object sender, EventArgs e)
+        private void loadProfileBackup_Click(object sender, EventArgs e)
         {
-            //TODO: confirmation box
-            try
+            if (DetectNPPRunning() == true)
             {
-                File.Delete(savePath + @"\Profiles\" + profileList.SelectedItem.ToString().Split(' ')[0]);
-                profileList.Items.Remove(profileList.SelectedItem);
-                loadProfile.Enabled = false;
-                deleteProfile.Enabled = false;
+                MessageBox.Show("Please close N++ before installing a new profile");
+                return;
             }
-            catch (Exception exc)
+
+            DialogResult dialogResult = MessageBox.Show("Are you sure you wish to replace your game profile with the selected backup? This process is irreversible if you haven't done a recent backup.", "Replace Existing nprofile?", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
             {
-                MessageBox.Show(exc.Message);
+                File.Delete(profilePath + @"\nprofile");
+                string zipPath = savePath + @"\Profiles\" + profileList.SelectedItem.ToString().Substring(0, profileList.SelectedItem.ToString().LastIndexOf(' ')).TrimEnd();
+                string extractPath = profilePath + @"\nprofile";
+                using (ZipArchive archive = ZipFile.OpenRead(zipPath))
+                {
+                    foreach (ZipArchiveEntry entry in archive.Entries)
+                    {
+                        if (entry.Name.Equals("nprofile")) entry.ExtractToFile(extractPath, true);
+                    }
+                }
+            }
+            else if (dialogResult == DialogResult.No)
+            {
+                // do nothing
+            }
+        }
+
+        private void deleteProfileBackup_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = MessageBox.Show("Are you sure you wish to delete the selected backup? This process is irreversible.", "Delete Selected File?", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                try
+                {
+                    File.Delete(savePath + @"\Profiles\" + profileList.SelectedItem.ToString().Split(' ')[0]);
+                    profileList.Items.Remove(profileList.SelectedItem);
+                    loadProfile.Enabled = false;
+                    deleteProfile.Enabled = false;
+                }
+                catch (Exception exc)
+                {
+                    MessageBox.Show(exc.Message);
+                }
             }
         }
 
         private void uninstallPalette_Click(object sender, EventArgs e)
         {
-            //TODO: confirmation box
-            try
+            DialogResult dialogResult = MessageBox.Show("Are you sure you wish to uninstall the selected palette? This process is irreversible if you haven't done a recent backup.", "Uninstall Palette?", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
             {
-                Directory.Delete(steamGamePath + @"\NPP\Palettes\" + palettesInstalledList.SelectedItem.ToString().Split(' ')[0], true);
-                //palettesInstalled.Items.Remove(palettesInstalled.SelectedItem);
-            }
-            catch (Exception exc)
-            {
-                MessageBox.Show(exc.Message);
-            }
+                try
+                {
+                    Directory.Delete(steamGamePath + @"\NPP\Palettes\" + palettesInstalledList.SelectedItem.ToString().Split(' ')[0], true);
+                    //palettesInstalled.Items.Remove(palettesInstalled.SelectedItem);
+                }
+                catch (Exception exc)
+                {
+                    MessageBox.Show(exc.Message);
+                }
 
-            palettesInstalledList.Items.Remove(palettesInstalledList.SelectedItem);
-            //palettesInstalledList.Items.Clear();
-            //PopulateListBoxWithSubDirectories(palettesInstalledList, steamGamePath + @"\NPP\Palettes");
-            uninstallPalette.Enabled = false;
-            backupPalette.Enabled = false;
+                palettesInstalledList.Items.Remove(palettesInstalledList.SelectedItem);
+                //palettesInstalledList.Items.Clear();
+                //PopulateListBoxWithSubDirectories(palettesInstalledList, steamGamePath + @"\NPP\Palettes");
+                uninstallPalette.Enabled = false;
+                backupPalette.Enabled = false;
 
-            updateCustomPalleteInstalledCounter();
+                updateCustomPalleteInstalledCounter();
+            }
         }
 
         private void palettesInstalled_SelectedIndexChanged(object sender, EventArgs e)
@@ -818,68 +855,84 @@ namespace N__Assistant
 
         private void installSpreadsheetSoundpack_Click(object sender, EventArgs e)
         {
-            //TODO: checkbox you really really wanna
-
-            try
+            if (DetectNPPRunning() == true)
             {
-                string myStringWebResource = null;
-                WebClient myWebClient = new WebClient();
+                MessageBox.Show("Please close N++ before installing soundpack");
+                return;
+            }
 
-                // get the url
-                foreach (var mapSheet in sheetMapList)
+            DialogResult dialogResult = MessageBox.Show("Are you sure you wish to replace your current soundpack with this one? This process is irreversible if you haven't done a recent backup.", "Replace Existing Sounds?", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                try
                 {
-                    if (mapSheet.sheetId.Equals(COMMUNITY_SOUNDPACKS) == true)
+                    string myStringWebResource = null;
+                    WebClient myWebClient = new WebClient();
+
+                    // get the url
+                    foreach (var mapSheet in sheetMapList)
                     {
-                        Cell[,] data = mapSheet.sheetData.Data;
-                        myStringWebResource = data[3, spreadsheetSoundpacks.SelectedIndex + 1].Value;
+                        if (mapSheet.sheetId.Equals(COMMUNITY_SOUNDPACKS) == true)
+                        {
+                            Cell[,] data = mapSheet.sheetData.Data;
+                            myStringWebResource = data[3, spreadsheetSoundpacks.SelectedIndex + 1].Value;
+                        }
                     }
+
+                    // download the file and save it into the current filesystem folder.
+                    string filename = steamGamePath + @"\NPP\" + "nppassisttempsounds.zip";
+                    myWebClient.DownloadFile(myStringWebResource, filename);
+
+                    // clean \Sounds\
+                    Directory.Delete(steamGamePath + @"\NPP\Sounds", true);
+                    Directory.CreateDirectory(steamGamePath + @"\NPP\Sounds");
+
+                    // extract temp file
+                    ZipFile.ExtractToDirectory(filename, steamGamePath + @"\NPP\Sounds");
+                    File.Delete(filename);
+
+                    // refresh installed soundpack directory
+                    previewSoundsList.Items.Clear();
+                    PopulateListBoxWithFileType(previewSoundsList, steamGamePath + @"\NPP\Sounds", "*.wav");
+                    installSpreadsheetSoundpack.Enabled = false;
+
+                    updateCustomPalleteInstalledCounter();
+
+                }
+                catch (Exception exc)
+                {
+                    MessageBox.Show("Couldn't install community soundpack because: " + exc.Message);
                 }
 
-                // download the file and save it into the current filesystem folder.
-                string filename = steamGamePath + @"\NPP\" + "nppassisttempsounds.zip";
-                myWebClient.DownloadFile(myStringWebResource, filename);
-
-                // clean \Sounds\
-                Directory.Delete(steamGamePath + @"\NPP\Sounds", true);
-                Directory.CreateDirectory(steamGamePath + @"\NPP\Sounds");
-
-                // extract temp file
-                ZipFile.ExtractToDirectory(filename, steamGamePath + @"\NPP\Sounds");
-                File.Delete(filename);
-
-                // refresh installed soundpack directory
-                previewSoundsList.Items.Clear();
-                PopulateListBoxWithFileType(previewSoundsList, steamGamePath + @"\NPP\Sounds", "*.wav");
                 installSpreadsheetSoundpack.Enabled = false;
-
-                updateCustomPalleteInstalledCounter();
-
             }
-            catch (Exception exc)
-            {
-                MessageBox.Show("Couldn't install community palette because: " + exc.Message);
-            }
-
-            installSpreadsheetSoundpack.Enabled = false;
         }
 
         private void installSoundpackButton_Click(object sender, EventArgs e)
         {
-            //TODO: checkbox you really really wanna
+            if (DetectNPPRunning() == true)
+            {
+                MessageBox.Show("Please close N++ before installing soundpack");
+                return;
+            }
 
-            // install
-            string sfxName = soundpackBackups.SelectedItem.ToString().Substring(0, soundpackBackups.SelectedItem.ToString().LastIndexOf('.') - 14).TrimEnd();
-            string filename = soundpackBackups.SelectedItem.ToString().Substring(0, soundpackBackups.SelectedItem.ToString().LastIndexOf(' ')).TrimEnd();
-            Directory.Delete(steamGamePath + @"\NPP\Sounds", true);
-            Directory.CreateDirectory(steamGamePath + @"\NPP\Sounds");
-            ZipFile.ExtractToDirectory(savePath + @"\Sounds\" + filename, steamGamePath + @"\NPP\Sounds");
+            DialogResult dialogResult = MessageBox.Show("Are you sure you wish to replace your current soundpack with this one? This process is irreversible if you haven't done a recent backup.", "Replace Existing Sounds?", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                // install
+                string sfxName = soundpackBackups.SelectedItem.ToString().Substring(0, soundpackBackups.SelectedItem.ToString().LastIndexOf('.') - 14).TrimEnd();
+                string filename = soundpackBackups.SelectedItem.ToString().Substring(0, soundpackBackups.SelectedItem.ToString().LastIndexOf(' ')).TrimEnd();
+                Directory.Delete(steamGamePath + @"\NPP\Sounds", true);
+                Directory.CreateDirectory(steamGamePath + @"\NPP\Sounds");
+                ZipFile.ExtractToDirectory(savePath + @"\Sounds\" + filename, steamGamePath + @"\NPP\Sounds");
 
-            // refresh soundpack preview
-            previewSoundsList.Items.Clear();
-            PopulateListBoxWithFileType(previewSoundsList, steamGamePath + @"\NPP\Sounds", "*.wav");
+                // refresh soundpack preview
+                previewSoundsList.Items.Clear();
+                PopulateListBoxWithFileType(previewSoundsList, steamGamePath + @"\NPP\Sounds", "*.wav");
 
-            // give some feedback it's done
-            installSoundpackButton.Enabled = false;
+                // give some feedback it's done
+                installSoundpackButton.Enabled = false;
+            }
         }
 
         private void deleteSoundpackBackupButton_Click(object sender, EventArgs e)
@@ -1130,6 +1183,11 @@ namespace N__Assistant
         private void linkMapsInEditor_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             launchExplorer(profilePath + @"\levels");
+        }
+
+        private void tabPage1_Click(object sender, EventArgs e)
+        {
+
         }
 
         /*private void metanetMapsList_MouseMove(object sender, MouseEventArgs e)

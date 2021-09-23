@@ -34,6 +34,8 @@ Needs Visual Studio Community 2019 with C# .Net stuff installed to compile from 
 
 ## Stuff it'll eventually do:
 
+* progress bar while downloading / installing soundpacks
+
 * option to rename backups
 
 * icon to refresh lists (in case people are renaming on folder)
