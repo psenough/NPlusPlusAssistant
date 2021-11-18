@@ -36,13 +36,13 @@ Needs Visual Studio Community 2019 with C# .Net stuff installed to compile from 
 
 ## Stuff it'll eventually do:
 
-* progress bar while downloading / installing soundpacks
+* install/revert community map packs
 
-* option to rename backups
+* progress bar while downloading / installing soundpacks
 
 * icon to refresh lists (in case people are renaming on folder)
 
-* install/revert community map packs
+* option to rename backups
 
 * edit nppconf (useful for troubleshooting some launch problems), careful to make sure it's always valid
 

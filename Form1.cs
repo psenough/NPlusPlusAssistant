@@ -183,6 +183,7 @@ namespace N__Assistant
                 spreadsheetSoundpacks.Items.Clear();
                 PopulateListBoxWithSpreadsheetData(spreadsheetSoundpacks, 0, COMMUNITY_SOUNDPACKS, new APIKey().key);
                 installSpreadsheetSoundpack.Enabled = false;
+                statusLabel.Text = "Getting community sound packs spreadsheet data";
 
                 // list preview
                 previewSoundsList.Items.Clear();
@@ -204,6 +205,7 @@ namespace N__Assistant
                 communityPalettesList.Items.Clear();
                 PopulateListBoxWithSpreadsheetData(communityPalettesList, 0, COMMUNITY_PALETTES, new APIKey().key);
                 installCommunityPalette.Enabled = false;
+                statusLabel.Text = "Getting community palettes spreadsheet data";
 
                 // list all palettes in local backup dir
                 localBackupPalettesList.Items.Clear();
@@ -594,6 +596,8 @@ namespace N__Assistant
                 {
                     sheetMapList.Add(new sheetMap(spreadsheetId, sheet));
                 }
+
+                statusLabel.Text = "Done retrieving spreadsheet data";
 
             }
             catch (System.Net.WebException webexc)
@@ -1021,6 +1025,7 @@ namespace N__Assistant
                     deleteSoundpackBackupButton.Enabled = false;
 
                     statusLabel.Text = "Finished Deleting Sound Pack Backup!";
+                }
                 catch (Exception exc)
                 {
                     MessageBox.Show("Couldn't delete backup because: " + exc.Message);
