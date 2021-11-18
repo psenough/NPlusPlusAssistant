@@ -31,12 +31,11 @@ namespace N__Assistant
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabStatus = new System.Windows.Forms.TabPage();
+            this.npplog_refresh = new System.Windows.Forms.Label();
             this.nppconflabel = new System.Windows.Forms.Label();
             this.npploglabel = new System.Windows.Forms.Label();
             this.npplogText = new System.Windows.Forms.RichTextBox();
             this.nppconfText = new System.Windows.Forms.RichTextBox();
-            this.progressLabel = new System.Windows.Forms.Label();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.screenshotsDir = new System.Windows.Forms.LinkLabel();
             this.backupsDir = new System.Windows.Forms.LinkLabel();
             this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
@@ -49,20 +48,19 @@ namespace N__Assistant
             this.linkBackupProfileFolder = new System.Windows.Forms.LinkLabel();
             this.deleteProfile = new System.Windows.Forms.Button();
             this.profileInfo = new System.Windows.Forms.RichTextBox();
-            this.profileBackupLabel = new System.Windows.Forms.Label();
             this.loadProfile = new System.Windows.Forms.Button();
             this.backupProfile = new System.Windows.Forms.Button();
             this.profileList = new System.Windows.Forms.ListBox();
             this.tabSoundpacks = new System.Windows.Forms.TabPage();
             this.linkSoundFolder = new System.Windows.Forms.LinkLabel();
             this.tabControl3 = new System.Windows.Forms.TabControl();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.spreadsheetSoundpacks = new System.Windows.Forms.ListBox();
+            this.installSpreadsheetSoundpack = new System.Windows.Forms.Button();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.soundpackBackups = new System.Windows.Forms.ListBox();
             this.installSoundpackButton = new System.Windows.Forms.Button();
             this.deleteSoundpackBackupButton = new System.Windows.Forms.Button();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.spreadsheetSoundpacks = new System.Windows.Forms.ListBox();
-            this.installSpreadsheetSoundpack = new System.Windows.Forms.Button();
             this.previewSoundsLabel = new System.Windows.Forms.Label();
             this.previewSoundsList = new System.Windows.Forms.ListBox();
             this.backupSoundpack = new System.Windows.Forms.Button();
@@ -72,12 +70,12 @@ namespace N__Assistant
             this.palettesInstalledLinkedLabel = new System.Windows.Forms.LinkLabel();
             this.label2 = new System.Windows.Forms.Label();
             this.tabControl2 = new System.Windows.Forms.TabControl();
-            this.metanetPalettes = new System.Windows.Forms.TabPage();
-            this.installMetanetPalette = new System.Windows.Forms.Button();
-            this.metanetPalettesList = new System.Windows.Forms.ListBox();
             this.communityPalettes = new System.Windows.Forms.TabPage();
             this.installCommunityPalette = new System.Windows.Forms.Button();
             this.communityPalettesList = new System.Windows.Forms.ListBox();
+            this.metanetPalettes = new System.Windows.Forms.TabPage();
+            this.installMetanetPalette = new System.Windows.Forms.Button();
+            this.metanetPalettesList = new System.Windows.Forms.ListBox();
             this.localBackupPalettes = new System.Windows.Forms.TabPage();
             this.deleteBackupPalette = new System.Windows.Forms.Button();
             this.installBackupPalette = new System.Windows.Forms.Button();
@@ -100,22 +98,41 @@ namespace N__Assistant
             this.backupSelectedMaps = new System.Windows.Forms.Button();
             this.listEditorMaps = new System.Windows.Forms.ListBox();
             this.tabMapPacks = new System.Windows.Forms.TabPage();
+            this.resetProfile = new System.Windows.Forms.Button();
+            this.tabControl4 = new System.Windows.Forms.TabControl();
+            this.mapPackCommunity = new System.Windows.Forms.TabPage();
+            this.button3 = new System.Windows.Forms.Button();
+            this.communityMapPacksList = new System.Windows.Forms.ListBox();
+            this.mapPackLocalBackups = new System.Windows.Forms.TabPage();
+            this.deleteLocalBackupMapPack = new System.Windows.Forms.Button();
+            this.installLocalBackupMapPack = new System.Windows.Forms.Button();
+            this.localBackupsMapPacksList = new System.Windows.Forms.ListBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.launchNPP = new System.Windows.Forms.Button();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.progressBar = new System.Windows.Forms.ToolStripProgressBar();
+            this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabControl1.SuspendLayout();
             this.tabStatus.SuspendLayout();
             this.tabProfile.SuspendLayout();
             this.tabSoundpacks.SuspendLayout();
             this.tabControl3.SuspendLayout();
-            this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             this.tabPalettes.SuspendLayout();
             this.tabControl2.SuspendLayout();
-            this.metanetPalettes.SuspendLayout();
             this.communityPalettes.SuspendLayout();
+            this.metanetPalettes.SuspendLayout();
             this.localBackupPalettes.SuspendLayout();
             this.tabMaps.SuspendLayout();
             this.tabControlEditorMaps.SuspendLayout();
             this.tabMetanetMaps.SuspendLayout();
             this.tabLocalBackups.SuspendLayout();
+            this.tabMapPacks.SuspendLayout();
+            this.tabControl4.SuspendLayout();
+            this.mapPackCommunity.SuspendLayout();
+            this.mapPackLocalBackups.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -135,12 +152,11 @@ namespace N__Assistant
             // 
             // tabStatus
             // 
+            this.tabStatus.Controls.Add(this.npplog_refresh);
             this.tabStatus.Controls.Add(this.nppconflabel);
             this.tabStatus.Controls.Add(this.npploglabel);
             this.tabStatus.Controls.Add(this.npplogText);
             this.tabStatus.Controls.Add(this.nppconfText);
-            this.tabStatus.Controls.Add(this.progressLabel);
-            this.tabStatus.Controls.Add(this.progressBar1);
             this.tabStatus.Controls.Add(this.screenshotsDir);
             this.tabStatus.Controls.Add(this.backupsDir);
             this.tabStatus.Controls.Add(this.checkedListBox1);
@@ -155,6 +171,17 @@ namespace N__Assistant
             this.tabStatus.TabIndex = 0;
             this.tabStatus.Text = "Status";
             this.tabStatus.UseVisualStyleBackColor = true;
+            // 
+            // npplog_refresh
+            // 
+            this.npplog_refresh.AutoSize = true;
+            this.npplog_refresh.Location = new System.Drawing.Point(308, 141);
+            this.npplog_refresh.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.npplog_refresh.Name = "npplog_refresh";
+            this.npplog_refresh.Size = new System.Drawing.Size(19, 13);
+            this.npplog_refresh.TabIndex = 16;
+            this.npplog_refresh.Text = "🔄";
+            this.npplog_refresh.Click += new System.EventHandler(this.npplogRefresh_Click);
             // 
             // nppconflabel
             // 
@@ -191,24 +218,6 @@ namespace N__Assistant
             this.nppconfText.Size = new System.Drawing.Size(208, 197);
             this.nppconfText.TabIndex = 12;
             this.nppconfText.Text = "";
-            // 
-            // progressLabel
-            // 
-            this.progressLabel.AutoSize = true;
-            this.progressLabel.Location = new System.Drawing.Point(377, 66);
-            this.progressLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.progressLabel.Name = "progressLabel";
-            this.progressLabel.Size = new System.Drawing.Size(0, 13);
-            this.progressLabel.TabIndex = 11;
-            // 
-            // progressBar1
-            // 
-            this.progressBar1.Location = new System.Drawing.Point(374, 100);
-            this.progressBar1.Margin = new System.Windows.Forms.Padding(2);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(154, 19);
-            this.progressBar1.TabIndex = 10;
-            this.progressBar1.Visible = false;
             // 
             // screenshotsDir
             // 
@@ -248,7 +257,7 @@ namespace N__Assistant
             this.checkedListBox1.Location = new System.Drawing.Point(249, 25);
             this.checkedListBox1.Margin = new System.Windows.Forms.Padding(2);
             this.checkedListBox1.Name = "checkedListBox1";
-            this.checkedListBox1.Size = new System.Drawing.Size(109, 109);
+            this.checkedListBox1.Size = new System.Drawing.Size(109, 94);
             this.checkedListBox1.TabIndex = 5;
             // 
             // backupNow
@@ -256,7 +265,7 @@ namespace N__Assistant
             this.backupNow.Location = new System.Drawing.Point(374, 25);
             this.backupNow.Margin = new System.Windows.Forms.Padding(2);
             this.backupNow.Name = "backupNow";
-            this.backupNow.Size = new System.Drawing.Size(154, 23);
+            this.backupNow.Size = new System.Drawing.Size(154, 36);
             this.backupNow.TabIndex = 4;
             this.backupNow.Text = "Backup Now";
             this.backupNow.UseVisualStyleBackColor = true;
@@ -293,7 +302,6 @@ namespace N__Assistant
             this.tabProfile.Controls.Add(this.linkBackupProfileFolder);
             this.tabProfile.Controls.Add(this.deleteProfile);
             this.tabProfile.Controls.Add(this.profileInfo);
-            this.tabProfile.Controls.Add(this.profileBackupLabel);
             this.tabProfile.Controls.Add(this.loadProfile);
             this.tabProfile.Controls.Add(this.backupProfile);
             this.tabProfile.Controls.Add(this.profileList);
@@ -357,15 +365,6 @@ namespace N__Assistant
             this.profileInfo.Text = "This box will eventually be used to display information on the currently selected" +
     " profile";
             // 
-            // profileBackupLabel
-            // 
-            this.profileBackupLabel.AutoSize = true;
-            this.profileBackupLabel.Location = new System.Drawing.Point(245, 24);
-            this.profileBackupLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.profileBackupLabel.Name = "profileBackupLabel";
-            this.profileBackupLabel.Size = new System.Drawing.Size(0, 13);
-            this.profileBackupLabel.TabIndex = 13;
-            // 
             // loadProfile
             // 
             this.loadProfile.Location = new System.Drawing.Point(13, 324);
@@ -426,13 +425,44 @@ namespace N__Assistant
             // 
             // tabControl3
             // 
-            this.tabControl3.Controls.Add(this.tabPage1);
             this.tabControl3.Controls.Add(this.tabPage2);
+            this.tabControl3.Controls.Add(this.tabPage1);
             this.tabControl3.Location = new System.Drawing.Point(12, 60);
             this.tabControl3.Name = "tabControl3";
             this.tabControl3.SelectedIndex = 0;
             this.tabControl3.Size = new System.Drawing.Size(272, 294);
             this.tabControl3.TabIndex = 9;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.spreadsheetSoundpacks);
+            this.tabPage2.Controls.Add(this.installSpreadsheetSoundpack);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(264, 268);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Community Sound Packs";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // spreadsheetSoundpacks
+            // 
+            this.spreadsheetSoundpacks.FormattingEnabled = true;
+            this.spreadsheetSoundpacks.Location = new System.Drawing.Point(6, 6);
+            this.spreadsheetSoundpacks.Name = "spreadsheetSoundpacks";
+            this.spreadsheetSoundpacks.Size = new System.Drawing.Size(252, 212);
+            this.spreadsheetSoundpacks.TabIndex = 0;
+            this.spreadsheetSoundpacks.SelectedIndexChanged += new System.EventHandler(this.spreadsheetSoundpacks_SelectedIndexChanged);
+            // 
+            // installSpreadsheetSoundpack
+            // 
+            this.installSpreadsheetSoundpack.Location = new System.Drawing.Point(75, 224);
+            this.installSpreadsheetSoundpack.Name = "installSpreadsheetSoundpack";
+            this.installSpreadsheetSoundpack.Size = new System.Drawing.Size(117, 38);
+            this.installSpreadsheetSoundpack.TabIndex = 6;
+            this.installSpreadsheetSoundpack.Text = "Install Sound Pack";
+            this.installSpreadsheetSoundpack.UseVisualStyleBackColor = true;
+            this.installSpreadsheetSoundpack.Click += new System.EventHandler(this.installSpreadsheetSoundpack_Click);
             // 
             // tabPage1
             // 
@@ -462,7 +492,7 @@ namespace N__Assistant
             this.installSoundpackButton.Name = "installSoundpackButton";
             this.installSoundpackButton.Size = new System.Drawing.Size(116, 38);
             this.installSoundpackButton.TabIndex = 4;
-            this.installSoundpackButton.Text = "Install Soundpack";
+            this.installSoundpackButton.Text = "Install Sound Pack";
             this.installSoundpackButton.UseVisualStyleBackColor = true;
             this.installSoundpackButton.Click += new System.EventHandler(this.installSoundpackButton_Click);
             // 
@@ -475,37 +505,6 @@ namespace N__Assistant
             this.deleteSoundpackBackupButton.Text = "Delete Backup";
             this.deleteSoundpackBackupButton.UseVisualStyleBackColor = true;
             this.deleteSoundpackBackupButton.Click += new System.EventHandler(this.deleteSoundpackBackupButton_Click);
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.Controls.Add(this.spreadsheetSoundpacks);
-            this.tabPage2.Controls.Add(this.installSpreadsheetSoundpack);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(264, 268);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Community Soundpacks";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // spreadsheetSoundpacks
-            // 
-            this.spreadsheetSoundpacks.FormattingEnabled = true;
-            this.spreadsheetSoundpacks.Location = new System.Drawing.Point(6, 6);
-            this.spreadsheetSoundpacks.Name = "spreadsheetSoundpacks";
-            this.spreadsheetSoundpacks.Size = new System.Drawing.Size(252, 212);
-            this.spreadsheetSoundpacks.TabIndex = 0;
-            this.spreadsheetSoundpacks.SelectedIndexChanged += new System.EventHandler(this.spreadsheetSoundpacks_SelectedIndexChanged);
-            // 
-            // installSpreadsheetSoundpack
-            // 
-            this.installSpreadsheetSoundpack.Location = new System.Drawing.Point(75, 224);
-            this.installSpreadsheetSoundpack.Name = "installSpreadsheetSoundpack";
-            this.installSpreadsheetSoundpack.Size = new System.Drawing.Size(117, 38);
-            this.installSpreadsheetSoundpack.TabIndex = 6;
-            this.installSpreadsheetSoundpack.Text = "Install Soundpack";
-            this.installSpreadsheetSoundpack.UseVisualStyleBackColor = true;
-            this.installSpreadsheetSoundpack.Click += new System.EventHandler(this.installSpreadsheetSoundpack_Click);
             // 
             // previewSoundsLabel
             // 
@@ -531,7 +530,7 @@ namespace N__Assistant
             this.backupSoundpack.Name = "backupSoundpack";
             this.backupSoundpack.Size = new System.Drawing.Size(272, 33);
             this.backupSoundpack.TabIndex = 2;
-            this.backupSoundpack.Text = "Backup Current Soundpack";
+            this.backupSoundpack.Text = "Backup Current Sound Pack";
             this.backupSoundpack.UseVisualStyleBackColor = true;
             this.backupSoundpack.Click += new System.EventHandler(this.backupSoundpack_Click);
             // 
@@ -597,8 +596,8 @@ namespace N__Assistant
             // 
             // tabControl2
             // 
-            this.tabControl2.Controls.Add(this.metanetPalettes);
             this.tabControl2.Controls.Add(this.communityPalettes);
+            this.tabControl2.Controls.Add(this.metanetPalettes);
             this.tabControl2.Controls.Add(this.localBackupPalettes);
             this.tabControl2.Location = new System.Drawing.Point(10, 26);
             this.tabControl2.Margin = new System.Windows.Forms.Padding(2);
@@ -606,6 +605,40 @@ namespace N__Assistant
             this.tabControl2.SelectedIndex = 0;
             this.tabControl2.Size = new System.Drawing.Size(256, 337);
             this.tabControl2.TabIndex = 4;
+            // 
+            // communityPalettes
+            // 
+            this.communityPalettes.Controls.Add(this.installCommunityPalette);
+            this.communityPalettes.Controls.Add(this.communityPalettesList);
+            this.communityPalettes.Location = new System.Drawing.Point(4, 22);
+            this.communityPalettes.Margin = new System.Windows.Forms.Padding(2);
+            this.communityPalettes.Name = "communityPalettes";
+            this.communityPalettes.Padding = new System.Windows.Forms.Padding(2);
+            this.communityPalettes.Size = new System.Drawing.Size(248, 311);
+            this.communityPalettes.TabIndex = 1;
+            this.communityPalettes.Text = "Community Palettes";
+            this.communityPalettes.UseVisualStyleBackColor = true;
+            // 
+            // installCommunityPalette
+            // 
+            this.installCommunityPalette.Location = new System.Drawing.Point(72, 271);
+            this.installCommunityPalette.Margin = new System.Windows.Forms.Padding(2);
+            this.installCommunityPalette.Name = "installCommunityPalette";
+            this.installCommunityPalette.Size = new System.Drawing.Size(96, 34);
+            this.installCommunityPalette.TabIndex = 8;
+            this.installCommunityPalette.Text = "Install Palette";
+            this.installCommunityPalette.UseVisualStyleBackColor = true;
+            this.installCommunityPalette.Click += new System.EventHandler(this.installCommunityPalette_Click);
+            // 
+            // communityPalettesList
+            // 
+            this.communityPalettesList.FormattingEnabled = true;
+            this.communityPalettesList.Location = new System.Drawing.Point(2, 3);
+            this.communityPalettesList.Margin = new System.Windows.Forms.Padding(2);
+            this.communityPalettesList.Name = "communityPalettesList";
+            this.communityPalettesList.Size = new System.Drawing.Size(242, 264);
+            this.communityPalettesList.TabIndex = 2;
+            this.communityPalettesList.SelectedIndexChanged += new System.EventHandler(this.communityPalettesList_SelectedIndexChanged);
             // 
             // metanetPalettes
             // 
@@ -640,40 +673,6 @@ namespace N__Assistant
             this.metanetPalettesList.Size = new System.Drawing.Size(242, 264);
             this.metanetPalettesList.TabIndex = 1;
             this.metanetPalettesList.SelectedIndexChanged += new System.EventHandler(this.metanetPalettesList_SelectedIndexChanged);
-            // 
-            // communityPalettes
-            // 
-            this.communityPalettes.Controls.Add(this.installCommunityPalette);
-            this.communityPalettes.Controls.Add(this.communityPalettesList);
-            this.communityPalettes.Location = new System.Drawing.Point(4, 22);
-            this.communityPalettes.Margin = new System.Windows.Forms.Padding(2);
-            this.communityPalettes.Name = "communityPalettes";
-            this.communityPalettes.Padding = new System.Windows.Forms.Padding(2);
-            this.communityPalettes.Size = new System.Drawing.Size(248, 311);
-            this.communityPalettes.TabIndex = 1;
-            this.communityPalettes.Text = "Community";
-            this.communityPalettes.UseVisualStyleBackColor = true;
-            // 
-            // installCommunityPalette
-            // 
-            this.installCommunityPalette.Location = new System.Drawing.Point(72, 271);
-            this.installCommunityPalette.Margin = new System.Windows.Forms.Padding(2);
-            this.installCommunityPalette.Name = "installCommunityPalette";
-            this.installCommunityPalette.Size = new System.Drawing.Size(96, 34);
-            this.installCommunityPalette.TabIndex = 8;
-            this.installCommunityPalette.Text = "Install Palette";
-            this.installCommunityPalette.UseVisualStyleBackColor = true;
-            this.installCommunityPalette.Click += new System.EventHandler(this.installCommunityPalette_Click);
-            // 
-            // communityPalettesList
-            // 
-            this.communityPalettesList.FormattingEnabled = true;
-            this.communityPalettesList.Location = new System.Drawing.Point(2, 3);
-            this.communityPalettesList.Margin = new System.Windows.Forms.Padding(2);
-            this.communityPalettesList.Name = "communityPalettesList";
-            this.communityPalettesList.Size = new System.Drawing.Size(242, 264);
-            this.communityPalettesList.TabIndex = 2;
-            this.communityPalettesList.SelectedIndexChanged += new System.EventHandler(this.communityPalettesList_SelectedIndexChanged);
             // 
             // localBackupPalettes
             // 
@@ -912,6 +911,9 @@ namespace N__Assistant
             // 
             // tabMapPacks
             // 
+            this.tabMapPacks.Controls.Add(this.resetProfile);
+            this.tabMapPacks.Controls.Add(this.tabControl4);
+            this.tabMapPacks.Controls.Add(this.button1);
             this.tabMapPacks.Location = new System.Drawing.Point(4, 22);
             this.tabMapPacks.Margin = new System.Windows.Forms.Padding(2);
             this.tabMapPacks.Name = "tabMapPacks";
@@ -920,11 +922,140 @@ namespace N__Assistant
             this.tabMapPacks.Text = "Map Packs";
             this.tabMapPacks.UseVisualStyleBackColor = true;
             // 
+            // resetProfile
+            // 
+            this.resetProfile.Location = new System.Drawing.Point(11, 327);
+            this.resetProfile.Name = "resetProfile";
+            this.resetProfile.Size = new System.Drawing.Size(94, 36);
+            this.resetProfile.TabIndex = 2;
+            this.resetProfile.Text = "Reset Profile";
+            this.resetProfile.UseVisualStyleBackColor = true;
+            // 
+            // tabControl4
+            // 
+            this.tabControl4.Controls.Add(this.mapPackCommunity);
+            this.tabControl4.Controls.Add(this.mapPackLocalBackups);
+            this.tabControl4.Location = new System.Drawing.Point(11, 54);
+            this.tabControl4.Name = "tabControl4";
+            this.tabControl4.SelectedIndex = 0;
+            this.tabControl4.Size = new System.Drawing.Size(272, 209);
+            this.tabControl4.TabIndex = 1;
+            // 
+            // mapPackCommunity
+            // 
+            this.mapPackCommunity.Controls.Add(this.button3);
+            this.mapPackCommunity.Controls.Add(this.communityMapPacksList);
+            this.mapPackCommunity.Location = new System.Drawing.Point(4, 22);
+            this.mapPackCommunity.Name = "mapPackCommunity";
+            this.mapPackCommunity.Padding = new System.Windows.Forms.Padding(3);
+            this.mapPackCommunity.Size = new System.Drawing.Size(264, 183);
+            this.mapPackCommunity.TabIndex = 0;
+            this.mapPackCommunity.Text = "Community Map Packs";
+            this.mapPackCommunity.UseVisualStyleBackColor = true;
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(63, 133);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(138, 44);
+            this.button3.TabIndex = 3;
+            this.button3.Text = "Install Map Pack";
+            this.button3.UseVisualStyleBackColor = true;
+            // 
+            // communityMapPacksList
+            // 
+            this.communityMapPacksList.FormattingEnabled = true;
+            this.communityMapPacksList.Location = new System.Drawing.Point(6, 6);
+            this.communityMapPacksList.Name = "communityMapPacksList";
+            this.communityMapPacksList.Size = new System.Drawing.Size(252, 121);
+            this.communityMapPacksList.TabIndex = 0;
+            // 
+            // mapPackLocalBackups
+            // 
+            this.mapPackLocalBackups.Controls.Add(this.deleteLocalBackupMapPack);
+            this.mapPackLocalBackups.Controls.Add(this.installLocalBackupMapPack);
+            this.mapPackLocalBackups.Controls.Add(this.localBackupsMapPacksList);
+            this.mapPackLocalBackups.Location = new System.Drawing.Point(4, 22);
+            this.mapPackLocalBackups.Name = "mapPackLocalBackups";
+            this.mapPackLocalBackups.Padding = new System.Windows.Forms.Padding(3);
+            this.mapPackLocalBackups.Size = new System.Drawing.Size(264, 183);
+            this.mapPackLocalBackups.TabIndex = 1;
+            this.mapPackLocalBackups.Text = "Local Backups";
+            this.mapPackLocalBackups.UseVisualStyleBackColor = true;
+            // 
+            // deleteLocalBackupMapPack
+            // 
+            this.deleteLocalBackupMapPack.Location = new System.Drawing.Point(153, 133);
+            this.deleteLocalBackupMapPack.Name = "deleteLocalBackupMapPack";
+            this.deleteLocalBackupMapPack.Size = new System.Drawing.Size(105, 44);
+            this.deleteLocalBackupMapPack.TabIndex = 4;
+            this.deleteLocalBackupMapPack.Text = "Delete Backup";
+            this.deleteLocalBackupMapPack.UseVisualStyleBackColor = true;
+            // 
+            // installLocalBackupMapPack
+            // 
+            this.installLocalBackupMapPack.Location = new System.Drawing.Point(6, 133);
+            this.installLocalBackupMapPack.Name = "installLocalBackupMapPack";
+            this.installLocalBackupMapPack.Size = new System.Drawing.Size(114, 44);
+            this.installLocalBackupMapPack.TabIndex = 3;
+            this.installLocalBackupMapPack.Text = "Install Map Pack";
+            this.installLocalBackupMapPack.UseVisualStyleBackColor = true;
+            // 
+            // localBackupsMapPacksList
+            // 
+            this.localBackupsMapPacksList.FormattingEnabled = true;
+            this.localBackupsMapPacksList.Location = new System.Drawing.Point(6, 6);
+            this.localBackupsMapPacksList.Name = "localBackupsMapPacksList";
+            this.localBackupsMapPacksList.Size = new System.Drawing.Size(255, 121);
+            this.localBackupsMapPacksList.TabIndex = 0;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(11, 12);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(272, 36);
+            this.button1.TabIndex = 0;
+            this.button1.Text = "Backup Current Map Pack";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // launchNPP
+            // 
+            this.launchNPP.Location = new System.Drawing.Point(436, 416);
+            this.launchNPP.Name = "launchNPP";
+            this.launchNPP.Size = new System.Drawing.Size(136, 31);
+            this.launchNPP.TabIndex = 3;
+            this.launchNPP.Text = "Launch N++";
+            this.launchNPP.UseVisualStyleBackColor = true;
+            this.launchNPP.Click += new System.EventHandler(this.launchNPP_Click);
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.progressBar,
+            this.statusLabel});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 456);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(584, 22);
+            this.statusStrip1.TabIndex = 4;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // progressBar
+            // 
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Size = new System.Drawing.Size(100, 16);
+            // 
+            // statusLabel
+            // 
+            this.statusLabel.Name = "statusLabel";
+            this.statusLabel.Size = new System.Drawing.Size(0, 17);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(584, 419);
+            this.ClientSize = new System.Drawing.Size(584, 478);
+            this.Controls.Add(this.statusStrip1);
+            this.Controls.Add(this.launchNPP);
             this.Controls.Add(this.tabControl1);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";
@@ -937,20 +1068,27 @@ namespace N__Assistant
             this.tabSoundpacks.ResumeLayout(false);
             this.tabSoundpacks.PerformLayout();
             this.tabControl3.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
             this.tabPalettes.ResumeLayout(false);
             this.tabPalettes.PerformLayout();
             this.tabControl2.ResumeLayout(false);
-            this.metanetPalettes.ResumeLayout(false);
             this.communityPalettes.ResumeLayout(false);
+            this.metanetPalettes.ResumeLayout(false);
             this.localBackupPalettes.ResumeLayout(false);
             this.tabMaps.ResumeLayout(false);
             this.tabMaps.PerformLayout();
             this.tabControlEditorMaps.ResumeLayout(false);
             this.tabMetanetMaps.ResumeLayout(false);
             this.tabLocalBackups.ResumeLayout(false);
+            this.tabMapPacks.ResumeLayout(false);
+            this.tabControl4.ResumeLayout(false);
+            this.mapPackCommunity.ResumeLayout(false);
+            this.mapPackLocalBackups.ResumeLayout(false);
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -971,10 +1109,7 @@ namespace N__Assistant
         private System.Windows.Forms.ListBox profileList;
         private System.Windows.Forms.LinkLabel backupsDir;
         private System.Windows.Forms.LinkLabel screenshotsDir;
-        private System.Windows.Forms.ProgressBar progressBar1;
-        private System.Windows.Forms.Label progressLabel;
         private System.Windows.Forms.Button loadProfile;
-        private System.Windows.Forms.Label profileBackupLabel;
         private System.Windows.Forms.RichTextBox profileInfo;
         private System.Windows.Forms.Button deleteProfile;
         private System.Windows.Forms.ListBox palettesInstalledList;
@@ -1027,6 +1162,21 @@ namespace N__Assistant
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.Label profileListLabel;
         private System.Windows.Forms.LinkLabel linkSoundFolder;
+        private System.Windows.Forms.Label npplog_refresh;
+        private System.Windows.Forms.Button resetProfile;
+        private System.Windows.Forms.TabControl tabControl4;
+        private System.Windows.Forms.TabPage mapPackCommunity;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.ListBox communityMapPacksList;
+        private System.Windows.Forms.TabPage mapPackLocalBackups;
+        private System.Windows.Forms.Button deleteLocalBackupMapPack;
+        private System.Windows.Forms.Button installLocalBackupMapPack;
+        private System.Windows.Forms.ListBox localBackupsMapPacksList;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button launchNPP;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel statusLabel;
+        private System.Windows.Forms.ToolStripProgressBar progressBar;
     }
 }
 

@@ -4,7 +4,7 @@ N++ Assistant helps with backups and installing community mod stuff for the vide
 
 Needs Visual Studio Community 2019 with C# .Net stuff installed to compile from source.
 
-## Stuff it already does:
+## Stuff it does:
 
 * autodetect main game asset folders (list them with explorer path link)
 
@@ -32,6 +32,8 @@ Needs Visual Studio Community 2019 with C# .Net stuff installed to compile from 
 
 * list all maps in backup and select one to install to your map levels editor folder
 
+* button to launch n++ (to save you time from going into steam)
+
 ## Stuff it'll eventually do:
 
 * progress bar while downloading / installing soundpacks
@@ -42,11 +44,13 @@ Needs Visual Studio Community 2019 with C# .Net stuff installed to compile from 
 
 * install/revert community map packs
 
-* edit nppconf (useful for troubleshooting some launch problems)
+* edit nppconf (useful for troubleshooting some launch problems), careful to make sure it's always valid
 
 * have an n++ icon (winning stickman?)
 
 * display nprofile road to 100% completion details / corruption checks
+
+* button to relaunch steam in offline/online mode
 
 ## Known issues:
 

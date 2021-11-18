@@ -155,7 +155,8 @@ namespace N__Assistant
             // switch to status / home tab
             if (current == tabStatus)
             {
-
+                nppconfText.Text = File.ReadAllText(profilePath + @"\npp.conf");
+                npplogText.Text = File.ReadAllText(profilePath + @"\NPPLog.txt");
             }
 
             // switch to profile tab
@@ -273,7 +274,7 @@ namespace N__Assistant
                 return;
             }
             backupNow.Enabled = false;
-            progressBar1.Show();
+            //progressBar1.Show();
             bgwBackupNow.RunWorkerAsync();
         }
 
@@ -338,14 +339,14 @@ namespace N__Assistant
 
         private void bgwBackupNow_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            progressBar1.Value = e.ProgressPercentage;
-            progressLabel.Text = String.Format("{0}", e.UserState);
+            progressBar.Value = e.ProgressPercentage;
+            statusLabel.Text = String.Format("{0}", e.UserState);
         }
 
         private void bgwBackupNow_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            progressLabel.Text = "Done with backup!";
-            progressBar1.Hide();
+            statusLabel.Text = "Done with backup!";
+            //progressBar.Hide();
             backupNow.Enabled = true;
         }
 
@@ -416,14 +417,14 @@ namespace N__Assistant
 
         private void backupProfile_Click(object sender, EventArgs e)
         {
-            profileBackupLabel.Text = "Profile backup started!";
+            statusLabel.Text = "Profile backup started!";
 
             using (FileStream fs = new FileStream(savePath + @"\Profiles\nprofile" + DateTime.Now.ToString("yyMMddHHmm") + ".zip", FileMode.Create))
             using (ZipArchive arch = new ZipArchive(fs, ZipArchiveMode.Create))
             {
                 arch.CreateEntryFromFile(profilePath + @"\nprofile", "nprofile");
             }
-            profileBackupLabel.Text = "Profile backup completed!";
+            statusLabel.Text = "Profile backup completed!";
 
             profileList.Items.Clear();
             PopulateListBoxWithFileType(profileList, savePath + @"\Profiles", "*.zip");
@@ -440,6 +441,7 @@ namespace N__Assistant
             if (DetectNPPRunning() == true)
             {
                 MessageBox.Show("Please close N++ before installing a new profile");
+                statusLabel.Text = "Aborted loading profile because N++ was running.";
                 return;
             }
 
@@ -453,7 +455,11 @@ namespace N__Assistant
                 {
                     foreach (ZipArchiveEntry entry in archive.Entries)
                     {
-                        if (entry.Name.Equals("nprofile")) entry.ExtractToFile(extractPath, true);
+                        if (entry.Name.Equals("nprofile"))
+                        {
+                            entry.ExtractToFile(extractPath, true);
+                            statusLabel.Text = "Replaced current N++ game profile with " + profileList.SelectedItem.ToString().Substring(0, profileList.SelectedItem.ToString().LastIndexOf(' ')).TrimEnd();
+                        }
                     }
                 }
             }
@@ -470,14 +476,17 @@ namespace N__Assistant
             {
                 try
                 {
-                    File.Delete(savePath + @"\Profiles\" + profileList.SelectedItem.ToString().Split(' ')[0]);
+                    string filename = profileList.SelectedItem.ToString().Split(' ')[0];
+                    File.Delete(savePath + @"\Profiles\" + filename);
                     profileList.Items.Remove(profileList.SelectedItem);
                     loadProfile.Enabled = false;
                     deleteProfile.Enabled = false;
+                    statusLabel.Text = "Deleted profile backup " + filename;
                 }
                 catch (Exception exc)
                 {
                     MessageBox.Show(exc.Message);
+                    statusLabel.Text = "Exception trying to delete profile backup " + profileList.SelectedItem.ToString().Split(' ')[0];
                 }
             }
         }
@@ -489,21 +498,22 @@ namespace N__Assistant
             {
                 try
                 {
-                    Directory.Delete(steamGamePath + @"\NPP\Palettes\" + palettesInstalledList.SelectedItem.ToString().Split(' ')[0], true);
-                    //palettesInstalled.Items.Remove(palettesInstalled.SelectedItem);
+                    string palName = palettesInstalledList.SelectedItem.ToString().Split(' ')[0];
+                    Directory.Delete(steamGamePath + @"\NPP\Palettes\" + palName, true);
+                    palettesInstalledList.Items.Remove(palettesInstalledList.SelectedItem);
+
+                    uninstallPalette.Enabled = false;
+                    backupPalette.Enabled = false;
+
+                    updateCustomPalleteInstalledCounter();
+                    statusLabel.Text = "Done uninstalling " + palName;
+
                 }
                 catch (Exception exc)
                 {
                     MessageBox.Show(exc.Message);
                 }
 
-                palettesInstalledList.Items.Remove(palettesInstalledList.SelectedItem);
-                //palettesInstalledList.Items.Clear();
-                //PopulateListBoxWithSubDirectories(palettesInstalledList, steamGamePath + @"\NPP\Palettes");
-                uninstallPalette.Enabled = false;
-                backupPalette.Enabled = false;
-
-                updateCustomPalleteInstalledCounter();
             }
         }
 
@@ -527,6 +537,7 @@ namespace N__Assistant
 
             // notify backup was done
             backupPalette.Enabled = false;
+            statusLabel.Text = "Done with backup of palette " + palName;
         }
 
         private void palettesInstalledLinkedLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -607,6 +618,7 @@ namespace N__Assistant
             palettesInstalledList.Items.Clear();
             PopulateListBoxWithSubDirectories(palettesInstalledList, steamGamePath + @"\NPP\Palettes");
             installMetanetPalette.Enabled = false;
+            statusLabel.Text = "Done installing palette " + palName;
         }
 
         private void communityPalettesList_SelectedIndexChanged(object sender, EventArgs e)
@@ -660,6 +672,7 @@ namespace N__Assistant
                             Directory.CreateDirectory(steamGamePath + @"\NPP\Palettes\" + dirname);
                             ZipFile.ExtractToDirectory(filename, steamGamePath + @"\NPP\Palettes\" + dirname);
                             File.Delete(filename);
+                            statusLabel.Text = "Done replacing palette " + dirname;
                         }
                         else
                         {
@@ -683,6 +696,7 @@ namespace N__Assistant
                             Directory.Delete(steamGamePath + @"\NPP\Palettes\" + names, true);
                             ZipFile.ExtractToDirectory(filename, steamGamePath + @"\NPP\Palettes");
                             File.Delete(filename);
+                            statusLabel.Text = "Done replacing palette " + names;
                         }
                         else
                         {
@@ -693,6 +707,7 @@ namespace N__Assistant
                     {
                         ZipFile.ExtractToDirectory(filename, steamGamePath + @"\NPP\Palettes");
                         File.Delete(filename);
+                        statusLabel.Text = "Done installing palette " + filename;
                     }
                 }
 
@@ -736,6 +751,7 @@ namespace N__Assistant
 
                     // notify it's done
                     installBackupPalette.Enabled = false;
+                    statusLabel.Text = "Done replacing palette " + palName;
                 }
                 else if (dialogResult == DialogResult.No)
                 {
@@ -758,25 +774,27 @@ namespace N__Assistant
                 installBackupPalette.Enabled = false;
 
                 updateCustomPalleteInstalledCounter();
+                statusLabel.Text = "Done installing palette " + palName;
             }
 
         }
 
         private void deleteBackupPalette_Click(object sender, EventArgs e)
         {
-            //TODO: confirmation box
+            DialogResult dialogResult = MessageBox.Show("Are you sure you wish to delete this backup? This process is irreversible.", "Delete backup?", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                string palName = localBackupPalettesList.SelectedItem.ToString().Substring(0, localBackupPalettesList.SelectedItem.ToString().LastIndexOf(' ')).TrimEnd();
+                File.Delete(savePath + @"\Palettes\" + palName);
 
-            string palName = localBackupPalettesList.SelectedItem.ToString().Substring(0, localBackupPalettesList.SelectedItem.ToString().LastIndexOf(' ')).TrimEnd();
-            File.Delete(savePath + @"\Palettes\" + palName);
+                // remove item instead of refreshing whole list, to keep position in view
+                localBackupPalettesList.Items.Remove(localBackupPalettesList.SelectedItem);
 
-            // remove item instead of refresh whole box, to keep position in view
-            localBackupPalettesList.Items.Remove(localBackupPalettesList.SelectedItem);
+                installBackupPalette.Enabled = false;
+                deleteBackupPalette.Enabled = false;
 
-            // refresh dir
-            //localBackupPalettesList.Items.Clear();
-            //PopulateListBoxWithFileType(localBackupPalettesList, savePath + @"\Palettes", "*.zip");
-            installBackupPalette.Enabled = false;
-            deleteBackupPalette.Enabled = false;
+                statusLabel.Text = "Done deleting backup " + palName;
+            }
         }
 
         private void updateCustomPalleteInstalledCounter()
@@ -890,6 +908,7 @@ namespace N__Assistant
             PopulateListBoxWithFileType(soundpackBackups, savePath + @"\Sounds", "*.zip");
             installSoundpackButton.Enabled = false;
             deleteSoundpackBackupButton.Enabled = false;
+            statusLabel.Text = "Finished Backup Current Sound Pack!";
         }
 
         private void soundpackBackups_SelectedIndexChanged(object sender, EventArgs e)
@@ -948,6 +967,8 @@ namespace N__Assistant
 
                     updateCustomPalleteInstalledCounter();
 
+                    statusLabel.Text = "Finished Installing Sound Pack!";
+
                 }
                 catch (Exception exc)
                 {
@@ -982,17 +1003,29 @@ namespace N__Assistant
 
                 // give some feedback it's done
                 installSoundpackButton.Enabled = false;
+
+                statusLabel.Text = "Finished Installing Sound Pack!";
             }
         }
 
         private void deleteSoundpackBackupButton_Click(object sender, EventArgs e)
         {
-            //TODO: checkbox you really really wanna
+            DialogResult dialogResult = MessageBox.Show("Are you sure you wish to delete this sound pack backup? This process is irreversible.", "Delete Backup?", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                try
+                {
+                    File.Delete(savePath + @"\Sounds\" + soundpackBackups.SelectedItem.ToString().Split(' ')[0]);
+                    soundpackBackups.Items.Remove(soundpackBackups.SelectedItem);
+                    installSoundpackButton.Enabled = false;
+                    deleteSoundpackBackupButton.Enabled = false;
 
-            File.Delete(savePath + @"\Sounds\" + soundpackBackups.SelectedItem.ToString().Split(' ')[0]);
-            soundpackBackups.Items.Remove(soundpackBackups.SelectedItem);
-            installSoundpackButton.Enabled = false;
-            deleteSoundpackBackupButton.Enabled = false;
+                    statusLabel.Text = "Finished Deleting Sound Pack Backup!";
+                catch (Exception exc)
+                {
+                    MessageBox.Show("Couldn't delete backup because: " + exc.Message);
+                }
+            }
         }
 
         private void previewSoundsList_SelectedIndexChanged(object sender, EventArgs e)
@@ -1021,8 +1054,6 @@ namespace N__Assistant
                     }
                 }
 
-                //TODO: list somewhere backup was done successfuly
-
                 // refresh localbackupslist
                 localMapsBackupsList.Items.Clear();
                 PopulateListBoxWithFileType(localMapsBackupsList, savePath + @"\Maps", "*.zip");
@@ -1031,10 +1062,11 @@ namespace N__Assistant
                 // disable the button to avoid duplicate backups
                 backupSelectedMaps.Enabled = false;
 
+                statusLabel.Text = "Done Backup of Selected Maps!";
             }
             catch (Exception exc)
             {
-                MessageBox.Show("something went wrong with the backup: " + exc.Message);
+                MessageBox.Show("Something went wrong with the backup: " + exc.Message);
             }
 
         }
@@ -1075,7 +1107,11 @@ namespace N__Assistant
                         {
                             foreach (ZipArchiveEntry entry in archive.Entries)
                             {
-                                if (entry.Name.Equals(mapName)) entry.ExtractToFile(extractPath, true);
+                                if (entry.Name.Equals(mapName))
+                                {
+                                    entry.ExtractToFile(extractPath, true);
+                                    statusLabel.Text = "Done replacing map " + mapName;
+                                }
                             }
                         }
                     }
@@ -1090,7 +1126,11 @@ namespace N__Assistant
                     {
                         foreach (ZipArchiveEntry entry in archive.Entries)
                         {
-                            if (entry.Name.Equals(mapName)) entry.ExtractToFile(extractPath);
+                            if (entry.Name.Equals(mapName))
+                            {
+                                entry.ExtractToFile(extractPath);
+                                statusLabel.Text = "Done installing map " + mapName;
+                            }
                         }
                     }
                 }
@@ -1196,6 +1236,7 @@ namespace N__Assistant
                 {
                     File.Copy(mapPath, profilePath + @"\levels\" + mapName, true);
                     RefreshListEditorMaps();
+                    statusLabel.Text = "Done replacing the map file " + mapName;
                 }
                 else if (dialogResult == DialogResult.No)
                 {
@@ -1206,6 +1247,7 @@ namespace N__Assistant
             {
                 File.Copy(mapPath, profilePath + @"\levels\" + mapName);
                 RefreshListEditorMaps();
+                statusLabel.Text = "Done installing the map file " + mapName;
             }
         }
 
@@ -1224,19 +1266,29 @@ namespace N__Assistant
 
         private void deleteSelectedMaps_Click(object sender, EventArgs e)
         {
-            //TODO: really sure?
-
-            foreach (var item in listEditorMaps.SelectedItems)
+            if (DetectNPPRunning() == true)
             {
-                string filename = item.ToString().Substring(0, item.ToString().LastIndexOf(' ')).TrimEnd();
-                File.Delete(profilePath + @"\levels\" + filename);
+                MessageBox.Show("Please close N++ before deleting editor maps");
+                return;
             }
 
-            var selectedItems = listEditorMaps.SelectedItems;
-            if (listEditorMaps.SelectedIndex != -1)
+            DialogResult dialogResult = MessageBox.Show("Are you sure you wish to delete the selected maps? This process is irreversible if you haven't done a recent backup.", "Delete Selected Maps?", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
             {
-                for (int i = selectedItems.Count - 1; i >= 0; i--)
-                    listEditorMaps.Items.Remove(selectedItems[i]);
+                foreach (var item in listEditorMaps.SelectedItems)
+                {
+                    string filename = item.ToString().Substring(0, item.ToString().LastIndexOf(' ')).TrimEnd();
+                    File.Delete(profilePath + @"\levels\" + filename);
+                }
+
+                var selectedItems = listEditorMaps.SelectedItems;
+                if (listEditorMaps.SelectedIndex != -1)
+                {
+                    for (int i = selectedItems.Count - 1; i >= 0; i--)
+                        listEditorMaps.Items.Remove(selectedItems[i]);
+                }
+
+                statusLabel.Text = "Done deleting the selected maps!";
             }
         }
 
@@ -1248,6 +1300,34 @@ namespace N__Assistant
         private void linkSoundFolder_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             launchExplorer(steamGamePath + @"\NPP\Sounds\");
+        }
+
+        private void npplogRefresh_Click(object sender, EventArgs e)
+        {
+            npplogText.Text = File.ReadAllText(profilePath + @"\NPPLog.txt");
+            statusLabel.Text = "Done Refreshing NPPLog.txt";
+        }
+
+        private void launchNPP_Click(object sender, EventArgs e)
+        {
+            statusLabel.Text = "Launching N++";
+            if (DetectNPPRunning() == true)
+            {
+                MessageBox.Show("Please close N++ before launching a new instance!");
+                statusLabel.Text = "N++ was already running!";
+                return;
+            } else
+            {
+                statusLabel.Text = "Launching N++";
+                ProcessStartInfo startInfo = new ProcessStartInfo
+                {
+                    //Arguments = steamGamePath,
+                    FileName = steamGamePath + "\\N++.exe"
+                };
+
+                Process.Start(startInfo);
+            }
+
         }
 
         /*private void metanetMapsList_MouseMove(object sender, MouseEventArgs e)
