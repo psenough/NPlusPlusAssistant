@@ -36,11 +36,12 @@ Needs Visual Studio Community 2019 with C# .Net stuff installed to compile from 
 
 ## Stuff it'll eventually do:
 
-* install/revert community map packs
+* install/revert community map packs & associated profile
+https://docs.google.com/spreadsheets/d/1M9W3_jk3nULledALJNzRDRRpNhIofeTD2SF8ES6vCy8/edit#gid=0
 
-* progress bar while downloading / installing soundpacks
+* progress bar while downloading / installing soundpacks / first launch without the backup folder
 
-* icon to refresh lists (in case people are renaming on folder)
+* option to refresh list (in case people are renaming things on folder)
 
 * option to rename backups
 
@@ -51,6 +52,8 @@ Needs Visual Studio Community 2019 with C# .Net stuff installed to compile from 
 * display nprofile road to 100% completion details / corruption checks
 
 * button to relaunch steam in offline/online mode
+
+* inject maps into map packs to facilitate play testing episodes / composing new map packs
 
 ## Known issues:
 

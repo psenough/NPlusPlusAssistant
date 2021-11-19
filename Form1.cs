@@ -9,6 +9,7 @@ using System.IO.Compression;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 using Popcron.Sheets;
+using System.Globalization;
 
 namespace N__Assistant
 {
@@ -26,6 +27,7 @@ namespace N__Assistant
         private List<sheetMap> sheetMapList = new List<sheetMap>();
         private string COMMUNITY_PALETTES = "1I2f87Qhfs6rxzZq5dQRDbLKYyaGLqTdCkLqfNfrw1Mk";
         private string COMMUNITY_SOUNDPACKS = "18PshamVuDNyH396a7U3YDFQmCw18s4gIVZ_WrFODRd4";
+        private string COMMUNITY_MAPPACKS = "1M9W3_jk3nULledALJNzRDRRpNhIofeTD2SF8ES6vCy8";
 
         public Form1()
         {
@@ -256,6 +258,24 @@ namespace N__Assistant
                 // list editor maps
                 RefreshListEditorMaps();
             }
+
+            if (current == tabMapPacks)
+            {
+                // populate community map packs from spreadsheet link
+                // https://docs.google.com/spreadsheets/d/1I2f87Qhfs6rxzZq5dQRDbLKYyaGLqTdCkLqfNfrw1Mk/edit#gid=0
+                communityMapPacksList.Items.Clear();
+                PopulateListBoxWithSpreadsheetData(communityMapPacksList, 0, COMMUNITY_MAPPACKS, new APIKey().key);
+                installCommunityMapPack.Enabled = false;
+                statusLabel.Text = "Getting community map packs spreadsheet data";
+
+                // list local backups
+                localBackupsMapPacksList.Items.Clear();
+                PopulateListBoxWithFileType(localBackupsMapPacksList, savePath + @"\MapPacks", "*.zip");
+                renameLocalBackupMapPack.Enabled = false;
+                installLocalBackupMapPack.Enabled = false;
+                deleteLocalBackupMapPack.Enabled = false;
+                installLocalBackupMapPackWithProfile.Enabled = false;
+            }
         }
 
         private void steamGamePath_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -404,7 +424,8 @@ namespace N__Assistant
             DirectoryInfo[] dirs = dinfo.GetDirectories();
             foreach (DirectoryInfo dir in dirs)
             {
-                lsb.Items.Add(dir.Name + " (" + dir.LastWriteTime.ToShortDateString() + ")");
+                // yyyy/MM/dd format is coherent with what's coming from google sheets
+                lsb.Items.Add(dir.Name + " (" + dir.LastWriteTime.ToString("yyyy/MM/dd") + ")");
             }
         }
 
@@ -1333,6 +1354,72 @@ namespace N__Assistant
                 Process.Start(startInfo);
             }
 
+        }
+
+        private void backupCurrentMapPack_Click(object sender, EventArgs e)
+        {
+            // backup the map pack
+            //string mapPackName = communityMapPacksList.SelectedItem.ToString().Substring(0, communityMapPacksList.SelectedItem.ToString().Length - 13);
+            ZipFile.CreateFromDirectory(steamGamePath + @"\NPP\Levels", savePath + @"\MapPacks\MapPack" + DateTime.Now.ToString("yyMMddHHmm") + ".zip");
+
+            // update local backup map packs list
+            localBackupsMapPacksList.Items.Clear();
+            PopulateListBoxWithFileType(localBackupsMapPacksList, savePath + @"\MapPacks", "*.zip");
+            renameLocalBackupMapPack.Enabled = false;
+            installLocalBackupMapPack.Enabled = false;
+            deleteLocalBackupMapPack.Enabled = false;
+            installLocalBackupMapPackWithProfile.Enabled = false;
+
+            // notify backup is done
+            statusLabel.Text = "Done with backup of active map pack ";
+        }
+
+        private void communityMapPacksList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            installCommunityMapPack.Enabled = true;
+        }
+
+        private void backupActiveProfile_Click(object sender, EventArgs e)
+        {
+            statusLabel.Text = "Active Profile backup started!";
+
+            using (FileStream fs = new FileStream(savePath + @"\Profiles\MapPack" + DateTime.Now.ToString("yyMMddHHmm") + ".zip", FileMode.Create))
+            using (ZipArchive arch = new ZipArchive(fs, ZipArchiveMode.Create))
+            {
+                arch.CreateEntryFromFile(profilePath + @"\nprofile", "nprofile");
+            }
+            statusLabel.Text = "Active Profile backup completed!";
+
+            profileMapBackupList.Items.Clear();
+            PopulateListBoxWithFileType(profileMapBackupList, savePath + @"\Profiles", "*.zip");
+        }
+
+        private void localBackupsMapPacksList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            renameLocalBackupMapPack.Enabled = true;
+            installLocalBackupMapPack.Enabled = true;
+            deleteLocalBackupMapPack.Enabled = true;
+            installLocalBackupMapPackWithProfile.Enabled = true;
+        }
+
+        private void mapPacksFolderLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            launchExplorer(steamGamePath + @"\Levels\");
+        }
+
+        private void linkMapPacksBackupFolder_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            launchExplorer(savePath + @"\MapPacks\");
+        }
+
+        private void profileFolderLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            launchExplorer(profilePath);
+        }
+
+        private void profilesFolderLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            launchExplorer(savePath + @"\Profiles\");
         }
 
         /*private void metanetMapsList_MouseMove(object sender, MouseEventArgs e)
