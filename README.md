@@ -42,6 +42,8 @@ Needs Visual Studio Community 2019 with C# .Net stuff installed to compile from 
 
 * update status bar while downloading / creating first launch stuff
 
+* preload all spreadsheet data instead of getting it on tab change
+
 * option to refresh lists (in case people are renaming things on folder)
 
 * option to rename backups from within N++ Assistant
@@ -55,6 +57,14 @@ Needs Visual Studio Community 2019 with C# .Net stuff installed to compile from 
 * button to relaunch steam in offline/online mode (useful for speedrunning)
 
 * way to inject maps into map packs to facilitate composing map packs
+
+* option to change save/backup directory
+
+* maps, search by map name
+
+* maps, rename solo to solo n++ (likewise co-op/race)
+
+* links to spreadsheets being used to retrieve the community data (either on readme or on app or both)
 
 ## Known issues:
 
@@ -70,8 +80,10 @@ Needs Visual Studio Community 2019 with C# .Net stuff installed to compile from 
 
 ## Credits:
 
-* ps main development
+* ps - main development
 
-* daniel steam detection code
+* daniel - steam detection code
 
-* cloudead beta-testing
+* cloudead - beta-testing
+
+* schmole - beta-testing
