@@ -185,7 +185,7 @@ namespace N__Assistant
                 spreadsheetSoundpacks.Items.Clear();
                 PopulateListBoxWithSpreadsheetData(spreadsheetSoundpacks, 0, COMMUNITY_SOUNDPACKS, new APIKey().key);
                 installSpreadsheetSoundpack.Enabled = false;
-                statusLabel.Text = "Getting community sound packs spreadsheet data";
+                statusLabel.Text = "Getting community sound packs spreadsheet data ...";
 
                 // list preview
                 previewSoundsList.Items.Clear();
@@ -207,7 +207,7 @@ namespace N__Assistant
                 communityPalettesList.Items.Clear();
                 PopulateListBoxWithSpreadsheetData(communityPalettesList, 0, COMMUNITY_PALETTES, new APIKey().key);
                 installCommunityPalette.Enabled = false;
-                statusLabel.Text = "Getting community palettes spreadsheet data";
+                statusLabel.Text = "Getting community palettes spreadsheet data ...";
 
                 // list all palettes in local backup dir
                 localBackupPalettesList.Items.Clear();
@@ -266,15 +266,22 @@ namespace N__Assistant
                 communityMapPacksList.Items.Clear();
                 PopulateListBoxWithSpreadsheetData(communityMapPacksList, 0, COMMUNITY_MAPPACKS, new APIKey().key);
                 installCommunityMapPack.Enabled = false;
-                statusLabel.Text = "Getting community map packs spreadsheet data";
+                statusLabel.Text = "Getting community map packs spreadsheet data ...";
 
-                // list local backups
+                // list local map packs backups
                 localBackupsMapPacksList.Items.Clear();
                 PopulateListBoxWithFileType(localBackupsMapPacksList, savePath + @"\MapPacks", "*.zip");
                 renameLocalBackupMapPack.Enabled = false;
                 installLocalBackupMapPack.Enabled = false;
                 deleteLocalBackupMapPack.Enabled = false;
                 installLocalBackupMapPackWithProfile.Enabled = false;
+
+                // list local profile backups
+                profileMapBackupList.Items.Clear();
+                PopulateListBoxWithFileType(profileMapBackupList, savePath + @"\Profiles", "*.zip");
+                renameProfileBackup.Enabled = false;
+                installBackupMapPackProfile.Enabled = false;
+                deleteBackupMapPackProfile.Enabled = false;
             }
         }
 
@@ -463,7 +470,7 @@ namespace N__Assistant
         {
             if (DetectNPPRunning() == true)
             {
-                MessageBox.Show("Please close N++ before installing a new profile");
+                MessageBox.Show("Please close N++ before installing a profile backup");
                 statusLabel.Text = "Aborted loading profile because N++ was running.";
                 return;
             }
@@ -933,7 +940,7 @@ namespace N__Assistant
             PopulateListBoxWithFileType(soundpackBackups, savePath + @"\Sounds", "*.zip");
             installSoundpackButton.Enabled = false;
             deleteSoundpackBackupButton.Enabled = false;
-            statusLabel.Text = "Finished Backup Current Sound Pack!";
+            statusLabel.Text = "Done Backup Current Sound Pack!";
         }
 
         private void soundpackBackups_SelectedIndexChanged(object sender, EventArgs e)
@@ -988,19 +995,15 @@ namespace N__Assistant
                     // refresh installed soundpack directory
                     previewSoundsList.Items.Clear();
                     PopulateListBoxWithFileType(previewSoundsList, steamGamePath + @"\NPP\Sounds", "*.wav");
+
                     installSpreadsheetSoundpack.Enabled = false;
-
-                    updateCustomPalleteInstalledCounter();
-
-                    statusLabel.Text = "Finished Installing Sound Pack!";
+                    statusLabel.Text = "Done installing sound pack "+ spreadsheetSoundpacks.SelectedItem.ToString();
 
                 }
                 catch (Exception exc)
                 {
                     MessageBox.Show("Couldn't install community soundpack because: " + exc.Message);
                 }
-
-                installSpreadsheetSoundpack.Enabled = false;
             }
         }
 
@@ -1029,7 +1032,7 @@ namespace N__Assistant
                 // give some feedback it's done
                 installSoundpackButton.Enabled = false;
 
-                statusLabel.Text = "Finished Installing Sound Pack!";
+                statusLabel.Text = "Done Installing Sound Pack!";
             }
         }
 
@@ -1045,7 +1048,7 @@ namespace N__Assistant
                     installSoundpackButton.Enabled = false;
                     deleteSoundpackBackupButton.Enabled = false;
 
-                    statusLabel.Text = "Finished Deleting Sound Pack Backup!";
+                    statusLabel.Text = "Done Deleting Sound Pack Backup!";
                 }
                 catch (Exception exc)
                 {
@@ -1388,10 +1391,14 @@ namespace N__Assistant
             {
                 arch.CreateEntryFromFile(profilePath + @"\nprofile", "nprofile");
             }
-            statusLabel.Text = "Active Profile backup completed!";
 
             profileMapBackupList.Items.Clear();
             PopulateListBoxWithFileType(profileMapBackupList, savePath + @"\Profiles", "*.zip");
+            renameProfileBackup.Enabled = false;
+            installBackupMapPackProfile.Enabled = false;
+            deleteBackupMapPackProfile.Enabled = false;
+
+            statusLabel.Text = "Active Profile backup completed!";
         }
 
         private void localBackupsMapPacksList_SelectedIndexChanged(object sender, EventArgs e)
@@ -1399,12 +1406,19 @@ namespace N__Assistant
             renameLocalBackupMapPack.Enabled = true;
             installLocalBackupMapPack.Enabled = true;
             deleteLocalBackupMapPack.Enabled = true;
-            installLocalBackupMapPackWithProfile.Enabled = true;
+            if (File.Exists(savePath + @"\Profiles\" + localBackupsMapPacksList.SelectedItem.ToString().Substring(0, localBackupsMapPacksList.SelectedItem.ToString().LastIndexOf(' ')).TrimEnd()) == true)
+            {
+                installLocalBackupMapPackWithProfile.Enabled = true;
+            }
+            else
+            {
+                installLocalBackupMapPackWithProfile.Enabled = false;
+            }
         }
 
         private void mapPacksFolderLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            launchExplorer(steamGamePath + @"\Levels\");
+            launchExplorer(steamGamePath + @"\NPP\Levels\");
         }
 
         private void linkMapPacksBackupFolder_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -1422,26 +1436,240 @@ namespace N__Assistant
             launchExplorer(savePath + @"\Profiles\");
         }
 
-        /*private void metanetMapsList_MouseMove(object sender, MouseEventArgs e)
+        private void backupMapPackAndProfile_Click(object sender, EventArgs e)
         {
-            // Get the node at the current mouse pointer location
-            TreeNode theNode = metanetMapsList.GetNodeAt(e.X, e.Y);
-
-            // Set a ToolTip only if the mouse pointer is actually paused on a node
-            if (theNode != null && theNode.Tag != null)
+            try
             {
-                // Change the ToolTip only if the pointer moved to a new node
-                if (theNode.Tag.ToString() != toolTip1.GetToolTip(metanetMapsList))
-                    toolTip1.SetToolTip(metanetMapsList, theNode.Tag.ToString());
+                // backup the map pack
+                string tsp = DateTime.Now.ToString("yyMMddHHmm");
+                ZipFile.CreateFromDirectory(steamGamePath + @"\NPP\Levels", savePath + @"\MapPacks\MapPack" + tsp + ".zip");
 
-            }
-            else       
+                // update local backup map packs list
+                localBackupsMapPacksList.Items.Clear();
+                PopulateListBoxWithFileType(localBackupsMapPacksList, savePath + @"\MapPacks", "*.zip");
+                renameLocalBackupMapPack.Enabled = false;
+                installLocalBackupMapPack.Enabled = false;
+                deleteLocalBackupMapPack.Enabled = false;
+                installLocalBackupMapPackWithProfile.Enabled = false;
+
+                // backup profile with same timestamp
+                using (FileStream fs = new FileStream(savePath + @"\Profiles\MapPack" + tsp + ".zip", FileMode.Create))
+                using (ZipArchive arch = new ZipArchive(fs, ZipArchiveMode.Create))
+                {
+                    arch.CreateEntryFromFile(profilePath + @"\nprofile", "nprofile");
+                }
+
+                // update local backup profile list
+                profileMapBackupList.Items.Clear();
+                PopulateListBoxWithFileType(profileMapBackupList, savePath + @"\Profiles", "*.zip");
+                renameProfileBackup.Enabled = false;
+                installBackupMapPackProfile.Enabled = false;
+                deleteBackupMapPackProfile.Enabled = false;
+
+                // notify backup is done
+                statusLabel.Text = "Done backup of active map pack and profile";
+
+            } catch(Exception exc)
             {
-                // Pointer is not over a node so clear the ToolTip
-                toolTip1.SetToolTip(metanetMapsList, "");
+                MessageBox.Show("Failed to do backup because: " + exc.Message);
             }
-        }*/
+        }
 
+        private void profileMapBackupList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            renameProfileBackup.Enabled = true;
+            installBackupMapPackProfile.Enabled = true;
+            deleteBackupMapPackProfile.Enabled = true;
+        }
+
+        private void installLocalBackupMapPack_Click(object sender, EventArgs e)
+        {
+            if (DetectNPPRunning() == true)
+            {
+                MessageBox.Show("Please close N++ before installing map pack");
+                return;
+            }
+
+            DialogResult dialogResult = MessageBox.Show("Are you sure you wish to replace your current levels map pack with this one? This process is irreversible if you haven't done a recent backup.", "Replace Existing Levels Map Pack?", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                // install
+                string filename = localBackupsMapPacksList.SelectedItem.ToString().Substring(0, localBackupsMapPacksList.SelectedItem.ToString().LastIndexOf(' ')).TrimEnd();
+                Directory.Delete(steamGamePath + @"\NPP\Levels", true);
+                Directory.CreateDirectory(steamGamePath + @"\NPP\Levels");
+                ZipFile.ExtractToDirectory(savePath + @"\MapPacks\" + filename, steamGamePath + @"\NPP\Levels");
+
+                // give some feedback it's done
+                installLocalBackupMapPack.Enabled = false;
+                statusLabel.Text = "Done Installing Map Pack!";
+            }
+        }
+
+        private void deleteLocalBackupMapPack_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = MessageBox.Show("Are you sure you wish to delete this map pack backup? This process is irreversible.", "Delete Backup?", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                try
+                {
+                    File.Delete(savePath + @"\MapPacks\" + localBackupsMapPacksList.SelectedItem.ToString().Split(' ')[0]);
+                    localBackupsMapPacksList.Items.Remove(localBackupsMapPacksList.SelectedItem);
+                    renameLocalBackupMapPack.Enabled = false;
+                    installLocalBackupMapPack.Enabled = false;
+                    deleteLocalBackupMapPack.Enabled = false;
+                    installLocalBackupMapPackWithProfile.Enabled = false;
+
+                    statusLabel.Text = "Done Deleting Map Pack Backup!";
+                }
+                catch (Exception exc)
+                {
+                    MessageBox.Show("Couldn't delete backup because: " + exc.Message);
+                }
+            }
+        }
+
+        private void installLocalBackupMapPackWithProfile_Click(object sender, EventArgs e)
+        {
+            if (DetectNPPRunning() == true)
+            {
+                MessageBox.Show("Please close N++ before installing map pack");
+                return;
+            }
+
+            DialogResult dialogResult = MessageBox.Show("Are you sure you wish to replace your current levels map pack with this one? This process is irreversible if you haven't done a recent backup.", "Replace Existing Levels Map Pack?", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                // install
+                string filename = localBackupsMapPacksList.SelectedItem.ToString().Substring(0, localBackupsMapPacksList.SelectedItem.ToString().LastIndexOf(' ')).TrimEnd();
+                Directory.Delete(steamGamePath + @"\NPP\Levels", true);
+                Directory.CreateDirectory(steamGamePath + @"\NPP\Levels");
+                ZipFile.ExtractToDirectory(savePath + @"\MapPacks\" + filename, steamGamePath + @"\NPP\Levels");
+
+                // check if profile exists with same timestamp
+                if (File.Exists(savePath + @"\Profiles\" + filename) == true)
+                {
+                    File.Delete(profilePath + @"\nprofile");
+                    string zipPath = savePath + @"\Profiles\" + filename;
+                    string extractPath = profilePath + @"\nprofile";
+                    using (ZipArchive archive = ZipFile.OpenRead(zipPath))
+                    {
+                        foreach (ZipArchiveEntry entry in archive.Entries)
+                        {
+                            if (entry.Name.Equals("nprofile"))
+                            {
+                                entry.ExtractToFile(extractPath, true);
+                                statusLabel.Text = "Done installing Map Pack with Profile of same timestamp: " + filename;
+                            }
+                        }
+                    }
+                } else {
+                    statusLabel.Text = "Done installing Map Pack " + filename + " but could not find a profile with the same timestamp";
+                }
+
+                // give some feedback it's done
+                installLocalBackupMapPackWithProfile.Enabled = false;
+            }
+        }
+
+        private void installBackupMapPackProfile_Click(object sender, EventArgs e)
+        {
+            if (DetectNPPRunning() == true)
+            {
+                MessageBox.Show("Please close N++ before installing a profile backup");
+                statusLabel.Text = "Aborted loading profile because N++ was running.";
+                return;
+            }
+
+            DialogResult dialogResult = MessageBox.Show("Are you sure you wish to replace your game profile with the selected backup? This process is irreversible if you haven't done a recent backup.", "Replace Existing nprofile?", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                File.Delete(profilePath + @"\nprofile");
+                string zipPath = savePath + @"\Profiles\" + profileMapBackupList.SelectedItem.ToString().Substring(0, profileMapBackupList.SelectedItem.ToString().LastIndexOf(' ')).TrimEnd();
+                string extractPath = profilePath + @"\nprofile";
+                using (ZipArchive archive = ZipFile.OpenRead(zipPath))
+                {
+                    foreach (ZipArchiveEntry entry in archive.Entries)
+                    {
+                        if (entry.Name.Equals("nprofile"))
+                        {
+                            entry.ExtractToFile(extractPath, true);
+                            statusLabel.Text = "Replaced current N++ game profile with " + profileMapBackupList.SelectedItem.ToString().Substring(0, profileMapBackupList.SelectedItem.ToString().LastIndexOf(' ')).TrimEnd();
+                        }
+                    }
+                }
+            }
+        }
+
+        private void installCommunityMapPack_Click(object sender, EventArgs e)
+        {
+            if (DetectNPPRunning() == true)
+            {
+                MessageBox.Show("Please close N++ before installing map pack");
+                return;
+            }
+
+            DialogResult dialogResult = MessageBox.Show("Are you sure you wish to replace your current game levels map pack with this one? This process is irreversible if you haven't done a recent backup.", "Replace Existing Sounds?", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                try
+                {
+                    string myStringWebResource = null;
+                    WebClient myWebClient = new WebClient();
+
+                    // get the url
+                    foreach (var mapSheet in sheetMapList)
+                    {
+                        if (mapSheet.sheetId.Equals(COMMUNITY_MAPPACKS) == true)
+                        {
+                            Cell[,] data = mapSheet.sheetData.Data;
+                            myStringWebResource = data[3, communityMapPacksList.SelectedIndex + 1].Value;
+                        }
+                    }
+
+                    // download the file and save it into the current filesystem folder.
+                    string filename = steamGamePath + @"\NPP\" + "nppassisttempmappacks.zip";
+                    myWebClient.DownloadFile(myStringWebResource, filename);
+
+                    // clean \Levels\
+                    Directory.Delete(steamGamePath + @"\NPP\Levels", true);
+                    Directory.CreateDirectory(steamGamePath + @"\NPP\Levels");
+
+                    // extract temp file
+                    ZipFile.ExtractToDirectory(filename, steamGamePath + @"\NPP\Levels");
+                    File.Delete(filename);
+
+                    installCommunityMapPack.Enabled = false;
+                    statusLabel.Text = "Done installing map pack " + communityMapPacksList.SelectedItem.ToString();
+                }
+                catch (Exception exc)
+                {
+                    MessageBox.Show("Couldn't install map pack because: " + exc.Message);
+                }
+            }
+        }
+
+        private void resetProfile_Click(object sender, EventArgs e)
+        {
+            if (DetectNPPRunning() == true)
+            {
+                MessageBox.Show("Please close N++ before resetting your profile");
+                return;
+            }
+
+            DialogResult dialogResult = MessageBox.Show("Are you sure you wish to reset your profile? This process is irreversible if you haven't done a recent backup.", "Reset Profile?", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                if (File.Exists(profilePath + @"\nprofile") == true)
+                {
+                    File.Delete(profilePath + @"\nprofile");
+                    statusLabel.Text = "Profile deleted!";
+                }
+                if (File.Exists(profilePath + @"\nprofile-old") == true)
+                {
+                    File.Delete(profilePath + @"\nprofile-old");
+                }
+            }
+        }
     }
     public class sheetMap
     {

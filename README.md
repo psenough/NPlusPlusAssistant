@@ -6,9 +6,9 @@ Needs Visual Studio Community 2019 with C# .Net stuff installed to compile from 
 
 ## Stuff it does:
 
-* autodetect main game asset folders (list them with explorer path link)
+* autodetect main game asset folders and link their explorer folder paths
 
-* backup profile, editor levels, replays, sounds, palettes and game levels
+* backup profile, editor levels, replays, sounds, palettes and game level map packs
 
 * detect if npp is running (avoid install / uninstall while running)
 
@@ -32,36 +32,41 @@ Needs Visual Studio Community 2019 with C# .Net stuff installed to compile from 
 
 * list all maps in backup and select one to install to your map levels editor folder
 
-* button to launch n++ (to save you time from going into steam)
+* button to launch n++ from within N++ Assistant
+
+* list community map packs (from google spreadsheet) and select which to install
+
+* list all map packs in backup and select one to install or delete (with optional same timestamp profile)
 
 ## Stuff it'll eventually do:
 
-* install/revert community map packs & associated profile
-https://docs.google.com/spreadsheets/d/1M9W3_jk3nULledALJNzRDRRpNhIofeTD2SF8ES6vCy8/edit#gid=0
+* update status bar while downloading / creating first launch stuff
 
-* progress bar while downloading / installing soundpacks / first launch without the backup folder
+* option to refresh lists (in case people are renaming things on folder)
 
-* option to refresh list (in case people are renaming things on folder)
-
-* option to rename backups
+* option to rename backups from within N++ Assistant
 
 * edit nppconf (useful for troubleshooting some launch problems), careful to make sure it's always valid
 
-* have an n++ icon (winning stickman?)
+* better icon
 
 * display nprofile road to 100% completion details / corruption checks
 
-* button to relaunch steam in offline/online mode
+* button to relaunch steam in offline/online mode (useful for speedrunning)
 
-* inject maps into map packs to facilitate play testing episodes / composing new map packs
+* way to inject maps into map packs to facilitate composing map packs
 
 ## Known issues:
 
-* some palettes/soundpacks installation don't work because they're not packed cleanly (need to repack, code smarter extractor or create a new column on spreadsheet)
+* rename buttons not working
 
-* missing some confirmation checkboxes on critical stuff that can't be reverted
+* some palettes installation don't work because they're not packed cleanly (need to repack, code smarter extractor or create a new column on spreadsheet)
+
+* missing some confirmations on critical stuff that can't be reverted
 
 * missing some checks if npp is running on critical stuff that requires npp to be closed to take effect
+
+* incoherent status message style
 
 ## Credits:
 

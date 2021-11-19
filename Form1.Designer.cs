@@ -936,7 +936,6 @@ namespace N__Assistant
             this.tabMapPacks.Controls.Add(this.installBackupMapPackProfile);
             this.tabMapPacks.Controls.Add(this.profileMapBackupList);
             this.tabMapPacks.Controls.Add(this.backupActiveProfile);
-            this.tabMapPacks.Controls.Add(this.resetProfile);
             this.tabMapPacks.Controls.Add(this.tabControl4);
             this.tabMapPacks.Controls.Add(this.backupCurrentMapPack);
             this.tabMapPacks.Location = new System.Drawing.Point(4, 22);
@@ -960,16 +959,17 @@ namespace N__Assistant
             // 
             // backupMapPackAndProfile
             // 
-            this.backupMapPackAndProfile.Location = new System.Drawing.Point(196, 12);
+            this.backupMapPackAndProfile.Location = new System.Drawing.Point(15, 12);
             this.backupMapPackAndProfile.Name = "backupMapPackAndProfile";
-            this.backupMapPackAndProfile.Size = new System.Drawing.Size(176, 36);
+            this.backupMapPackAndProfile.Size = new System.Drawing.Size(272, 36);
             this.backupMapPackAndProfile.TabIndex = 25;
-            this.backupMapPackAndProfile.Text = "Backup Both";
+            this.backupMapPackAndProfile.Text = "Backup Active Map Pack and Profile";
             this.backupMapPackAndProfile.UseVisualStyleBackColor = true;
+            this.backupMapPackAndProfile.Click += new System.EventHandler(this.backupMapPackAndProfile_Click);
             // 
             // renameProfileBackup
             // 
-            this.renameProfileBackup.Location = new System.Drawing.Point(302, 297);
+            this.renameProfileBackup.Location = new System.Drawing.Point(302, 310);
             this.renameProfileBackup.Name = "renameProfileBackup";
             this.renameProfileBackup.Size = new System.Drawing.Size(75, 35);
             this.renameProfileBackup.TabIndex = 24;
@@ -979,7 +979,7 @@ namespace N__Assistant
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(299, 92);
+            this.label1.Location = new System.Drawing.Point(300, 98);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(112, 13);
             this.label1.TabIndex = 23;
@@ -988,7 +988,7 @@ namespace N__Assistant
             // profileFolderLink
             // 
             this.profileFolderLink.AutoSize = true;
-            this.profileFolderLink.Location = new System.Drawing.Point(480, 62);
+            this.profileFolderLink.Location = new System.Drawing.Point(97, 62);
             this.profileFolderLink.Name = "profileFolderLink";
             this.profileFolderLink.Size = new System.Drawing.Size(64, 13);
             this.profileFolderLink.TabIndex = 22;
@@ -998,7 +998,7 @@ namespace N__Assistant
             // 
             // deleteBackupMapPackProfile
             // 
-            this.deleteBackupMapPackProfile.Location = new System.Drawing.Point(465, 297);
+            this.deleteBackupMapPackProfile.Location = new System.Drawing.Point(465, 311);
             this.deleteBackupMapPackProfile.Name = "deleteBackupMapPackProfile";
             this.deleteBackupMapPackProfile.Size = new System.Drawing.Size(79, 34);
             this.deleteBackupMapPackProfile.TabIndex = 21;
@@ -1007,42 +1007,45 @@ namespace N__Assistant
             // 
             // installBackupMapPackProfile
             // 
-            this.installBackupMapPackProfile.Location = new System.Drawing.Point(383, 298);
+            this.installBackupMapPackProfile.Location = new System.Drawing.Point(383, 311);
             this.installBackupMapPackProfile.Name = "installBackupMapPackProfile";
             this.installBackupMapPackProfile.Size = new System.Drawing.Size(76, 34);
             this.installBackupMapPackProfile.TabIndex = 20;
             this.installBackupMapPackProfile.Text = "Install";
             this.installBackupMapPackProfile.UseVisualStyleBackColor = true;
+            this.installBackupMapPackProfile.Click += new System.EventHandler(this.installBackupMapPackProfile_Click);
             // 
             // profileMapBackupList
             // 
             this.profileMapBackupList.FormattingEnabled = true;
-            this.profileMapBackupList.Location = new System.Drawing.Point(302, 107);
+            this.profileMapBackupList.Location = new System.Drawing.Point(302, 117);
             this.profileMapBackupList.Margin = new System.Windows.Forms.Padding(2);
             this.profileMapBackupList.Name = "profileMapBackupList";
             this.profileMapBackupList.ScrollAlwaysVisible = true;
             this.profileMapBackupList.Size = new System.Drawing.Size(242, 186);
             this.profileMapBackupList.TabIndex = 19;
+            this.profileMapBackupList.SelectedIndexChanged += new System.EventHandler(this.profileMapBackupList_SelectedIndexChanged);
             // 
             // backupActiveProfile
             // 
-            this.backupActiveProfile.Location = new System.Drawing.Point(377, 12);
+            this.backupActiveProfile.Location = new System.Drawing.Point(433, 12);
             this.backupActiveProfile.Margin = new System.Windows.Forms.Padding(2);
             this.backupActiveProfile.Name = "backupActiveProfile";
-            this.backupActiveProfile.Size = new System.Drawing.Size(167, 36);
+            this.backupActiveProfile.Size = new System.Drawing.Size(111, 36);
             this.backupActiveProfile.TabIndex = 3;
-            this.backupActiveProfile.Text = "Backup Active Game Profile";
+            this.backupActiveProfile.Text = "Backup Profile";
             this.backupActiveProfile.UseVisualStyleBackColor = true;
             this.backupActiveProfile.Click += new System.EventHandler(this.backupActiveProfile_Click);
             // 
             // resetProfile
             // 
-            this.resetProfile.Location = new System.Drawing.Point(302, 338);
+            this.resetProfile.Location = new System.Drawing.Point(30, 196);
             this.resetProfile.Name = "resetProfile";
-            this.resetProfile.Size = new System.Drawing.Size(157, 34);
+            this.resetProfile.Size = new System.Drawing.Size(207, 40);
             this.resetProfile.TabIndex = 2;
-            this.resetProfile.Text = "Reset Profile";
+            this.resetProfile.Text = "Reset Game Profile";
             this.resetProfile.UseVisualStyleBackColor = true;
+            this.resetProfile.Click += new System.EventHandler(this.resetProfile_Click);
             // 
             // tabControl4
             // 
@@ -1058,6 +1061,7 @@ namespace N__Assistant
             // 
             this.mapPackCommunity.Controls.Add(this.installCommunityMapPack);
             this.mapPackCommunity.Controls.Add(this.communityMapPacksList);
+            this.mapPackCommunity.Controls.Add(this.resetProfile);
             this.mapPackCommunity.Location = new System.Drawing.Point(4, 22);
             this.mapPackCommunity.Name = "mapPackCommunity";
             this.mapPackCommunity.Padding = new System.Windows.Forms.Padding(3);
@@ -1068,12 +1072,13 @@ namespace N__Assistant
             // 
             // installCommunityMapPack
             // 
-            this.installCommunityMapPack.Location = new System.Drawing.Point(29, 159);
+            this.installCommunityMapPack.Location = new System.Drawing.Point(30, 140);
             this.installCommunityMapPack.Name = "installCommunityMapPack";
             this.installCommunityMapPack.Size = new System.Drawing.Size(207, 44);
             this.installCommunityMapPack.TabIndex = 3;
-            this.installCommunityMapPack.Text = "Install Community Map Pack";
+            this.installCommunityMapPack.Text = "Install Map Pack";
             this.installCommunityMapPack.UseVisualStyleBackColor = true;
+            this.installCommunityMapPack.Click += new System.EventHandler(this.installCommunityMapPack_Click);
             // 
             // communityMapPacksList
             // 
@@ -1102,7 +1107,7 @@ namespace N__Assistant
             // linkMapPacksBackupFolder
             // 
             this.linkMapPacksBackupFolder.AutoSize = true;
-            this.linkMapPacksBackupFolder.Location = new System.Drawing.Point(124, 62);
+            this.linkMapPacksBackupFolder.Location = new System.Drawing.Point(292, 62);
             this.linkMapPacksBackupFolder.Name = "linkMapPacksBackupFolder";
             this.linkMapPacksBackupFolder.Size = new System.Drawing.Size(132, 13);
             this.linkMapPacksBackupFolder.TabIndex = 26;
@@ -1127,6 +1132,7 @@ namespace N__Assistant
             this.installLocalBackupMapPackWithProfile.TabIndex = 5;
             this.installLocalBackupMapPackWithProfile.Text = "Install Map Pack With Profile Same Timestamp";
             this.installLocalBackupMapPackWithProfile.UseVisualStyleBackColor = true;
+            this.installLocalBackupMapPackWithProfile.Click += new System.EventHandler(this.installLocalBackupMapPackWithProfile_Click);
             // 
             // deleteLocalBackupMapPack
             // 
@@ -1136,6 +1142,7 @@ namespace N__Assistant
             this.deleteLocalBackupMapPack.TabIndex = 4;
             this.deleteLocalBackupMapPack.Text = "Delete";
             this.deleteLocalBackupMapPack.UseVisualStyleBackColor = true;
+            this.deleteLocalBackupMapPack.Click += new System.EventHandler(this.deleteLocalBackupMapPack_Click);
             // 
             // installLocalBackupMapPack
             // 
@@ -1145,6 +1152,7 @@ namespace N__Assistant
             this.installLocalBackupMapPack.TabIndex = 3;
             this.installLocalBackupMapPack.Text = "Install";
             this.installLocalBackupMapPack.UseVisualStyleBackColor = true;
+            this.installLocalBackupMapPack.Click += new System.EventHandler(this.installLocalBackupMapPack_Click);
             // 
             // localBackupsMapPacksList
             // 
@@ -1157,11 +1165,11 @@ namespace N__Assistant
             // 
             // backupCurrentMapPack
             // 
-            this.backupCurrentMapPack.Location = new System.Drawing.Point(19, 12);
+            this.backupCurrentMapPack.Location = new System.Drawing.Point(293, 12);
             this.backupCurrentMapPack.Name = "backupCurrentMapPack";
-            this.backupCurrentMapPack.Size = new System.Drawing.Size(171, 36);
+            this.backupCurrentMapPack.Size = new System.Drawing.Size(135, 36);
             this.backupCurrentMapPack.TabIndex = 0;
-            this.backupCurrentMapPack.Text = "Backup Active Map Pack";
+            this.backupCurrentMapPack.Text = "Backup Map Pack";
             this.backupCurrentMapPack.UseVisualStyleBackColor = true;
             this.backupCurrentMapPack.Click += new System.EventHandler(this.backupCurrentMapPack_Click);
             // 
@@ -1183,6 +1191,7 @@ namespace N__Assistant
             this.statusStrip1.Location = new System.Drawing.Point(0, 456);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(584, 22);
+            this.statusStrip1.SizingGrip = false;
             this.statusStrip1.TabIndex = 4;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -1199,7 +1208,7 @@ namespace N__Assistant
             // profilesFolderLink
             // 
             this.profilesFolderLink.AutoSize = true;
-            this.profilesFolderLink.Location = new System.Drawing.Point(315, 62);
+            this.profilesFolderLink.Location = new System.Drawing.Point(432, 62);
             this.profilesFolderLink.Name = "profilesFolderLink";
             this.profilesFolderLink.Size = new System.Drawing.Size(113, 13);
             this.profilesFolderLink.TabIndex = 28;
@@ -1215,6 +1224,7 @@ namespace N__Assistant
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.launchNPP);
             this.Controls.Add(this.tabControl1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";
