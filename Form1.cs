@@ -646,11 +646,29 @@ namespace N__Assistant
         private void installMetanetPalette_Click(object sender, EventArgs e)
         {
             string palName = metanetPalettesList.SelectedItem.ToString().Substring(0, metanetPalettesList.SelectedItem.ToString().Length - 13);
-            DirectoryCopy(savePath + @"\Palettes\Palettes\" + palName, steamGamePath + @"\NPP\Palettes\" + palName, false);
-            palettesInstalledList.Items.Clear();
-            PopulateListBoxWithSubDirectories(palettesInstalledList, steamGamePath + @"\NPP\Palettes");
-            installMetanetPalette.Enabled = false;
-            statusLabel.Text = "Done installing palette " + palName;
+
+            // check if it already exists
+            if (Directory.Exists(steamGamePath + @"\NPP\Palettes\" + palName))
+            {
+                DialogResult dialogResult = MessageBox.Show("A palette already exists with this name, would you like to replace it?", "Replace Existing?", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    Directory.Delete(steamGamePath + @"\NPP\Palettes\" + palName, true);
+                    DirectoryCopy(savePath + @"\Palettes\Palettes\" + palName, steamGamePath + @"\NPP\Palettes\" + palName, false);
+                    palettesInstalledList.Items.Clear();
+                    PopulateListBoxWithSubDirectories(palettesInstalledList, steamGamePath + @"\NPP\Palettes");
+                    installMetanetPalette.Enabled = false;
+                    statusLabel.Text = "Done installing palette " + palName;
+                }
+            }
+            else
+            {
+                DirectoryCopy(savePath + @"\Palettes\Palettes\" + palName, steamGamePath + @"\NPP\Palettes\" + palName, false);
+                palettesInstalledList.Items.Clear();
+                PopulateListBoxWithSubDirectories(palettesInstalledList, steamGamePath + @"\NPP\Palettes");
+                installMetanetPalette.Enabled = false;
+                statusLabel.Text = "Done installing palette " + palName;
+            }
         }
 
         private void communityPalettesList_SelectedIndexChanged(object sender, EventArgs e)
