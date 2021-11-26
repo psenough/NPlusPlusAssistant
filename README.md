@@ -76,10 +76,8 @@ Needs Visual Studio Community 2019 with C# .Net stuff installed to compile from 
 
 ## Credits:
 
-* ps - main development
+* main development: ps
 
-* daniel - steam detection code
+* steam directory detection code: yupdaniel
 
-* cloudead - beta-testing
-
-* schmole - beta-testing
+* beta-testing: cloudead, schmole, bigblargh
