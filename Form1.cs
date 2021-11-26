@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using Newtonsoft.Json;
 using Popcron.Sheets;
 using System.Globalization;
+using System.Threading;
 
 namespace N__Assistant
 {
@@ -21,6 +22,8 @@ namespace N__Assistant
         private string screenshotsPath = @"\userdata\64929984\760\remote\230270\screenshots";
         private string savePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\N++Assistant";
 
+        static Thread MyLoadingThread = null;
+        static Thread MyReadingTextThread = null;
         private BackgroundWorker bgwBackupNow = new BackgroundWorker();
 
         // there is probably a better way to map this but fuck me if i know C# properly
@@ -84,47 +87,9 @@ namespace N__Assistant
             if (!Directory.Exists(savePath + @"\Palettes")) Directory.CreateDirectory(savePath + @"\Palettes");
             if (!Directory.Exists(savePath + @"\MapPacks")) Directory.CreateDirectory(savePath + @"\MapPacks");
 
-            // download default Metanet Palettes.zip pack to backup dir
-            if (!Directory.Exists(savePath + @"\Palettes\Palettes"))
-            {
-                try
-                {
-                    string myStringWebResource = "https://cdn.discordapp.com/attachments/197793786389200896/592821804746276864/Palettes.zip";
-                    WebClient myWebClient = new WebClient();
-                    string filename = savePath + @"\Palettes\Palettes.zip";
-                    myWebClient.DownloadFile(myStringWebResource, filename);
-                    myWebClient.Dispose();
-                    ZipFile.ExtractToDirectory(filename, savePath + @"\Palettes");
-                    File.Delete(savePath + @"\Palettes\Palettes.zip");
-                }
-                catch (Exception exc)
-                {
-                    MessageBox.Show("Couldn't download Metanet Palettes pack because: " + exc.Message);
-                }
-            }
-
-            // download NPP_AllLevels.zip to backup dir
-            if (!Directory.Exists(savePath + @"\Maps\NPP_AllLevels"))
-            {
-                try
-                {
-                    string myStringWebResource = "https://cdn.discordapp.com/attachments/592913929630384138/890428300911050752/NPP_AllLevels.zip";
-                    WebClient myWebClient = new WebClient();
-                    string filename = savePath + @"\Maps\NPP_AllLevels.zip";
-                    myWebClient.DownloadFile(myStringWebResource, filename);
-                    myWebClient.Dispose();
-                    Directory.CreateDirectory(savePath + @"\Maps\NPP_AllLevels");
-                    ZipFile.ExtractToDirectory(filename, savePath + @"\Maps\NPP_AllLevels");
-                    File.Delete(savePath + @"\Maps\NPP_AllLevels.zip");
-                }
-                catch (Exception exc)
-                {
-                    MessageBox.Show("Couldn't download Metanet Palettes pack because: " + exc.Message);
-                }
-            }
-
-            // tooltip
-            // this.metanetMapsList.MouseMove += new System.Windows.Forms.MouseEventHandler(this.metanetMapsList_MouseMove);
+            MyLoadingThread = new Thread(new ThreadStart(DownloadStuff));
+            MyLoadingThread.IsBackground = true;
+            MyLoadingThread.Start();
 
             // create palettes directory in steam game dir if it doesnt exist (it's needed to install the custom palettes)
             if (!Directory.Exists(steamGamePath + @"\NPP\Palettes")) Directory.CreateDirectory(steamGamePath + @"\NPP\Palettes");
@@ -150,6 +115,96 @@ namespace N__Assistant
             deleteProfile.Enabled = false;
         }
 
+        private void DownloadStuff()
+        {
+            // download default Metanet Palettes.zip pack to backup dir
+            if (!Directory.Exists(savePath + @"\Palettes\Palettes"))
+            {
+                try
+                {
+                    string myStringWebResource = "https://cdn.discordapp.com/attachments/197793786389200896/592821804746276864/Palettes.zip";
+                    WebClient myWebClient = new WebClient();
+                    string filename = savePath + @"\Palettes\Palettes.zip";
+                    myWebClient.DownloadFile(myStringWebResource, filename);
+                    myWebClient.Dispose();
+                    ZipFile.ExtractToDirectory(filename, savePath + @"\Palettes");
+                    File.Delete(savePath + @"\Palettes\Palettes.zip");
+                    statusLabel.Text = "Done downloading Metanet allpalettes.zip";
+                }
+                catch (Exception exc)
+                {
+                    MessageBox.Show("Couldn't download Metanet Palettes pack because: " + exc.Message);
+                }
+            }
+
+            // download NPP_AllLevels.zip to backup dir
+            if (!Directory.Exists(savePath + @"\Maps\NPP_AllLevels"))
+            {
+                try
+                {
+                    string myStringWebResource = "https://cdn.discordapp.com/attachments/592913929630384138/890428300911050752/NPP_AllLevels.zip";
+                    WebClient myWebClient = new WebClient();
+                    string filename = savePath + @"\Maps\NPP_AllLevels.zip";
+                    myWebClient.DownloadFile(myStringWebResource, filename);
+                    myWebClient.Dispose();
+                    Directory.CreateDirectory(savePath + @"\Maps\NPP_AllLevels");
+                    ZipFile.ExtractToDirectory(filename, savePath + @"\Maps\NPP_AllLevels");
+                    File.Delete(savePath + @"\Maps\NPP_AllLevels.zip");
+                    statusLabel.Text = "Done downloading NPP_AllLevels.zip";
+                }
+                catch (Exception exc)
+                {
+                    MessageBox.Show("Couldn't download Metanet Palettes pack because: " + exc.Message);
+                }
+            }
+
+            // list spreadsheet of new sound packs
+            // https://docs.google.com/spreadsheets/d/18PshamVuDNyH396a7U3YDFQmCw18s4gIVZ_WrFODRd4/edit#gid=0
+            if (spreadsheetSoundpacks.Items.Count == 0)
+            {
+                //spreadsheetSoundpacks.Items.Clear();
+                PopulateListBoxWithSpreadsheetData(spreadsheetSoundpacks, 0, COMMUNITY_SOUNDPACKS, new APIKey().key, "Sound Packs");
+                installSpreadsheetSoundpack.Enabled = false;
+                statusLabel.Text = "Getting community sound packs spreadsheet data ...";
+            }
+
+            // populate community palettes from spreadsheet link
+            // https://docs.google.com/spreadsheets/d/1I2f87Qhfs6rxzZq5dQRDbLKYyaGLqTdCkLqfNfrw1Mk/edit#gid=0
+            if (communityPalettesList.Items.Count == 0)
+            {
+                //communityPalettesList.Items.Clear();
+                PopulateListBoxWithSpreadsheetData(communityPalettesList, 0, COMMUNITY_PALETTES, new APIKey().key, "Palettes");
+                installCommunityPalette.Enabled = false;
+                statusLabel.Text = "Getting community palettes spreadsheet data ...";
+            }
+
+            // populate community map packs from spreadsheet link
+            // https://docs.google.com/spreadsheets/d/1M9W3_jk3nULledALJNzRDRRpNhIofeTD2SF8ES6vCy8/edit#gid=0
+            if (communityMapPacksList.Items.Count == 0)
+            {
+                //communityMapPacksList.Items.Clear();
+                PopulateListBoxWithSpreadsheetData(communityMapPacksList, 0, COMMUNITY_MAPPACKS, new APIKey().key, "Map Packs");
+                installCommunityMapPack.Enabled = false;
+                statusLabel.Text = "Getting community map packs spreadsheet data ...";
+            }
+        }
+
+        private void ReadNPPTextLogs()
+        {
+            string nppconfText_Text = File.ReadAllText(profilePath + @"\npp.conf");
+            string npplogText_Text = File.ReadAllText(profilePath + @"\NPPLog.txt");
+
+            if (InvokeRequired)
+            {
+                this.Invoke(new MethodInvoker(delegate {
+                    nppconfText.Text = nppconfText_Text;
+                    npplogText.Text = npplogText_Text;
+                    statusLabel.Text = "Done loading NPP config and log files";
+                }));
+                return;
+            }
+        }
+
         private void tabControl1_Selecting(object sender, TabControlCancelEventArgs e)
         {
             TabPage current = (sender as TabControl).SelectedTab;
@@ -157,8 +212,11 @@ namespace N__Assistant
             // switch to status / home tab
             if (current == tabStatus)
             {
-                nppconfText.Text = File.ReadAllText(profilePath + @"\npp.conf");
-                npplogText.Text = File.ReadAllText(profilePath + @"\NPPLog.txt");
+                if (nppconfText.Text == "") { 
+                    MyReadingTextThread = new Thread(new ThreadStart(ReadNPPTextLogs));
+                    MyReadingTextThread.IsBackground = true;
+                    MyReadingTextThread.Start();
+                }
             }
 
             // switch to profile tab
@@ -173,24 +231,15 @@ namespace N__Assistant
             // switch to soundpacks tab
             if (current == tabSoundpacks)
             {
-
                 // list backups
                 soundpackBackups.Items.Clear();
                 PopulateListBoxWithFileType(soundpackBackups, savePath + @"\Sounds", "*.zip");
                 installSoundpackButton.Enabled = false;
                 deleteSoundpackBackupButton.Enabled = false;
 
-                // list spreadsheet of new sound packs
-                // https://docs.google.com/spreadsheets/d/18PshamVuDNyH396a7U3YDFQmCw18s4gIVZ_WrFODRd4/edit#gid=0
-                spreadsheetSoundpacks.Items.Clear();
-                PopulateListBoxWithSpreadsheetData(spreadsheetSoundpacks, 0, COMMUNITY_SOUNDPACKS, new APIKey().key);
-                installSpreadsheetSoundpack.Enabled = false;
-                statusLabel.Text = "Getting community sound packs spreadsheet data ...";
-
                 // list preview
                 previewSoundsList.Items.Clear();
                 PopulateListBoxWithFileType(previewSoundsList, steamGamePath + @"\NPP\Sounds", "*.wav");
-
             }
 
             // switch to palettes tab
@@ -201,13 +250,6 @@ namespace N__Assistant
                 metanetPalettesList.Items.Clear();
                 PopulateListBoxWithSubDirectories(metanetPalettesList, savePath + @"\Palettes\Palettes");
                 installMetanetPalette.Enabled = false;
-
-                // populate community palettes from spreadsheet link
-                // https://docs.google.com/spreadsheets/d/1I2f87Qhfs6rxzZq5dQRDbLKYyaGLqTdCkLqfNfrw1Mk/edit#gid=0
-                communityPalettesList.Items.Clear();
-                PopulateListBoxWithSpreadsheetData(communityPalettesList, 0, COMMUNITY_PALETTES, new APIKey().key);
-                installCommunityPalette.Enabled = false;
-                statusLabel.Text = "Getting community palettes spreadsheet data ...";
 
                 // list all palettes in local backup dir
                 localBackupPalettesList.Items.Clear();
@@ -261,13 +303,6 @@ namespace N__Assistant
 
             if (current == tabMapPacks)
             {
-                // populate community map packs from spreadsheet link
-                // https://docs.google.com/spreadsheets/d/1I2f87Qhfs6rxzZq5dQRDbLKYyaGLqTdCkLqfNfrw1Mk/edit#gid=0
-                communityMapPacksList.Items.Clear();
-                PopulateListBoxWithSpreadsheetData(communityMapPacksList, 0, COMMUNITY_MAPPACKS, new APIKey().key);
-                installCommunityMapPack.Enabled = false;
-                statusLabel.Text = "Getting community map packs spreadsheet data ...";
-
                 // list local map packs backups
                 localBackupsMapPacksList.Items.Clear();
                 PopulateListBoxWithFileType(localBackupsMapPacksList, savePath + @"\MapPacks", "*.zip");
@@ -588,7 +623,7 @@ namespace N__Assistant
             }
         }
 
-        private async void PopulateListBoxWithSpreadsheetData(ListBox lsb, int sheetsId, string spreadsheetId, string key)
+        private async void PopulateListBoxWithSpreadsheetData(ListBox lsb, int sheetsId, string spreadsheetId, string key, string sht)
         {
             // test url https://sheets.googleapis.com/v4/spreadsheets/spreadsheetid?key=key
 
@@ -625,7 +660,7 @@ namespace N__Assistant
                     sheetMapList.Add(new sheetMap(spreadsheetId, sheet));
                 }
 
-                statusLabel.Text = "Done retrieving spreadsheet data";
+                statusLabel.Text = "Done retrieving spreadsheet data " + sht;
 
             }
             catch (System.Net.WebException webexc)

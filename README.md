@@ -16,7 +16,7 @@ Needs Visual Studio Community 2019 with C# .Net stuff installed to compile from 
 
 * list metanet palettes (auto download from discord link) and select which to install
 
-* list community palettes (from google spreadsheet) and select which to install
+* list community palettes (from [google spreadsheet](https://docs.google.com/spreadsheets/d/1I2f87Qhfs6rxzZq5dQRDbLKYyaGLqTdCkLqfNfrw1Mk/edit#gid=0]) and select which to install
 
 * list all palettes on backup and select one to install or delete
 
@@ -24,7 +24,7 @@ Needs Visual Studio Community 2019 with C# .Net stuff installed to compile from 
 
 * list all soundpacks on backup and select one to install or delete
 
-* list community soundpacks (from google spreadsheet) and select which to install
+* list community soundpacks (from [google spreadsheet](https://docs.google.com/spreadsheets/d/18PshamVuDNyH396a7U3YDFQmCw18s4gIVZ_WrFODRd4/edit#gid=0]) and select which to install
 
 * list metanet maps and select one to put on your map levels editor folder (for practice / remixes)
 
@@ -34,15 +34,11 @@ Needs Visual Studio Community 2019 with C# .Net stuff installed to compile from 
 
 * button to launch n++ from within N++ Assistant
 
-* list community map packs (from google spreadsheet) and select which to install
+* list community map packs (from [google spreadsheet](https://docs.google.com/spreadsheets/d/1M9W3_jk3nULledALJNzRDRRpNhIofeTD2SF8ES6vCy8/edit#gid=0]) and select which to install
 
 * list all map packs in backup and select one to install or delete (with optional same timestamp profile)
 
 ## Stuff it'll eventually do:
-
-* update status bar while downloading / creating first launch stuff
-
-* preload all spreadsheet data instead of getting it on tab change
 
 * option to refresh lists (in case people are renaming things on folder)
 
@@ -64,7 +60,7 @@ Needs Visual Studio Community 2019 with C# .Net stuff installed to compile from 
 
 * maps, rename solo to solo n++ (likewise co-op/race)
 
-* links to spreadsheets being used to retrieve the community data (either on readme or on app or both)
+* note that mentions metanet maps don't show up ingame even if they are in the Palettes directory, unless you rename them, they are for palette creation reference only
 
 ## Known issues:
 
