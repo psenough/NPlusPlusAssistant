@@ -60,7 +60,7 @@ Needs Visual Studio Community 2019 with C# .Net stuff installed to compile from 
 
 * maps, rename solo to solo n++ (likewise co-op/race)
 
-* note that mentions metanet maps don't show up ingame even if they are in the Palettes directory, unless you rename them, they are for palette creation reference only
+* note that mentions metanet palettes aren't listed ingame until you unlock them, even if they are in the Palettes directory, unless you rename them to something else; they are being included as installing options as references for people who want to make their own palettes
 
 * support installing textpacks (like the [VZ pack by megajumpr](https://docs.google.com/spreadsheets/d/18PshamVuDNyH396a7U3YDFQmCw18s4gIVZ_WrFODRd4/edit#gid=1000190067))
 
