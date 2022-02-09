@@ -4,6 +4,8 @@ N++ Assistant helps with backups and installing community mod stuff for the vide
 
 Needs Visual Studio Community 2019 with C# .Net stuff installed to compile from source.
 
+If you just want to run it, you don't need to compile it from source, just download the zip of the latest version from [releases](https://github.com/psenough/NPlusPlusAssistant/releases), extract that to a folder and launch the .exe inside. First launch might take a little while to see anything happening since the application is creating missing directories and downloading default things from the internet that it'll only need to download once.
+
 ## Stuff it does:
 
 * autodetect main game asset folders and link their explorer folder paths
