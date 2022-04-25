@@ -78,6 +78,8 @@ If you just want to run it, you don't need to compile it from source, just downl
 
 * incoherent status message style
 
+* crashes when assuming documents is on default dir instead of looking up `HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders`
+
 ## Credits:
 
 * main development: ps
