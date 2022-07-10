@@ -58,8 +58,6 @@ If you just want to run it, you don't need to compile it from source, just downl
 
 * option to change save/backup directory
 
-* maps, rename solo to solo n++ (likewise co-op/race)
-
 * note that mentions metanet palettes aren't listed ingame until you unlock them, even if they are in the Palettes directory, unless you rename them to something else; they are being included as installing options as references for people who want to make their own palettes
 
 * support installing textpacks (like the [VZ pack by megajumpr](https://docs.google.com/spreadsheets/d/18PshamVuDNyH396a7U3YDFQmCw18s4gIVZ_WrFODRd4/edit#gid=1000190067))
@@ -79,8 +77,6 @@ If you just want to run it, you don't need to compile it from source, just downl
 * missing some checks if npp is running on critical stuff that requires npp to be closed to take effect
 
 * incoherent status message style
-
-* crashes when assuming documents is on default dir instead of looking up `HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders`
 
 ## Credits:
 
