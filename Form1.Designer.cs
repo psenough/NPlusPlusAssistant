@@ -89,6 +89,8 @@ namespace N__Assistant
             this.listEditorMapsLabel = new System.Windows.Forms.Label();
             this.tabControlEditorMaps = new System.Windows.Forms.TabControl();
             this.tabMetanetMaps = new System.Windows.Forms.TabPage();
+            this.searchTextInMetanetMaps = new System.Windows.Forms.Button();
+            this.searchMapName = new System.Windows.Forms.TextBox();
             this.metanetMapsList = new System.Windows.Forms.TreeView();
             this.installMetanetMap = new System.Windows.Forms.Button();
             this.tabLocalBackups = new System.Windows.Forms.TabPage();
@@ -99,6 +101,8 @@ namespace N__Assistant
             this.backupSelectedMaps = new System.Windows.Forms.Button();
             this.listEditorMaps = new System.Windows.Forms.ListBox();
             this.tabMapPacks = new System.Windows.Forms.TabPage();
+            this.profilesFolderLink = new System.Windows.Forms.LinkLabel();
+            this.linkMapPacksBackupFolder = new System.Windows.Forms.LinkLabel();
             this.mapPacksFolderLink = new System.Windows.Forms.LinkLabel();
             this.backupMapPackAndProfile = new System.Windows.Forms.Button();
             this.renameProfileBackup = new System.Windows.Forms.Button();
@@ -108,13 +112,12 @@ namespace N__Assistant
             this.installBackupMapPackProfile = new System.Windows.Forms.Button();
             this.profileMapBackupList = new System.Windows.Forms.ListBox();
             this.backupActiveProfile = new System.Windows.Forms.Button();
-            this.resetProfile = new System.Windows.Forms.Button();
             this.tabControl4 = new System.Windows.Forms.TabControl();
             this.mapPackCommunity = new System.Windows.Forms.TabPage();
             this.installCommunityMapPack = new System.Windows.Forms.Button();
             this.communityMapPacksList = new System.Windows.Forms.ListBox();
+            this.resetProfile = new System.Windows.Forms.Button();
             this.mapPackLocalBackups = new System.Windows.Forms.TabPage();
-            this.linkMapPacksBackupFolder = new System.Windows.Forms.LinkLabel();
             this.renameLocalBackupMapPack = new System.Windows.Forms.Button();
             this.installLocalBackupMapPackWithProfile = new System.Windows.Forms.Button();
             this.deleteLocalBackupMapPack = new System.Windows.Forms.Button();
@@ -125,7 +128,6 @@ namespace N__Assistant
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.progressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.profilesFolderLink = new System.Windows.Forms.LinkLabel();
             this.tabControl1.SuspendLayout();
             this.tabStatus.SuspendLayout();
             this.tabProfile.SuspendLayout();
@@ -158,7 +160,7 @@ namespace N__Assistant
             this.tabControl1.Controls.Add(this.tabMaps);
             this.tabControl1.Controls.Add(this.tabMapPacks);
             this.tabControl1.Location = new System.Drawing.Point(9, 10);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(2);
+            this.tabControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(566, 401);
@@ -178,9 +180,9 @@ namespace N__Assistant
             this.tabStatus.Controls.Add(this.profileDir);
             this.tabStatus.Controls.Add(this.steamInstallDir);
             this.tabStatus.Location = new System.Drawing.Point(4, 22);
-            this.tabStatus.Margin = new System.Windows.Forms.Padding(2);
+            this.tabStatus.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tabStatus.Name = "tabStatus";
-            this.tabStatus.Padding = new System.Windows.Forms.Padding(2);
+            this.tabStatus.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tabStatus.Size = new System.Drawing.Size(558, 375);
             this.tabStatus.TabIndex = 0;
             this.tabStatus.Text = "Status";
@@ -269,15 +271,15 @@ namespace N__Assistant
             "palettes",
             "game levels"});
             this.checkedListBox1.Location = new System.Drawing.Point(249, 25);
-            this.checkedListBox1.Margin = new System.Windows.Forms.Padding(2);
+            this.checkedListBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.checkedListBox1.Name = "checkedListBox1";
-            this.checkedListBox1.Size = new System.Drawing.Size(109, 94);
+            this.checkedListBox1.Size = new System.Drawing.Size(109, 79);
             this.checkedListBox1.TabIndex = 5;
             // 
             // backupNow
             // 
             this.backupNow.Location = new System.Drawing.Point(374, 25);
-            this.backupNow.Margin = new System.Windows.Forms.Padding(2);
+            this.backupNow.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.backupNow.Name = "backupNow";
             this.backupNow.Size = new System.Drawing.Size(154, 36);
             this.backupNow.TabIndex = 4;
@@ -320,9 +322,9 @@ namespace N__Assistant
             this.tabProfile.Controls.Add(this.backupProfile);
             this.tabProfile.Controls.Add(this.profileList);
             this.tabProfile.Location = new System.Drawing.Point(4, 22);
-            this.tabProfile.Margin = new System.Windows.Forms.Padding(2);
+            this.tabProfile.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tabProfile.Name = "tabProfile";
-            this.tabProfile.Padding = new System.Windows.Forms.Padding(2);
+            this.tabProfile.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tabProfile.Size = new System.Drawing.Size(558, 375);
             this.tabProfile.TabIndex = 1;
             this.tabProfile.Text = "Profile";
@@ -392,7 +394,7 @@ namespace N__Assistant
             // backupProfile
             // 
             this.backupProfile.Location = new System.Drawing.Point(13, 15);
-            this.backupProfile.Margin = new System.Windows.Forms.Padding(2);
+            this.backupProfile.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.backupProfile.Name = "backupProfile";
             this.backupProfile.Size = new System.Drawing.Size(213, 30);
             this.backupProfile.TabIndex = 1;
@@ -404,7 +406,7 @@ namespace N__Assistant
             // 
             this.profileList.FormattingEnabled = true;
             this.profileList.Location = new System.Drawing.Point(13, 75);
-            this.profileList.Margin = new System.Windows.Forms.Padding(2);
+            this.profileList.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.profileList.Name = "profileList";
             this.profileList.ScrollAlwaysVisible = true;
             this.profileList.Size = new System.Drawing.Size(213, 238);
@@ -419,7 +421,7 @@ namespace N__Assistant
             this.tabSoundpacks.Controls.Add(this.previewSoundsList);
             this.tabSoundpacks.Controls.Add(this.backupSoundpack);
             this.tabSoundpacks.Location = new System.Drawing.Point(4, 22);
-            this.tabSoundpacks.Margin = new System.Windows.Forms.Padding(2);
+            this.tabSoundpacks.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tabSoundpacks.Name = "tabSoundpacks";
             this.tabSoundpacks.Size = new System.Drawing.Size(558, 375);
             this.tabSoundpacks.TabIndex = 2;
@@ -453,7 +455,7 @@ namespace N__Assistant
             this.tabPage2.Controls.Add(this.installSpreadsheetSoundpack);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.tabPage2.Size = new System.Drawing.Size(264, 268);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Community Sound Packs";
@@ -485,7 +487,7 @@ namespace N__Assistant
             this.tabPage1.Controls.Add(this.deleteSoundpackBackupButton);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.tabPage1.Size = new System.Drawing.Size(264, 268);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Local Backups";
@@ -559,7 +561,7 @@ namespace N__Assistant
             this.tabPalettes.Controls.Add(this.uninstallPalette);
             this.tabPalettes.Controls.Add(this.palettesInstalledList);
             this.tabPalettes.Location = new System.Drawing.Point(4, 22);
-            this.tabPalettes.Margin = new System.Windows.Forms.Padding(2);
+            this.tabPalettes.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tabPalettes.Name = "tabPalettes";
             this.tabPalettes.Size = new System.Drawing.Size(558, 375);
             this.tabPalettes.TabIndex = 3;
@@ -614,7 +616,7 @@ namespace N__Assistant
             this.tabControl2.Controls.Add(this.metanetPalettes);
             this.tabControl2.Controls.Add(this.localBackupPalettes);
             this.tabControl2.Location = new System.Drawing.Point(10, 26);
-            this.tabControl2.Margin = new System.Windows.Forms.Padding(2);
+            this.tabControl2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
             this.tabControl2.Size = new System.Drawing.Size(256, 337);
@@ -625,9 +627,9 @@ namespace N__Assistant
             this.communityPalettes.Controls.Add(this.installCommunityPalette);
             this.communityPalettes.Controls.Add(this.communityPalettesList);
             this.communityPalettes.Location = new System.Drawing.Point(4, 22);
-            this.communityPalettes.Margin = new System.Windows.Forms.Padding(2);
+            this.communityPalettes.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.communityPalettes.Name = "communityPalettes";
-            this.communityPalettes.Padding = new System.Windows.Forms.Padding(2);
+            this.communityPalettes.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.communityPalettes.Size = new System.Drawing.Size(248, 311);
             this.communityPalettes.TabIndex = 1;
             this.communityPalettes.Text = "Community Palettes";
@@ -636,7 +638,7 @@ namespace N__Assistant
             // installCommunityPalette
             // 
             this.installCommunityPalette.Location = new System.Drawing.Point(72, 271);
-            this.installCommunityPalette.Margin = new System.Windows.Forms.Padding(2);
+            this.installCommunityPalette.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.installCommunityPalette.Name = "installCommunityPalette";
             this.installCommunityPalette.Size = new System.Drawing.Size(96, 34);
             this.installCommunityPalette.TabIndex = 8;
@@ -648,7 +650,7 @@ namespace N__Assistant
             // 
             this.communityPalettesList.FormattingEnabled = true;
             this.communityPalettesList.Location = new System.Drawing.Point(2, 3);
-            this.communityPalettesList.Margin = new System.Windows.Forms.Padding(2);
+            this.communityPalettesList.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.communityPalettesList.Name = "communityPalettesList";
             this.communityPalettesList.Size = new System.Drawing.Size(242, 264);
             this.communityPalettesList.TabIndex = 2;
@@ -659,9 +661,9 @@ namespace N__Assistant
             this.metanetPalettes.Controls.Add(this.installMetanetPalette);
             this.metanetPalettes.Controls.Add(this.metanetPalettesList);
             this.metanetPalettes.Location = new System.Drawing.Point(4, 22);
-            this.metanetPalettes.Margin = new System.Windows.Forms.Padding(2);
+            this.metanetPalettes.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.metanetPalettes.Name = "metanetPalettes";
-            this.metanetPalettes.Padding = new System.Windows.Forms.Padding(2);
+            this.metanetPalettes.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.metanetPalettes.Size = new System.Drawing.Size(248, 311);
             this.metanetPalettes.TabIndex = 0;
             this.metanetPalettes.Text = "Metanet";
@@ -670,7 +672,7 @@ namespace N__Assistant
             // installMetanetPalette
             // 
             this.installMetanetPalette.Location = new System.Drawing.Point(72, 271);
-            this.installMetanetPalette.Margin = new System.Windows.Forms.Padding(2);
+            this.installMetanetPalette.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.installMetanetPalette.Name = "installMetanetPalette";
             this.installMetanetPalette.Size = new System.Drawing.Size(96, 34);
             this.installMetanetPalette.TabIndex = 9;
@@ -682,7 +684,7 @@ namespace N__Assistant
             // 
             this.metanetPalettesList.FormattingEnabled = true;
             this.metanetPalettesList.Location = new System.Drawing.Point(2, 3);
-            this.metanetPalettesList.Margin = new System.Windows.Forms.Padding(2);
+            this.metanetPalettesList.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.metanetPalettesList.Name = "metanetPalettesList";
             this.metanetPalettesList.Size = new System.Drawing.Size(242, 264);
             this.metanetPalettesList.TabIndex = 1;
@@ -694,7 +696,7 @@ namespace N__Assistant
             this.localBackupPalettes.Controls.Add(this.installBackupPalette);
             this.localBackupPalettes.Controls.Add(this.localBackupPalettesList);
             this.localBackupPalettes.Location = new System.Drawing.Point(4, 22);
-            this.localBackupPalettes.Margin = new System.Windows.Forms.Padding(2);
+            this.localBackupPalettes.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.localBackupPalettes.Name = "localBackupPalettes";
             this.localBackupPalettes.Size = new System.Drawing.Size(248, 311);
             this.localBackupPalettes.TabIndex = 2;
@@ -704,7 +706,7 @@ namespace N__Assistant
             // deleteBackupPalette
             // 
             this.deleteBackupPalette.Location = new System.Drawing.Point(136, 271);
-            this.deleteBackupPalette.Margin = new System.Windows.Forms.Padding(2);
+            this.deleteBackupPalette.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.deleteBackupPalette.Name = "deleteBackupPalette";
             this.deleteBackupPalette.Size = new System.Drawing.Size(96, 34);
             this.deleteBackupPalette.TabIndex = 10;
@@ -715,7 +717,7 @@ namespace N__Assistant
             // installBackupPalette
             // 
             this.installBackupPalette.Location = new System.Drawing.Point(15, 271);
-            this.installBackupPalette.Margin = new System.Windows.Forms.Padding(2);
+            this.installBackupPalette.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.installBackupPalette.Name = "installBackupPalette";
             this.installBackupPalette.Size = new System.Drawing.Size(96, 34);
             this.installBackupPalette.TabIndex = 9;
@@ -727,7 +729,7 @@ namespace N__Assistant
             // 
             this.localBackupPalettesList.FormattingEnabled = true;
             this.localBackupPalettesList.Location = new System.Drawing.Point(2, 3);
-            this.localBackupPalettesList.Margin = new System.Windows.Forms.Padding(2);
+            this.localBackupPalettesList.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.localBackupPalettesList.Name = "localBackupPalettesList";
             this.localBackupPalettesList.Size = new System.Drawing.Size(244, 264);
             this.localBackupPalettesList.TabIndex = 2;
@@ -736,7 +738,7 @@ namespace N__Assistant
             // backupPalette
             // 
             this.backupPalette.Location = new System.Drawing.Point(470, 50);
-            this.backupPalette.Margin = new System.Windows.Forms.Padding(2);
+            this.backupPalette.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.backupPalette.Name = "backupPalette";
             this.backupPalette.Size = new System.Drawing.Size(76, 44);
             this.backupPalette.TabIndex = 3;
@@ -747,7 +749,7 @@ namespace N__Assistant
             // uninstallPalette
             // 
             this.uninstallPalette.Location = new System.Drawing.Point(470, 105);
-            this.uninstallPalette.Margin = new System.Windows.Forms.Padding(2);
+            this.uninstallPalette.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.uninstallPalette.Name = "uninstallPalette";
             this.uninstallPalette.Size = new System.Drawing.Size(76, 42);
             this.uninstallPalette.TabIndex = 2;
@@ -759,7 +761,7 @@ namespace N__Assistant
             // 
             this.palettesInstalledList.FormattingEnabled = true;
             this.palettesInstalledList.Location = new System.Drawing.Point(270, 50);
-            this.palettesInstalledList.Margin = new System.Windows.Forms.Padding(2);
+            this.palettesInstalledList.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.palettesInstalledList.Name = "palettesInstalledList";
             this.palettesInstalledList.Size = new System.Drawing.Size(197, 303);
             this.palettesInstalledList.TabIndex = 1;
@@ -774,7 +776,7 @@ namespace N__Assistant
             this.tabMaps.Controls.Add(this.backupSelectedMaps);
             this.tabMaps.Controls.Add(this.listEditorMaps);
             this.tabMaps.Location = new System.Drawing.Point(4, 22);
-            this.tabMaps.Margin = new System.Windows.Forms.Padding(2);
+            this.tabMaps.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tabMaps.Name = "tabMaps";
             this.tabMaps.Size = new System.Drawing.Size(558, 375);
             this.tabMaps.TabIndex = 4;
@@ -808,7 +810,7 @@ namespace N__Assistant
             this.tabControlEditorMaps.Controls.Add(this.tabMetanetMaps);
             this.tabControlEditorMaps.Controls.Add(this.tabLocalBackups);
             this.tabControlEditorMaps.Location = new System.Drawing.Point(11, 24);
-            this.tabControlEditorMaps.Margin = new System.Windows.Forms.Padding(2);
+            this.tabControlEditorMaps.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tabControlEditorMaps.Name = "tabControlEditorMaps";
             this.tabControlEditorMaps.SelectedIndex = 0;
             this.tabControlEditorMaps.Size = new System.Drawing.Size(329, 336);
@@ -816,21 +818,48 @@ namespace N__Assistant
             // 
             // tabMetanetMaps
             // 
+            this.tabMetanetMaps.Controls.Add(this.searchTextInMetanetMaps);
+            this.tabMetanetMaps.Controls.Add(this.searchMapName);
             this.tabMetanetMaps.Controls.Add(this.metanetMapsList);
             this.tabMetanetMaps.Controls.Add(this.installMetanetMap);
             this.tabMetanetMaps.Location = new System.Drawing.Point(4, 22);
-            this.tabMetanetMaps.Margin = new System.Windows.Forms.Padding(2);
+            this.tabMetanetMaps.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tabMetanetMaps.Name = "tabMetanetMaps";
-            this.tabMetanetMaps.Padding = new System.Windows.Forms.Padding(2);
+            this.tabMetanetMaps.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tabMetanetMaps.Size = new System.Drawing.Size(321, 310);
             this.tabMetanetMaps.TabIndex = 0;
             this.tabMetanetMaps.Text = "Metanet Maps";
             this.tabMetanetMaps.UseVisualStyleBackColor = true;
             // 
+            // searchTextInMetanetMaps
+            // 
+            this.searchTextInMetanetMaps.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.searchTextInMetanetMaps.Location = new System.Drawing.Point(83, 267);
+            this.searchTextInMetanetMaps.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.searchTextInMetanetMaps.Name = "searchTextInMetanetMaps";
+            this.searchTextInMetanetMaps.Size = new System.Drawing.Size(52, 27);
+            this.searchTextInMetanetMaps.TabIndex = 7;
+            this.searchTextInMetanetMaps.Text = "Search";
+            this.searchTextInMetanetMaps.UseVisualStyleBackColor = true;
+            this.searchTextInMetanetMaps.Click += new System.EventHandler(this.searchTextInMetanetMaps_Click);
+            // 
+            // searchMapName
+            // 
+            this.searchMapName.Location = new System.Drawing.Point(5, 271);
+            this.searchMapName.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.searchMapName.Name = "searchMapName";
+            this.searchMapName.Size = new System.Drawing.Size(74, 20);
+            this.searchMapName.TabIndex = 6;
+            this.searchMapName.Text = "search";
+            this.searchMapName.Enter += new System.EventHandler(this.searchMapName_Enter);
+            this.searchMapName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.searchMapName_KeyPress);
+            // 
             // metanetMapsList
             // 
             this.metanetMapsList.Location = new System.Drawing.Point(2, 4);
-            this.metanetMapsList.Margin = new System.Windows.Forms.Padding(2);
+            this.metanetMapsList.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.metanetMapsList.Name = "metanetMapsList";
             this.metanetMapsList.Size = new System.Drawing.Size(318, 253);
             this.metanetMapsList.TabIndex = 5;
@@ -838,8 +867,8 @@ namespace N__Assistant
             // 
             // installMetanetMap
             // 
-            this.installMetanetMap.Location = new System.Drawing.Point(111, 265);
-            this.installMetanetMap.Margin = new System.Windows.Forms.Padding(2);
+            this.installMetanetMap.Location = new System.Drawing.Point(219, 267);
+            this.installMetanetMap.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.installMetanetMap.Name = "installMetanetMap";
             this.installMetanetMap.Size = new System.Drawing.Size(100, 34);
             this.installMetanetMap.TabIndex = 4;
@@ -853,9 +882,9 @@ namespace N__Assistant
             this.tabLocalBackups.Controls.Add(this.localEditorMaps);
             this.tabLocalBackups.Controls.Add(this.localMapsBackupsList);
             this.tabLocalBackups.Location = new System.Drawing.Point(4, 22);
-            this.tabLocalBackups.Margin = new System.Windows.Forms.Padding(2);
+            this.tabLocalBackups.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tabLocalBackups.Name = "tabLocalBackups";
-            this.tabLocalBackups.Padding = new System.Windows.Forms.Padding(2);
+            this.tabLocalBackups.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tabLocalBackups.Size = new System.Drawing.Size(321, 310);
             this.tabLocalBackups.TabIndex = 1;
             this.tabLocalBackups.Text = "Local Backups";
@@ -893,7 +922,7 @@ namespace N__Assistant
             // deleteSelectedMaps
             // 
             this.deleteSelectedMaps.Location = new System.Drawing.Point(473, 312);
-            this.deleteSelectedMaps.Margin = new System.Windows.Forms.Padding(2);
+            this.deleteSelectedMaps.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.deleteSelectedMaps.Name = "deleteSelectedMaps";
             this.deleteSelectedMaps.Size = new System.Drawing.Size(74, 39);
             this.deleteSelectedMaps.TabIndex = 3;
@@ -904,7 +933,7 @@ namespace N__Assistant
             // backupSelectedMaps
             // 
             this.backupSelectedMaps.Location = new System.Drawing.Point(357, 312);
-            this.backupSelectedMaps.Margin = new System.Windows.Forms.Padding(2);
+            this.backupSelectedMaps.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.backupSelectedMaps.Name = "backupSelectedMaps";
             this.backupSelectedMaps.Size = new System.Drawing.Size(76, 39);
             this.backupSelectedMaps.TabIndex = 2;
@@ -916,7 +945,7 @@ namespace N__Assistant
             // 
             this.listEditorMaps.FormattingEnabled = true;
             this.listEditorMaps.Location = new System.Drawing.Point(357, 37);
-            this.listEditorMaps.Margin = new System.Windows.Forms.Padding(2);
+            this.listEditorMaps.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.listEditorMaps.Name = "listEditorMaps";
             this.listEditorMaps.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.listEditorMaps.Size = new System.Drawing.Size(190, 264);
@@ -939,12 +968,34 @@ namespace N__Assistant
             this.tabMapPacks.Controls.Add(this.tabControl4);
             this.tabMapPacks.Controls.Add(this.backupCurrentMapPack);
             this.tabMapPacks.Location = new System.Drawing.Point(4, 22);
-            this.tabMapPacks.Margin = new System.Windows.Forms.Padding(2);
+            this.tabMapPacks.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tabMapPacks.Name = "tabMapPacks";
             this.tabMapPacks.Size = new System.Drawing.Size(558, 375);
             this.tabMapPacks.TabIndex = 5;
             this.tabMapPacks.Text = "Map Packs";
             this.tabMapPacks.UseVisualStyleBackColor = true;
+            // 
+            // profilesFolderLink
+            // 
+            this.profilesFolderLink.AutoSize = true;
+            this.profilesFolderLink.Location = new System.Drawing.Point(432, 62);
+            this.profilesFolderLink.Name = "profilesFolderLink";
+            this.profilesFolderLink.Size = new System.Drawing.Size(113, 13);
+            this.profilesFolderLink.TabIndex = 28;
+            this.profilesFolderLink.TabStop = true;
+            this.profilesFolderLink.Text = "profiles backups folder";
+            this.profilesFolderLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.profilesFolderLink_LinkClicked);
+            // 
+            // linkMapPacksBackupFolder
+            // 
+            this.linkMapPacksBackupFolder.AutoSize = true;
+            this.linkMapPacksBackupFolder.Location = new System.Drawing.Point(292, 62);
+            this.linkMapPacksBackupFolder.Name = "linkMapPacksBackupFolder";
+            this.linkMapPacksBackupFolder.Size = new System.Drawing.Size(132, 13);
+            this.linkMapPacksBackupFolder.TabIndex = 26;
+            this.linkMapPacksBackupFolder.TabStop = true;
+            this.linkMapPacksBackupFolder.Text = "map packs backups folder";
+            this.linkMapPacksBackupFolder.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkMapPacksBackupFolder_LinkClicked);
             // 
             // mapPacksFolderLink
             // 
@@ -1019,7 +1070,7 @@ namespace N__Assistant
             // 
             this.profileMapBackupList.FormattingEnabled = true;
             this.profileMapBackupList.Location = new System.Drawing.Point(302, 117);
-            this.profileMapBackupList.Margin = new System.Windows.Forms.Padding(2);
+            this.profileMapBackupList.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.profileMapBackupList.Name = "profileMapBackupList";
             this.profileMapBackupList.ScrollAlwaysVisible = true;
             this.profileMapBackupList.Size = new System.Drawing.Size(242, 186);
@@ -1029,23 +1080,13 @@ namespace N__Assistant
             // backupActiveProfile
             // 
             this.backupActiveProfile.Location = new System.Drawing.Point(433, 12);
-            this.backupActiveProfile.Margin = new System.Windows.Forms.Padding(2);
+            this.backupActiveProfile.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.backupActiveProfile.Name = "backupActiveProfile";
             this.backupActiveProfile.Size = new System.Drawing.Size(111, 36);
             this.backupActiveProfile.TabIndex = 3;
             this.backupActiveProfile.Text = "Backup Profile";
             this.backupActiveProfile.UseVisualStyleBackColor = true;
             this.backupActiveProfile.Click += new System.EventHandler(this.backupActiveProfile_Click);
-            // 
-            // resetProfile
-            // 
-            this.resetProfile.Location = new System.Drawing.Point(30, 196);
-            this.resetProfile.Name = "resetProfile";
-            this.resetProfile.Size = new System.Drawing.Size(207, 40);
-            this.resetProfile.TabIndex = 2;
-            this.resetProfile.Text = "Reset Game Profile";
-            this.resetProfile.UseVisualStyleBackColor = true;
-            this.resetProfile.Click += new System.EventHandler(this.resetProfile_Click);
             // 
             // tabControl4
             // 
@@ -1064,7 +1105,7 @@ namespace N__Assistant
             this.mapPackCommunity.Controls.Add(this.resetProfile);
             this.mapPackCommunity.Location = new System.Drawing.Point(4, 22);
             this.mapPackCommunity.Name = "mapPackCommunity";
-            this.mapPackCommunity.Padding = new System.Windows.Forms.Padding(3);
+            this.mapPackCommunity.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.mapPackCommunity.Size = new System.Drawing.Size(264, 250);
             this.mapPackCommunity.TabIndex = 0;
             this.mapPackCommunity.Text = "Community Map Packs";
@@ -1089,6 +1130,16 @@ namespace N__Assistant
             this.communityMapPacksList.TabIndex = 0;
             this.communityMapPacksList.SelectedIndexChanged += new System.EventHandler(this.communityMapPacksList_SelectedIndexChanged);
             // 
+            // resetProfile
+            // 
+            this.resetProfile.Location = new System.Drawing.Point(30, 196);
+            this.resetProfile.Name = "resetProfile";
+            this.resetProfile.Size = new System.Drawing.Size(207, 40);
+            this.resetProfile.TabIndex = 2;
+            this.resetProfile.Text = "Reset Game Profile";
+            this.resetProfile.UseVisualStyleBackColor = true;
+            this.resetProfile.Click += new System.EventHandler(this.resetProfile_Click);
+            // 
             // mapPackLocalBackups
             // 
             this.mapPackLocalBackups.Controls.Add(this.renameLocalBackupMapPack);
@@ -1098,22 +1149,11 @@ namespace N__Assistant
             this.mapPackLocalBackups.Controls.Add(this.localBackupsMapPacksList);
             this.mapPackLocalBackups.Location = new System.Drawing.Point(4, 22);
             this.mapPackLocalBackups.Name = "mapPackLocalBackups";
-            this.mapPackLocalBackups.Padding = new System.Windows.Forms.Padding(3);
+            this.mapPackLocalBackups.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.mapPackLocalBackups.Size = new System.Drawing.Size(264, 250);
             this.mapPackLocalBackups.TabIndex = 1;
             this.mapPackLocalBackups.Text = "Local Backups";
             this.mapPackLocalBackups.UseVisualStyleBackColor = true;
-            // 
-            // linkMapPacksBackupFolder
-            // 
-            this.linkMapPacksBackupFolder.AutoSize = true;
-            this.linkMapPacksBackupFolder.Location = new System.Drawing.Point(292, 62);
-            this.linkMapPacksBackupFolder.Name = "linkMapPacksBackupFolder";
-            this.linkMapPacksBackupFolder.Size = new System.Drawing.Size(132, 13);
-            this.linkMapPacksBackupFolder.TabIndex = 26;
-            this.linkMapPacksBackupFolder.TabStop = true;
-            this.linkMapPacksBackupFolder.Text = "map packs backups folder";
-            this.linkMapPacksBackupFolder.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkMapPacksBackupFolder_LinkClicked);
             // 
             // renameLocalBackupMapPack
             // 
@@ -1185,6 +1225,7 @@ namespace N__Assistant
             // 
             // statusStrip1
             // 
+            this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.progressBar,
             this.statusLabel});
@@ -1205,17 +1246,6 @@ namespace N__Assistant
             this.statusLabel.Name = "statusLabel";
             this.statusLabel.Size = new System.Drawing.Size(0, 17);
             // 
-            // profilesFolderLink
-            // 
-            this.profilesFolderLink.AutoSize = true;
-            this.profilesFolderLink.Location = new System.Drawing.Point(432, 62);
-            this.profilesFolderLink.Name = "profilesFolderLink";
-            this.profilesFolderLink.Size = new System.Drawing.Size(113, 13);
-            this.profilesFolderLink.TabIndex = 28;
-            this.profilesFolderLink.TabStop = true;
-            this.profilesFolderLink.Text = "profiles backups folder";
-            this.profilesFolderLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.profilesFolderLink_LinkClicked);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1226,7 +1256,7 @@ namespace N__Assistant
             this.Controls.Add(this.tabControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(2);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "Form1";
             this.Text = "N++ Assistant";
             this.tabControl1.ResumeLayout(false);
@@ -1249,6 +1279,7 @@ namespace N__Assistant
             this.tabMaps.PerformLayout();
             this.tabControlEditorMaps.ResumeLayout(false);
             this.tabMetanetMaps.ResumeLayout(false);
+            this.tabMetanetMaps.PerformLayout();
             this.tabLocalBackups.ResumeLayout(false);
             this.tabMapPacks.ResumeLayout(false);
             this.tabMapPacks.PerformLayout();
@@ -1360,6 +1391,8 @@ namespace N__Assistant
         private System.Windows.Forms.Button renameLocalBackupMapPack;
         private System.Windows.Forms.Button installLocalBackupMapPackWithProfile;
         private System.Windows.Forms.LinkLabel profilesFolderLink;
+        private System.Windows.Forms.TextBox searchMapName;
+        private System.Windows.Forms.Button searchTextInMetanetMaps;
     }
 }
 

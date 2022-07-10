@@ -26,7 +26,7 @@ Needs Visual Studio Community 2019 with C# .Net stuff installed to compile from 
 
 * list community soundpacks (from [google spreadsheet](https://docs.google.com/spreadsheets/d/18PshamVuDNyH396a7U3YDFQmCw18s4gIVZ_WrFODRd4/edit#gid=0]) and select which to install
 
-* list metanet maps and select one to put on your map levels editor folder (for practice / remixes)
+* list metanet maps, search by name and select one to put on your map levels editor folder (for practice / remixes)
 
 * list all maps in editor and select which ones to backup or delete
 
@@ -56,11 +56,13 @@ Needs Visual Studio Community 2019 with C# .Net stuff installed to compile from 
 
 * option to change save/backup directory
 
-* maps, search by map name
-
 * maps, rename solo to solo n++ (likewise co-op/race)
 
 * note that mentions metanet maps don't show up ingame even if they are in the Palettes directory, unless you rename them, they are for palette creation reference only
+
+* multi-select install metanet palettes
+
+* show screenshots on github project readme
 
 ## Known issues:
 

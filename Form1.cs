@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using Popcron.Sheets;
 using System.Globalization;
 using System.Threading;
+using System.Collections;
 
 namespace N__Assistant
 {
@@ -18,9 +19,11 @@ namespace N__Assistant
     {
         // more robust autodetect added by YupdanielThatsMe#6492
         private string steamGamePath;
-        private string profilePath = Environment.ExpandEnvironmentVariables("%HOMEDRIVE%%HOMEPATH%") + @"\Documents\Metanet\N++";
+        //private string profilePath = Environment.ExpandEnvironmentVariables("%HOMEDRIVE%%HOMEPATH%") + @"\Documents\Metanet\N++";
+        private string profilePath = (string)Registry.GetValue("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "Personal", "null") + @"\Metanet\N++";
         private string screenshotsPath = @"\userdata\64929984\760\remote\230270\screenshots";
-        private string savePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\N++Assistant";
+        //private string savePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\N++Assistant";
+        private string savePath = (string)Registry.GetValue("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "Local AppData", "null") + @"\N++Assistant";
 
         static Thread MyLoadingThread = null;
         static Thread MyReadingTextThread = null;
@@ -34,165 +37,195 @@ namespace N__Assistant
 
         public Form1()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
 
-            // get rid of "The request was aborted: Could not create SSL/TLS secure channel" error that happens on some versions of windows
-            ServicePointManager.Expect100Continue = true;
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                // get rid of "The request was aborted: Could not create SSL/TLS secure channel" error that happens on some versions of windows
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-            // get steam path
-            string steampath = (string)Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\Valve\\Steam", "InstallPath", "null");
-            if (steampath == "null")
-            {
-                steampath = (string)Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Valve\\Steam", "InstallPath", "null");
-            }
-            if (steampath == "null")
-            {
-                throw new FileNotFoundException("Steam Not Found, WTF Bro is your pc good?");
-            }
-            if (!Directory.Exists(steampath + "\\steamapps\\"))
-            {
-                throw new FileNotFoundException("steamapps Not Found");
-            }
-            screenshotsPath = steampath + screenshotsPath;
-            string[] configLines = File.ReadAllLines(steampath + "\\steamapps\\libraryfolders.vdf");
-            List<string> possiblepaths = new List<string>() { steampath };
-            foreach (string configline in configLines)
-            {
-                if (configline.Contains("\t\t\"path\"\t\t\""))
+                // get steam path
+                string steampath = (string)Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\Valve\\Steam", "InstallPath", "null");
+                if (steampath == "null")
                 {
-                    possiblepaths.Add(configline.Replace("\t\t\"path\"\t\t\"", "").Replace("\\\\", "\\").Replace("\"", ""));
+                    steampath = (string)Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Valve\\Steam", "InstallPath", "null");
                 }
-            }
-            foreach (string possiblepath in possiblepaths)
-            {
-                if (Directory.Exists(possiblepath + "\\steamapps\\common\\N++"))
+                if (steampath == "null")
                 {
-                    steamGamePath = possiblepath + "\\steamapps\\common\\N++";
-                    break;
+                    throw new FileNotFoundException("Steam Not Found, WTF Bro is your pc good?");
                 }
+                if (!Directory.Exists(steampath + "\\steamapps\\"))
+                {
+                    throw new FileNotFoundException("steamapps Not Found");
+                }
+                screenshotsPath = steampath + screenshotsPath;
+                string[] configLines = File.ReadAllLines(steampath + "\\steamapps\\libraryfolders.vdf");
+                List<string> possiblepaths = new List<string>() { steampath };
+                foreach (string configline in configLines)
+                {
+                    if (configline.Contains("\t\t\"path\"\t\t\""))
+                    {
+                        possiblepaths.Add(configline.Replace("\t\t\"path\"\t\t\"", "").Replace("\\\\", "\\").Replace("\"", ""));
+                    }
+                }
+                foreach (string possiblepath in possiblepaths)
+                {
+                    if (Directory.Exists(possiblepath + "\\steamapps\\common\\N++"))
+                    {
+                        steamGamePath = possiblepath + "\\steamapps\\common\\N++";
+                        break;
+                    }
+                }
+                if (steamGamePath == "")
+                {
+                    throw new FileNotFoundException("N++ not installed in steam");
+                }
+
+                // create backup directories if they dont exist
+                if (!Directory.Exists(savePath)) Directory.CreateDirectory(savePath);
+                if (!Directory.Exists(savePath + @"\Profiles")) Directory.CreateDirectory(savePath + @"\Profiles");
+                if (!Directory.Exists(savePath + @"\Sounds")) Directory.CreateDirectory(savePath + @"\Sounds");
+                if (!Directory.Exists(savePath + @"\Replays")) Directory.CreateDirectory(savePath + @"\Replays");
+                if (!Directory.Exists(savePath + @"\Levels")) Directory.CreateDirectory(savePath + @"\Levels");
+                if (!Directory.Exists(savePath + @"\Maps")) Directory.CreateDirectory(savePath + @"\Maps");
+                if (!Directory.Exists(savePath + @"\Palettes")) Directory.CreateDirectory(savePath + @"\Palettes");
+                if (!Directory.Exists(savePath + @"\MapPacks")) Directory.CreateDirectory(savePath + @"\MapPacks");
+
+                MyLoadingThread = new Thread(new ThreadStart(DownloadStuff));
+                MyLoadingThread.IsBackground = true;
+                MyLoadingThread.Start();
+
+                // create palettes directory in steam game dir if it doesnt exist (it's needed to install the custom palettes)
+                if (!Directory.Exists(steamGamePath + @"\NPP\Palettes")) Directory.CreateDirectory(steamGamePath + @"\NPP\Palettes");
+
+                MyReadingTextThread = new Thread(new ThreadStart(ReadNPPTextLogs));
+                MyReadingTextThread.IsBackground = true;
+                MyReadingTextThread.Start();
+
+                //TODO: save user settings and reload the same on launch
+                // set checkbox on profile backup default on
+                checkedListBox1.SetItemChecked(0, true);
+                // set checkbox on level editor backup default on
+                checkedListBox1.SetItemChecked(2, true);
+
+                // initialize background worker for backup now button
+                bgwBackupNow.DoWork += new DoWorkEventHandler(bgwBackupNow_DoWork);
+                bgwBackupNow.ProgressChanged += new ProgressChangedEventHandler(bgwBackupNow_ProgressChanged);
+                bgwBackupNow.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bgwBackupNow_RunWorkerCompleted);
+                bgwBackupNow.WorkerReportsProgress = true;
+
+                tabControl1.Selecting += new TabControlCancelEventHandler(tabControl1_Selecting);
+
+                loadProfile.Enabled = false;
+                deleteProfile.Enabled = false;
             }
-            if (steamGamePath == "")
-            {
-                throw new FileNotFoundException("N++ not installed in steam");
+            catch (Exception exc) {
+                MessageBox.Show("Coulnd't initialize because: " + exc.Message);
             }
-
-            // create backup directories if they dont exist
-            if (!Directory.Exists(savePath)) Directory.CreateDirectory(savePath);
-            if (!Directory.Exists(savePath + @"\Profiles")) Directory.CreateDirectory(savePath + @"\Profiles");
-            if (!Directory.Exists(savePath + @"\Sounds")) Directory.CreateDirectory(savePath + @"\Sounds");
-            if (!Directory.Exists(savePath + @"\Replays")) Directory.CreateDirectory(savePath + @"\Replays");
-            if (!Directory.Exists(savePath + @"\Levels")) Directory.CreateDirectory(savePath + @"\Levels");
-            if (!Directory.Exists(savePath + @"\Maps")) Directory.CreateDirectory(savePath + @"\Maps");
-            if (!Directory.Exists(savePath + @"\Palettes")) Directory.CreateDirectory(savePath + @"\Palettes");
-            if (!Directory.Exists(savePath + @"\MapPacks")) Directory.CreateDirectory(savePath + @"\MapPacks");
-
-            MyLoadingThread = new Thread(new ThreadStart(DownloadStuff));
-            MyLoadingThread.IsBackground = true;
-            MyLoadingThread.Start();
-
-            // create palettes directory in steam game dir if it doesnt exist (it's needed to install the custom palettes)
-            if (!Directory.Exists(steamGamePath + @"\NPP\Palettes")) Directory.CreateDirectory(steamGamePath + @"\NPP\Palettes");
-
-            //TODO: save user settings and reload the same on launch
-            // set checkbox on profile backup default on
-            checkedListBox1.SetItemChecked(0, true);
-            // set checkbox on level editor backup default on
-            checkedListBox1.SetItemChecked(2, true);
-
-            // initialize background worker for backup now button
-            bgwBackupNow.DoWork += new DoWorkEventHandler(bgwBackupNow_DoWork);
-            bgwBackupNow.ProgressChanged += new ProgressChangedEventHandler(bgwBackupNow_ProgressChanged);
-            bgwBackupNow.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bgwBackupNow_RunWorkerCompleted);
-            bgwBackupNow.WorkerReportsProgress = true;
-
-            tabControl1.Selecting += new TabControlCancelEventHandler(tabControl1_Selecting);
-
-            nppconfText.Text = File.ReadAllText(profilePath + @"\npp.conf");
-            npplogText.Text = File.ReadAllText(profilePath + @"\NPPLog.txt");
-
-            loadProfile.Enabled = false;
-            deleteProfile.Enabled = false;
         }
 
         private void DownloadStuff()
         {
-            // download default Metanet Palettes.zip pack to backup dir
-            if (!Directory.Exists(savePath + @"\Palettes\Palettes"))
-            {
-                try
+            try { 
+                // download default Metanet Palettes.zip pack to backup dir
+                if (!Directory.Exists(savePath + @"\Palettes\Palettes"))
                 {
-                    string myStringWebResource = "https://cdn.discordapp.com/attachments/197793786389200896/592821804746276864/Palettes.zip";
-                    WebClient myWebClient = new WebClient();
-                    string filename = savePath + @"\Palettes\Palettes.zip";
-                    myWebClient.DownloadFile(myStringWebResource, filename);
-                    myWebClient.Dispose();
-                    ZipFile.ExtractToDirectory(filename, savePath + @"\Palettes");
-                    File.Delete(savePath + @"\Palettes\Palettes.zip");
-                    statusLabel.Text = "Done downloading Metanet allpalettes.zip";
+                    try
+                    {
+                        string myStringWebResource = "https://cdn.discordapp.com/attachments/197793786389200896/592821804746276864/Palettes.zip";
+                        WebClient myWebClient = new WebClient();
+                        string filename = savePath + @"\Palettes\Palettes.zip";
+                        myWebClient.DownloadFile(myStringWebResource, filename);
+                        myWebClient.Dispose();
+                        ZipFile.ExtractToDirectory(filename, savePath + @"\Palettes");
+                        File.Delete(savePath + @"\Palettes\Palettes.zip");
+                        statusLabel.Text = "Done downloading Metanet allpalettes.zip";
+                    }
+                    catch (Exception exc)
+                    {
+                        MessageBox.Show("Couldn't download Metanet Palettes pack because: " + exc.Message);
+                    }
                 }
-                catch (Exception exc)
+
+                // download NPP_AllLevels.zip to backup dir
+                if (!Directory.Exists(savePath + @"\Maps\NPP_AllLevels"))
                 {
-                    MessageBox.Show("Couldn't download Metanet Palettes pack because: " + exc.Message);
+                    try
+                    {
+                        string myStringWebResource = "https://cdn.discordapp.com/attachments/592913929630384138/890428300911050752/NPP_AllLevels.zip";
+                        WebClient myWebClient = new WebClient();
+                        string filename = savePath + @"\Maps\NPP_AllLevels.zip";
+                        myWebClient.DownloadFile(myStringWebResource, filename);
+                        myWebClient.Dispose();
+                        Directory.CreateDirectory(savePath + @"\Maps\NPP_AllLevels");
+                        ZipFile.ExtractToDirectory(filename, savePath + @"\Maps\NPP_AllLevels");
+                        File.Delete(savePath + @"\Maps\NPP_AllLevels.zip");
+                        statusLabel.Text = "Done downloading NPP_AllLevels.zip";
+                    }
+                    catch (Exception exc)
+                    {
+                        MessageBox.Show("Couldn't download Metanet Palettes pack because: " + exc.Message);
+                    }
+                }
+
+                // list spreadsheet of new sound packs
+                // https://docs.google.com/spreadsheets/d/18PshamVuDNyH396a7U3YDFQmCw18s4gIVZ_WrFODRd4/edit#gid=0
+                if (spreadsheetSoundpacks.Items.Count == 0)
+                {
+                    //spreadsheetSoundpacks.Items.Clear();
+                    PopulateListBoxWithSpreadsheetData(spreadsheetSoundpacks, 0, COMMUNITY_SOUNDPACKS, new APIKey().key, "Sound Packs");
+                    installSpreadsheetSoundpack.Enabled = false;
+                    statusLabel.Text = "Getting community sound packs spreadsheet data ...";
+                }
+
+                // populate community palettes from spreadsheet link
+                // https://docs.google.com/spreadsheets/d/1I2f87Qhfs6rxzZq5dQRDbLKYyaGLqTdCkLqfNfrw1Mk/edit#gid=0
+                if (communityPalettesList.Items.Count == 0)
+                {
+                    //communityPalettesList.Items.Clear();
+                    PopulateListBoxWithSpreadsheetData(communityPalettesList, 0, COMMUNITY_PALETTES, new APIKey().key, "Palettes");
+                    installCommunityPalette.Enabled = false;
+                    statusLabel.Text = "Getting community palettes spreadsheet data ...";
+                }
+
+                // populate community map packs from spreadsheet link
+                // https://docs.google.com/spreadsheets/d/1M9W3_jk3nULledALJNzRDRRpNhIofeTD2SF8ES6vCy8/edit#gid=0
+                if (communityMapPacksList.Items.Count == 0)
+                {
+                    //communityMapPacksList.Items.Clear();
+                    PopulateListBoxWithSpreadsheetData(communityMapPacksList, 0, COMMUNITY_MAPPACKS, new APIKey().key, "Map Packs");
+                    installCommunityMapPack.Enabled = false;
+                    statusLabel.Text = "Getting community map packs spreadsheet data ...";
                 }
             }
-
-            // download NPP_AllLevels.zip to backup dir
-            if (!Directory.Exists(savePath + @"\Maps\NPP_AllLevels"))
+            catch (Exception exc)
             {
-                try
-                {
-                    string myStringWebResource = "https://cdn.discordapp.com/attachments/592913929630384138/890428300911050752/NPP_AllLevels.zip";
-                    WebClient myWebClient = new WebClient();
-                    string filename = savePath + @"\Maps\NPP_AllLevels.zip";
-                    myWebClient.DownloadFile(myStringWebResource, filename);
-                    myWebClient.Dispose();
-                    Directory.CreateDirectory(savePath + @"\Maps\NPP_AllLevels");
-                    ZipFile.ExtractToDirectory(filename, savePath + @"\Maps\NPP_AllLevels");
-                    File.Delete(savePath + @"\Maps\NPP_AllLevels.zip");
-                    statusLabel.Text = "Done downloading NPP_AllLevels.zip";
-                }
-                catch (Exception exc)
-                {
-                    MessageBox.Show("Couldn't download Metanet Palettes pack because: " + exc.Message);
-                }
-            }
-
-            // list spreadsheet of new sound packs
-            // https://docs.google.com/spreadsheets/d/18PshamVuDNyH396a7U3YDFQmCw18s4gIVZ_WrFODRd4/edit#gid=0
-            if (spreadsheetSoundpacks.Items.Count == 0)
-            {
-                //spreadsheetSoundpacks.Items.Clear();
-                PopulateListBoxWithSpreadsheetData(spreadsheetSoundpacks, 0, COMMUNITY_SOUNDPACKS, new APIKey().key, "Sound Packs");
-                installSpreadsheetSoundpack.Enabled = false;
-                statusLabel.Text = "Getting community sound packs spreadsheet data ...";
-            }
-
-            // populate community palettes from spreadsheet link
-            // https://docs.google.com/spreadsheets/d/1I2f87Qhfs6rxzZq5dQRDbLKYyaGLqTdCkLqfNfrw1Mk/edit#gid=0
-            if (communityPalettesList.Items.Count == 0)
-            {
-                //communityPalettesList.Items.Clear();
-                PopulateListBoxWithSpreadsheetData(communityPalettesList, 0, COMMUNITY_PALETTES, new APIKey().key, "Palettes");
-                installCommunityPalette.Enabled = false;
-                statusLabel.Text = "Getting community palettes spreadsheet data ...";
-            }
-
-            // populate community map packs from spreadsheet link
-            // https://docs.google.com/spreadsheets/d/1M9W3_jk3nULledALJNzRDRRpNhIofeTD2SF8ES6vCy8/edit#gid=0
-            if (communityMapPacksList.Items.Count == 0)
-            {
-                //communityMapPacksList.Items.Clear();
-                PopulateListBoxWithSpreadsheetData(communityMapPacksList, 0, COMMUNITY_MAPPACKS, new APIKey().key, "Map Packs");
-                installCommunityMapPack.Enabled = false;
-                statusLabel.Text = "Getting community map packs spreadsheet data ...";
+                MessageBox.Show("Coulnd't download because: " + exc.Message);
             }
         }
 
         private void ReadNPPTextLogs()
         {
-            string nppconfText_Text = File.ReadAllText(profilePath + @"\npp.conf");
-            string npplogText_Text = File.ReadAllText(profilePath + @"\NPPLog.txt");
+            string nppconfText_Text = "";
+            string npplogText_Text = "";
+            
+            try
+            {
+                nppconfText_Text = File.ReadAllText(profilePath + @"\npp.conf");
+            } catch (Exception exc)
+            {
+                MessageBox.Show("Couldn't read npp.conf! \n" + exc.Message);
+            }
+
+            try
+            {
+                npplogText_Text = File.ReadAllText(profilePath + @"\NPPLog.txt");
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show("Couldn't read NPPLog.txt! \n" + exc.Message);
+            }
 
             if (InvokeRequired)
             {
@@ -212,11 +245,7 @@ namespace N__Assistant
             // switch to status / home tab
             if (current == tabStatus)
             {
-                if (nppconfText.Text == "") { 
-                    MyReadingTextThread = new Thread(new ThreadStart(ReadNPPTextLogs));
-                    MyReadingTextThread.IsBackground = true;
-                    MyReadingTextThread.Start();
-                }
+                
             }
 
             // switch to profile tab
@@ -715,7 +744,7 @@ namespace N__Assistant
         {
             if (DetectNPPRunning() == true)
             {
-                MessageBox.Show("Please close N++ before installing maps to the editor");
+                MessageBox.Show("Please close N++ before installing palettes");
                 return;
             }
 
@@ -1386,8 +1415,15 @@ namespace N__Assistant
 
         private void npplogRefresh_Click(object sender, EventArgs e)
         {
-            npplogText.Text = File.ReadAllText(profilePath + @"\NPPLog.txt");
-            statusLabel.Text = "Done Refreshing NPPLog.txt";
+            try
+            {
+                npplogText.Text = File.ReadAllText(profilePath + @"\NPPLog.txt");
+                statusLabel.Text = "Done Refreshing NPPLog.txt";
+            } catch(Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+            }
+            
         }
 
         private void launchNPP_Click(object sender, EventArgs e)
@@ -1722,6 +1758,47 @@ namespace N__Assistant
                     File.Delete(profilePath + @"\nprofile-old");
                 }
             }
+        }
+
+        private void searchMapName_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == 13)
+            {
+                //string myString = searchMapName.Text;
+                SearchRecursive(metanetMapsList, metanetMapsList.Nodes, searchMapName.Text);
+                //MessageBox.Show("Results for: " + searchMapName.Text);
+            }
+        }
+
+        private bool SearchRecursive(TreeView treeView1, IEnumerable nodes, string searchFor)
+        {
+            foreach (TreeNode node in nodes)
+            {
+                if (node.Text.ToLower().Contains(searchFor.ToLower()))
+                {
+                    treeView1.SelectedNode = node;
+                    node.BackColor = System.Drawing.Color.Yellow;
+                } else
+                {
+                    node.BackColor = System.Drawing.Color.Transparent;
+                }
+                if (SearchRecursive(treeView1, node.Nodes, searchFor))
+                    return true;
+            }
+            return false;
+        }
+
+        private void searchMapName_Enter(object sender, EventArgs e)
+        {
+            string myString = searchMapName.Text;
+            if (myString.CompareTo("search") == 0) {
+                searchMapName.Text = "";
+            }
+        }
+
+        private void searchTextInMetanetMaps_Click(object sender, EventArgs e)
+        {
+            SearchRecursive(metanetMapsList, metanetMapsList.Nodes, searchMapName.Text);
         }
     }
     public class sheetMap
