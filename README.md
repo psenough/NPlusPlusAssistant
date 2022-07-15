@@ -78,6 +78,8 @@ If you just want to run it, you don't need to compile it from source, just downl
 
 * incoherent status message style
 
+* some map level id's are wrong in co-op and race ultimate modes
+
 ## Credits:
 
 * main development: ps

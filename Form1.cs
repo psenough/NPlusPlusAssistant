@@ -302,23 +302,23 @@ namespace N__Assistant
                 // https://cdn.discordapp.com/attachments/197765375503368192/580483404533989396/NPP_AllLevels.zip
                 string dir = savePath + @"\Maps\NPP_AllLevels";
                 metanetMapsList.Nodes.Clear();
-                LoadFiles(dir + @"\SI", metanetMapsList.Nodes.Add("Solo Intro"));
-                LoadFiles(dir + @"\S", metanetMapsList.Nodes.Add("Solo N++"));
-                LoadFiles(dir + @"\S2", metanetMapsList.Nodes.Add("Solo Ultimate"));
-                LoadFiles(dir + @"\SL", metanetMapsList.Nodes.Add("Solo Legacy"));
-                LoadFiles(dir + @"\SL2", metanetMapsList.Nodes.Add("Solo Legacy Ultimate"));
-                LoadFiles(dir + @"\SS", metanetMapsList.Nodes.Add("Solo !"));
-                LoadFiles(dir + @"\SS2", metanetMapsList.Nodes.Add("Solo ?"));
-                LoadFiles(dir + @"\CI", metanetMapsList.Nodes.Add("Co-op Intro"));
-                LoadFiles(dir + @"\C", metanetMapsList.Nodes.Add("Co-op N++"));
-                LoadFiles(dir + @"\C2", metanetMapsList.Nodes.Add("Co-op Ultimate"));
-                LoadFiles(dir + @"\CL", metanetMapsList.Nodes.Add("Co-op Legacy"));
-                LoadFiles(dir + @"\CL2", metanetMapsList.Nodes.Add("Co-op Legacy Ultimate"));
-                LoadFiles(dir + @"\RI", metanetMapsList.Nodes.Add("Race Intro"));
-                LoadFiles(dir + @"\R", metanetMapsList.Nodes.Add("Race N++"));
-                LoadFiles(dir + @"\R2", metanetMapsList.Nodes.Add("Race Ultimate"));
-                LoadFiles(dir + @"\RL", metanetMapsList.Nodes.Add("Race Legacy"));
-                LoadFiles(dir + @"\RL2", metanetMapsList.Nodes.Add("Race Legacy Ultimate"));
+                LoadMapFiles(dir + @"\SI", "SI-", 5,5,0, metanetMapsList.Nodes.Add("Solo Intro"));
+                LoadMapFiles(dir + @"\S", "S-", 20,6,0, metanetMapsList.Nodes.Add("Solo N++"));
+                LoadMapFiles(dir + @"\S2", "SU-", 20,6,0, metanetMapsList.Nodes.Add("Solo Ultimate"));
+                LoadMapFiles(dir + @"\SL", "SL-", 20,6,0, metanetMapsList.Nodes.Add("Solo Legacy"));
+                LoadMapFiles(dir + @"\SL2", "SD-", 20,6,0, metanetMapsList.Nodes.Add("Solo Legacy Discarded"));
+                LoadMapFiles(dir + @"\SS", "?-", 4,6,0, metanetMapsList.Nodes.Add("Solo ?"));
+                LoadMapFiles(dir + @"\SS2", "!-", 4,6,0, metanetMapsList.Nodes.Add("Solo !"));
+                LoadMapFiles(dir + @"\CI", "CI-", 2,5,0, metanetMapsList.Nodes.Add("Co-op Intro"));
+                LoadMapFiles(dir + @"\C", "C-", 10,6,0, metanetMapsList.Nodes.Add("Co-op N++"));
+                LoadMapFiles(dir + @"\C2", "CU-", 10,6,10, metanetMapsList.Nodes.Add("Co-op Ultimate"));
+                LoadMapFiles(dir + @"\CL", "CL-",  5,5,0, metanetMapsList.Nodes.Add("Co-op Legacy"));
+                LoadMapFiles(dir + @"\CL2", "CL-", 6,6,5, metanetMapsList.Nodes.Add("Co-op Legacy Ultimate"));
+                LoadMapFiles(dir + @"\RI", "RI-", 1,5,0, metanetMapsList.Nodes.Add("Race Intro"));
+                LoadMapFiles(dir + @"\R", "R-", 10,5,0, metanetMapsList.Nodes.Add("Race N++"));
+                LoadMapFiles(dir + @"\R2", "RU-", 10,5,10, metanetMapsList.Nodes.Add("Race Ultimate"));
+                LoadMapFiles(dir + @"\RL", "RL-", 10,5,0, metanetMapsList.Nodes.Add("Race Legacy"));
+                LoadMapFiles(dir + @"\RL2", "RL-", 10,5,10, metanetMapsList.Nodes.Add("Race Legacy Ultimate"));
                 installMetanetMap.Enabled = false;
 
                 // list local backups
@@ -1257,7 +1257,7 @@ namespace N__Assistant
             else installMetanetMap.Enabled = false;
         }
 
-        private void LoadSubDirectories(string dir, TreeNode td)
+        /*private void LoadSubDirectories(string dir, TreeNode td)
         {
             // Get all subdirectories  
             string[] subdirectoryEntries = Directory.GetDirectories(dir);
@@ -1314,16 +1314,38 @@ namespace N__Assistant
                 //UpdateProgress();
 
             }
-        }
-        private void LoadFiles(string dir, TreeNode td)
+        }*/
+
+        private void LoadMapFiles(string dir, string shortname, int cols, int rows, int startRowIndex, TreeNode td)
         {
             string[] Files = Directory.GetFiles(dir, "*.*");
+
+            int counter = 0;
+            int row = 0;
+            int col = startRowIndex;
 
             // Loop through them to see files  
             foreach (string file in Files)
             {
+
+                string rowchar = ((char)(65 + row)).ToString();
+                if (row == 5) rowchar = "X";
+                string idname = "[" + shortname + rowchar + "-" + col.ToString().PadLeft(2,'0') + "-" + (counter%cols).ToString().PadLeft(2, '0') + "] ";
+
+                counter++;
+                if (counter >= rows)
+                {
+                    counter = 0;
+                    row ++;
+                    if (row >= rows)
+                    {
+                        row = 0;
+                        col++;
+                    }
+                }
+
                 FileInfo fi = new FileInfo(file);
-                TreeNode tds = td.Nodes.Add(fi.Name);
+                TreeNode tds = td.Nodes.Add(idname + fi.Name);
                 tds.Tag = fi.FullName;
                 tds.StateImageIndex = 1;
                 //UpdateProgress();
