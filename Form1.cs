@@ -1330,13 +1330,13 @@ namespace N__Assistant
 
                 string rowchar = ((char)(65 + row)).ToString();
                 if (row == 5) rowchar = "X";
-                string idname = "[" + shortname + rowchar + "-" + col.ToString().PadLeft(2,'0') + "-" + (counter%cols).ToString().PadLeft(2, '0') + "] ";
+                string idname = "[" + shortname + rowchar + "-" + col.ToString().PadLeft(2,'0') + "-" + (counter).ToString().PadLeft(2, '0') + "] ";
 
                 counter++;
-                if (counter >= rows)
+                if (counter >= 5)
                 {
                     counter = 0;
-                    row ++;
+                    row++;
                     if (row >= rows)
                     {
                         row = 0;
