@@ -6,6 +6,20 @@ Needs Visual Studio Community 2019 with C# .Net stuff installed to compile from 
 
 If you just want to run it, you don't need to compile it from source, just download the zip of the latest version from [releases](https://github.com/psenough/NPlusPlusAssistant/releases), extract that to a folder and launch the .exe inside. First launch might take a little while to see anything happening since the application is creating missing directories and downloading default things from the internet that it'll only need to download once.
 
+## Screenshots
+
+![](screen01.jpg)
+
+![](screen02.jpg)
+
+![](screen03.jpg)
+
+![](screen04.jpg)
+
+![](screen05.jpg)
+
+![](screen06.jpg)
+
 ## Stuff it does:
 
 * autodetect main game asset folders and link their explorer folder paths
@@ -64,7 +78,7 @@ If you just want to run it, you don't need to compile it from source, just downl
 
 * multi-select install metanet palettes
 
-* show screenshots on github project readme
+* expose the different spreadsheet url and ids on a default xml (and editable on the GUI) to avoid recompiling the app to alter them
 
 ## Known issues:
 

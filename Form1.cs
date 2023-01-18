@@ -33,7 +33,9 @@ namespace N__Assistant
         private List<sheetMap> sheetMapList = new List<sheetMap>();
         private string COMMUNITY_PALETTES = "1I2f87Qhfs6rxzZq5dQRDbLKYyaGLqTdCkLqfNfrw1Mk";
         private string COMMUNITY_SOUNDPACKS = "18PshamVuDNyH396a7U3YDFQmCw18s4gIVZ_WrFODRd4";
-        private string COMMUNITY_MAPPACKS = "1M9W3_jk3nULledALJNzRDRRpNhIofeTD2SF8ES6vCy8";
+        //private string COMMUNITY_MAPPACKS = "1M9W3_jk3nULledALJNzRDRRpNhIofeTD2SF8ES6vCy8";
+        private string COMMUNITY_MAPPACKS = "18PshamVuDNyH396a7U3YDFQmCw18s4gIVZ_WrFODRd4";
+
 
         public Form1()
         {
@@ -194,7 +196,7 @@ namespace N__Assistant
                 if (communityMapPacksList.Items.Count == 0)
                 {
                     //communityMapPacksList.Items.Clear();
-                    PopulateListBoxWithSpreadsheetData(communityMapPacksList, 0, COMMUNITY_MAPPACKS, new APIKey().key, "Map Packs");
+                    PopulateListBoxWithSpreadsheetData(communityMapPacksList, 1, COMMUNITY_MAPPACKS, new APIKey().key, "Map Packs");
                     installCommunityMapPack.Enabled = false;
                     statusLabel.Text = "Getting community map packs spreadsheet data ...";
                 }
