@@ -63,7 +63,7 @@ namespace Popcron.Sheets
             }
         }
 
-        private CellData raw;
+        public CellData raw;
 
         internal Cell()
         {

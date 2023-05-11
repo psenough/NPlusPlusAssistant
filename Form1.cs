@@ -193,10 +193,11 @@ namespace N__Assistant
 
                 // populate community map packs from spreadsheet link
                 // https://docs.google.com/spreadsheets/d/1M9W3_jk3nULledALJNzRDRRpNhIofeTD2SF8ES6vCy8/edit#gid=0
+                // https://docs.google.com/spreadsheets/d/18PshamVuDNyH396a7U3YDFQmCw18s4gIVZ_WrFODRd4/edit#gid=1470738075
                 if (communityMapPacksList.Items.Count == 0)
                 {
                     //communityMapPacksList.Items.Clear();
-                    PopulateListBoxWithSpreadsheetData(communityMapPacksList, 1, COMMUNITY_MAPPACKS, new APIKey().key, "Map Packs");
+                    PopulateListBoxWithSpreadsheetData(communityMapPacksList, 2, COMMUNITY_MAPPACKS, new APIKey().key, "Map Packs");
                     installCommunityMapPack.Enabled = false;
                     statusLabel.Text = "Getting community map packs spreadsheet data ...";
                 }
@@ -761,7 +762,7 @@ namespace N__Assistant
                     if (mapSheet.sheetId.Equals(COMMUNITY_PALETTES) == true)
                     {
                         Cell[,] data = mapSheet.sheetData.Data;
-                        myStringWebResource = data[3, communityPalettesList.SelectedIndex + 1].Value;
+                        myStringWebResource = data[3, communityPalettesList.SelectedIndex + 1].raw.hyperlink;
                     }
                 }
 
