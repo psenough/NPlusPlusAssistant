@@ -12,6 +12,7 @@ using Popcron.Sheets;
 using System.Globalization;
 using System.Threading;
 using System.Collections;
+using System.Text;
 
 namespace N__Assistant
 {
@@ -93,6 +94,7 @@ namespace N__Assistant
                 if (!Directory.Exists(savePath + @"\Maps")) Directory.CreateDirectory(savePath + @"\Maps");
                 if (!Directory.Exists(savePath + @"\Palettes")) Directory.CreateDirectory(savePath + @"\Palettes");
                 if (!Directory.Exists(savePath + @"\MapPacks")) Directory.CreateDirectory(savePath + @"\MapPacks");
+                if (!Directory.Exists(savePath + @"\NPPDLL")) Directory.CreateDirectory(savePath + @"\NPPDLL");
 
                 MyLoadingThread = new Thread(new ThreadStart(DownloadStuff));
                 MyLoadingThread.IsBackground = true;
@@ -100,6 +102,9 @@ namespace N__Assistant
 
                 // create palettes directory in steam game dir if it doesnt exist (it's needed to install the custom palettes)
                 if (!Directory.Exists(steamGamePath + @"\NPP\Palettes")) Directory.CreateDirectory(steamGamePath + @"\NPP\Palettes");
+
+                // copy npp.dll into \NPPDLL if it doesn't exist
+                if (!File.Exists(savePath + @"\NPPDLL\npp.dll")) File.Copy(steamGamePath + @"\npp.dll", savePath + @"\NPPDLL\npp.dll");
 
                 MyReadingTextThread = new Thread(new ThreadStart(ReadNPPTextLogs));
                 MyReadingTextThread.IsBackground = true;
@@ -119,8 +124,6 @@ namespace N__Assistant
 
                 tabControl1.Selecting += new TabControlCancelEventHandler(tabControl1_Selecting);
 
-                loadProfile.Enabled = false;
-                deleteProfile.Enabled = false;
             }
             catch (Exception exc) {
                 MessageBox.Show("Coulnd't initialize because: " + exc.Message);
@@ -199,6 +202,7 @@ namespace N__Assistant
                     //communityMapPacksList.Items.Clear();
                     PopulateListBoxWithSpreadsheetData(communityMapPacksList, 2, COMMUNITY_MAPPACKS, new APIKey().key, "Map Packs");
                     installCommunityMapPack.Enabled = false;
+                    patchLeaderboardsForMapPack.Enabled = false;
                     statusLabel.Text = "Getting community map packs spreadsheet data ...";
                 }
             }
@@ -1025,7 +1029,7 @@ namespace N__Assistant
             PopulateListBoxWithFileType(soundpackBackups, savePath + @"\Sounds", "*.zip");
             installSoundpackButton.Enabled = false;
             deleteSoundpackBackupButton.Enabled = false;
-            statusLabel.Text = "Done Backup Current Sound Pack!";
+            statusLabel.Text = "Done backup of current sound pack!";
         }
 
         private void soundpackBackups_SelectedIndexChanged(object sender, EventArgs e)
@@ -1176,7 +1180,7 @@ namespace N__Assistant
                 // disable the button to avoid duplicate backups
                 backupSelectedMaps.Enabled = false;
 
-                statusLabel.Text = "Done Backup of Selected Maps!";
+                statusLabel.Text = "Done backup of selected maps!";
             }
             catch (Exception exc)
             {
@@ -1493,7 +1497,66 @@ namespace N__Assistant
 
         private void communityMapPacksList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            installCommunityMapPack.Enabled = true;
+            // check if map has a download url, allow installing if it does
+            try
+            {
+                string myStringWebResource = null;
+                WebClient myWebClient = new WebClient();
+
+                // get the url
+                foreach (var mapSheet in sheetMapList)
+                {
+                    if (mapSheet.sheetId.Equals(COMMUNITY_MAPPACKS) == true)
+                    {
+                        Cell[,] data = mapSheet.sheetData.Data;
+                        myStringWebResource = data[3, communityMapPacksList.SelectedIndex + 1].Value;
+                    }
+                }
+
+                if (myStringWebResource != null && !myStringWebResource.Equals(""))
+                {
+                    installCommunityMapPack.Enabled = true;
+                }
+                else
+                {
+                    installCommunityMapPack.Enabled = false;
+                }
+
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show("Error: " + exc.Message);
+            }
+            
+
+            // check if map has a custom leaderboard url, allow patching if it does
+            try
+            {
+                string myStringWebResource = null;
+                WebClient myWebClient = new WebClient();
+
+                // get the url
+                foreach (var mapSheet in sheetMapList)
+                {
+                    if (mapSheet.sheetId.Equals(COMMUNITY_MAPPACKS) == true)
+                    {
+                        Cell[,] data = mapSheet.sheetData.Data;
+                        myStringWebResource = data[5, communityMapPacksList.SelectedIndex + 1].Value;
+                    }
+                }
+
+                if (myStringWebResource != null && !myStringWebResource.Equals(""))
+                {
+                    patchLeaderboardsForMapPack.Enabled = true;
+                } else {
+                    patchLeaderboardsForMapPack.Enabled = false;
+                }
+               
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show("Error: " + exc.Message);
+            }
         }
 
         private void backupActiveProfile_Click(object sender, EventArgs e)
@@ -1722,7 +1785,7 @@ namespace N__Assistant
                 return;
             }
 
-            DialogResult dialogResult = MessageBox.Show("Are you sure you wish to replace your current game levels map pack with this one? This process is irreversible if you haven't done a recent backup.", "Replace Existing Sounds?", MessageBoxButtons.YesNo);
+            DialogResult dialogResult = MessageBox.Show("Are you sure you wish to replace your current game levels map pack with this one? This process is irreversible if you haven't done a recent backup.", "Install Map Pack?", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
             {
                 try
@@ -1762,7 +1825,7 @@ namespace N__Assistant
             }
         }
 
-        private void resetProfile_Click(object sender, EventArgs e)
+        private void ResetProfile()
         {
             if (DetectNPPRunning() == true)
             {
@@ -1783,6 +1846,11 @@ namespace N__Assistant
                     File.Delete(profilePath + @"\nprofile-old");
                 }
             }
+        }
+
+        private void resetProfile_Click(object sender, EventArgs e)
+        {
+            ResetProfile();
         }
 
         private void searchMapName_KeyPress(object sender, KeyPressEventArgs e)
@@ -1824,6 +1892,206 @@ namespace N__Assistant
         private void searchTextInMetanetMaps_Click(object sender, EventArgs e)
         {
             SearchRecursive(metanetMapsList, metanetMapsList.Nodes, searchMapName.Text);
+        }
+
+        private void backupPalettes_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string[] dirs = Directory.GetDirectories(steamGamePath + @"\NPP\Palettes");
+                foreach (string dir in dirs)
+                {
+                    string[] splits = dir.Split('\\');
+                    string palName = splits[splits.Length - 1];
+                    ZipFile.CreateFromDirectory(dir, savePath + @"\Palettes\" + palName + DateTime.Now.ToString("yyMMddHHmm") + ".zip");
+                }
+                localBackupPalettesList.Items.Clear();
+                PopulateListBoxWithFileType(localBackupPalettesList, savePath + @"\Palettes", "*.zip");
+                installBackupPalette.Enabled = false;
+                deleteBackupPalette.Enabled = false;
+                statusLabel.Text = "Done with Backup of Installed Palettes!";
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show("Failed to zip palettes: {0}", exc.ToString());
+            }
+        }
+
+        private void linkSoundpackSpreadsheet_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://docs.google.com/spreadsheets/d/18PshamVuDNyH396a7U3YDFQmCw18s4gIVZ_WrFODRd4/edit#gid=0");
+        }
+
+        private void linkPalettesSpreadsheet_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://docs.google.com/spreadsheets/d/1I2f87Qhfs6rxzZq5dQRDbLKYyaGLqTdCkLqfNfrw1Mk/edit#gid=0");
+        }
+
+        private void linkMappacksSpreadsheet_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://docs.google.com/spreadsheets/d/18PshamVuDNyH396a7U3YDFQmCw18s4gIVZ_WrFODRd4/edit#gid=1470738075");
+        }
+
+        void ReplaceTextInFile(string fileName, string oldText, string newText, bool padwithNull)
+        {
+            byte[] fileBytes = File.ReadAllBytes(fileName),
+                oldBytes = Encoding.UTF8.GetBytes(oldText);
+            
+            byte[] newBytes = new byte[oldBytes.Length];
+            byte[] newStringBytes = Encoding.UTF8.GetBytes(newText);
+            for (int i=0; i<newStringBytes.Length; i++)
+            {
+                newBytes[i] = newStringBytes[i];
+            }
+
+            int index = IndexOfBytes(fileBytes, oldBytes);
+
+            if (index < 0)
+            {
+                // Text was not found
+                return;
+            }
+
+            /*if (padwithNull && (oldBytes.Length > newBytes.Length))
+            {
+                for (int i = newBytes.Length; i < oldBytes.Length; i++)
+                {
+                    newBytes[i] = 0;
+                }
+            }*/
+
+            byte[] newFileBytes =
+                new byte[fileBytes.Length + newBytes.Length - oldBytes.Length];
+
+            Buffer.BlockCopy(fileBytes, 0, newFileBytes, 0, index);
+            Buffer.BlockCopy(newBytes, 0, newFileBytes, index, newBytes.Length);
+            Buffer.BlockCopy(fileBytes, index + oldBytes.Length,
+                newFileBytes, index + newBytes.Length,
+                fileBytes.Length - index - oldBytes.Length);
+
+            File.WriteAllBytes(fileName, newFileBytes);
+        }
+
+        int IndexOfBytes(byte[] searchBuffer, byte[] bytesToFind)
+        {
+            for (int i = 0; i < searchBuffer.Length - bytesToFind.Length; i++)
+            {
+                bool success = true;
+
+                for (int j = 0; j < bytesToFind.Length; j++)
+                {
+                    if (searchBuffer[i + j] != bytesToFind[j])
+                    {
+                        success = false;
+                        break;
+                    }
+                }
+
+                if (success)
+                {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
+
+        private void patchLeaderboardsForMapPack_Click(object sender, EventArgs e)
+        {
+
+            if (DetectNPPRunning() == true)
+            {
+                MessageBox.Show("Please close N++ before installing map pack");
+                return;
+            }
+
+            DialogResult dialogResult = MessageBox.Show("Are you sure you wish to patch your N++ for this leaderboard?", "Patch N++?", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                try
+                {
+                    string myStringWebResource = null;
+                    WebClient myWebClient = new WebClient();
+
+                    // get the url
+                    foreach (var mapSheet in sheetMapList)
+                    {
+                        if (mapSheet.sheetId.Equals(COMMUNITY_MAPPACKS) == true)
+                        {
+                            Cell[,] data = mapSheet.sheetData.Data;
+                            myStringWebResource = data[5, communityMapPacksList.SelectedIndex + 1].Value;
+                        }
+                    }
+
+                    // check myStringWebResource is not null and has a string with correct length
+                    if (myStringWebResource != null && myStringWebResource.Length > 0)
+                    {
+                        // copy npp.dll into \NPPDLL if it doesn't exist
+                        if (!File.Exists(savePath + @"\NPPDLL\npp.dll")) File.Copy(steamGamePath + @"\npp.dll", savePath + @"\NPPDLL\npp.dll");
+
+                        File.Copy(savePath + @"\NPPDLL\npp.dll", savePath + @"\NPPDLL\npp_topatch.dll");
+
+                        // replace "https://dojo.nplusplus.ninja" with myStringWebResource
+                        ReplaceTextInFile(savePath + @"\NPPDLL\npp_topatch.dll", "https://dojo.nplusplus.ninja", myStringWebResource, true);
+
+                        File.Delete(steamGamePath + @"\npp.dll");
+
+                        File.Copy(savePath + @"\NPPDLL\npp_topatch.dll", steamGamePath + @"\npp.dll");
+
+                        File.Delete(savePath + @"\NPPDLL\npp_topatch.dll");
+
+                        patchLeaderboardsForMapPack.Enabled = false;
+                        statusLabel.Text = "Done patching leaderboards on N++ for map pack " + communityMapPacksList.SelectedItem.ToString();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Could not retrieve a valid patch string: " + myStringWebResource.ToString() + " (" + myStringWebResource.Length + ")");
+                    }
+
+                }
+                catch (Exception exc)
+                {
+                    MessageBox.Show("Couldn't install map pack because: " + exc.Message);
+                }
+            }
+
+        }
+
+        private void resetGameProfile_Click(object sender, EventArgs e)
+        {
+            ResetProfile();
+        }
+
+        private void originalMapPack_Click(object sender, EventArgs e)
+        {
+            // TODO: revert to original metanet maps
+        }
+
+        private void metanetLeaderboards_Click(object sender, EventArgs e)
+        {
+            if (DetectNPPRunning() == true)
+            {
+                MessageBox.Show("Please close N++ before installing map pack");
+                return;
+            }
+
+            DialogResult dialogResult = MessageBox.Show("Are you sure you wish to revert to the original Metanet leaderboards?", "Revert?", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                try
+                {
+                    if (File.Exists(savePath + @"\NPPDLL\npp.dll")) {
+                        File.Delete(steamGamePath + @"\npp.dll");
+                        File.Copy(savePath + @"\NPPDLL\npp.dll", steamGamePath + @"\npp.dll");
+                    }
+                    statusLabel.Text = "Done reverting to the original Metanet leaderboards!";
+                }
+                catch (Exception exc)
+                {
+                    MessageBox.Show("Couldn't revert to original Metanet leaderboards because: " + exc.Message);
+                }
+            }
+
         }
     }
     public class sheetMap

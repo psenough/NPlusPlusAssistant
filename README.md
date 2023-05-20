@@ -50,11 +50,15 @@ If you just want to run it, you don't need to compile it from source, just downl
 
 * button to launch n++ from within N++ Assistant
 
-* list community map packs (from [google spreadsheet](https://docs.google.com/spreadsheets/d/1M9W3_jk3nULledALJNzRDRRpNhIofeTD2SF8ES6vCy8/edit#gid=0]) and select which to install
+* list community map packs (from [google spreadsheet](https://docs.google.com/spreadsheets/d/18PshamVuDNyH396a7U3YDFQmCw18s4gIVZ_WrFODRd4/edit#gid=1470738075]) and select which to install
 
 * list all map packs in backup and select one to install or delete (with optional same timestamp profile)
 
+* backup and patching of npp.dll to support custom leaderboards
+
 ## Stuff it'll eventually do:
+
+* list currently install / last installed mods (soundpack, mappack, leaderboard hack) on status tab
 
 * option to refresh lists (in case people are renaming things on folder)
 
@@ -64,7 +68,7 @@ If you just want to run it, you don't need to compile it from source, just downl
 
 * better icon
 
-* display nprofile road to 100% completion details / corruption checks
+* display nprofile road to 100% completion details / corruption checks on profile tab
 
 * button to relaunch steam in offline/online mode (useful for speedrunning)
 
@@ -72,7 +76,7 @@ If you just want to run it, you don't need to compile it from source, just downl
 
 * option to change save/backup directory
 
-* note that mentions metanet palettes aren't listed ingame until you unlock them, even if they are in the Palettes directory, unless you rename them to something else; they are being included as installing options as references for people who want to make their own palettes
+* note mentioning metanet palettes aren't listed ingame until you unlock them, even if they are in the Palettes directory, unless you rename them to something else; they are being included as installing options as references for people who want to make their own palettes
 
 * support installing textpacks (like the [VZ pack by megajumpr](https://docs.google.com/spreadsheets/d/18PshamVuDNyH396a7U3YDFQmCw18s4gIVZ_WrFODRd4/edit#gid=1000190067))
 
@@ -80,7 +84,11 @@ If you just want to run it, you don't need to compile it from source, just downl
 
 * expose the different spreadsheet url and ids on a default xml (and editable on the GUI) to avoid recompiling the app to alter them
 
+* button to backup all maps in editor (coherence between tabs)
+
 ## Known issues:
+
+* `Cross-thread operation not valid:` error when changing to sound packs or map packs tab too quickly right after loading
 
 * rename buttons not working
 
@@ -101,3 +109,5 @@ If you just want to run it, you don't need to compile it from source, just downl
 * steam directory detection code: yupdaniel
 
 * beta-testing: cloudead, schmole, bigblargh
+
+* other assistance: eddy
