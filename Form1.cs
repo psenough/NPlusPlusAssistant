@@ -1932,13 +1932,13 @@ namespace N__Assistant
             System.Diagnostics.Process.Start("https://docs.google.com/spreadsheets/d/18PshamVuDNyH396a7U3YDFQmCw18s4gIVZ_WrFODRd4/edit#gid=1470738075");
         }
 
-        void ReplaceTextInFile(string fileName, string oldText, string newText, bool padwithNull)
+        void ReplaceTextInFile(string fileName, string oldText, string newText)
         {
             byte[] fileBytes = File.ReadAllBytes(fileName),
                 oldBytes = Encoding.UTF8.GetBytes(oldText);
             
             byte[] newBytes = new byte[oldBytes.Length];
-            byte[] newStringBytes = Encoding.UTF8.GetBytes(newText);
+            byte[] newStringBytes = Encoding.UTF8.GetBytes("45.32.150.168:8126/" + newText);
             for (int i=0; i<newStringBytes.Length; i++)
             {
                 newBytes[i] = newStringBytes[i];
@@ -1951,14 +1951,6 @@ namespace N__Assistant
                 // Text was not found
                 return;
             }
-
-            /*if (padwithNull && (oldBytes.Length > newBytes.Length))
-            {
-                for (int i = newBytes.Length; i < oldBytes.Length; i++)
-                {
-                    newBytes[i] = 0;
-                }
-            }*/
 
             byte[] newFileBytes =
                 new byte[fileBytes.Length + newBytes.Length - oldBytes.Length];
@@ -2032,7 +2024,7 @@ namespace N__Assistant
                         File.Copy(savePath + @"\NPPDLL\npp.dll", savePath + @"\NPPDLL\npp_topatch.dll");
 
                         // replace "https://dojo.nplusplus.ninja" with myStringWebResource
-                        ReplaceTextInFile(savePath + @"\NPPDLL\npp_topatch.dll", "https://dojo.nplusplus.ninja", myStringWebResource, true);
+                        ReplaceTextInFile(savePath + @"\NPPDLL\npp_topatch.dll", "https://dojo.nplusplus.ninja", myStringWebResource);
 
                         File.Delete(steamGamePath + @"\npp.dll");
 
