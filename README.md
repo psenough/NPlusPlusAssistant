@@ -86,6 +86,8 @@ If you just want to run it, you don't need to compile it from source, just downl
 
 * button to backup all maps in editor (coherence between tabs)
 
+* auto-extract colors from palette and change background/foreground (also update on community spreadsheet if possible and using default b/w)
+
 ## Known issues:
 
 * `Cross-thread operation not valid:` error when changing to sound packs or map packs tab too quickly right after loading
