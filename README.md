@@ -90,7 +90,11 @@ If you just want to run it, you don't need to compile it from source, just downl
 
 * button to backup all maps in editor (coherence between tabs)
 
+<<<<<<< HEAD
 * watchdog to auto-backup your profile everytime it detects n++ closing down
+=======
+* auto-extract colors from palette and change background/foreground (also update on community spreadsheet if possible and using default b/w)
+>>>>>>> 3ebf47051e319714ae93984f153f5e7ea82ce786
 
 ## Known issues:
 
