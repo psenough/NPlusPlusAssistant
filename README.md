@@ -58,6 +58,10 @@ If you just want to run it, you don't need to compile it from source, just downl
 
 ## Stuff it'll eventually do:
 
+* detect new N++ versions and update the backups accordingly (npp.dll most importantly)
+
+* button to load a new profile with all base levels and colors already unlocked
+
 * list currently install / last installed mods (soundpack, mappack, leaderboard hack) on status tab
 
 * option to refresh lists (in case people are renaming things on folder)
@@ -85,6 +89,8 @@ If you just want to run it, you don't need to compile it from source, just downl
 * expose the different spreadsheet url and ids on a default xml (and editable on the GUI) to avoid recompiling the app to alter them
 
 * button to backup all maps in editor (coherence between tabs)
+
+* watchdog to auto-backup your profile everytime it detects n++ closing down
 
 ## Known issues:
 
