@@ -32,7 +32,7 @@ If you just want to run it, you don't need to compile it from source, just downl
 
 * list metanet palettes (auto download from discord link) and select which to install
 
-* list community palettes (from [google spreadsheet](https://docs.google.com/spreadsheets/d/1I2f87Qhfs6rxzZq5dQRDbLKYyaGLqTdCkLqfNfrw1Mk/edit#gid=0]) and select which to install
+* list community palettes (from [google spreadsheet](https://docs.google.com/spreadsheets/d/1I2f87Qhfs6rxzZq5dQRDbLKYyaGLqTdCkLqfNfrw1Mk/edit#gid=0])) and select which to install
 
 * list all palettes on backup and select one to install or delete
 
@@ -40,7 +40,7 @@ If you just want to run it, you don't need to compile it from source, just downl
 
 * list all soundpacks on backup and select one to install or delete
 
-* list community soundpacks (from [google spreadsheet](https://docs.google.com/spreadsheets/d/18PshamVuDNyH396a7U3YDFQmCw18s4gIVZ_WrFODRd4/edit#gid=0]) and select which to install
+* list community soundpacks (from [google spreadsheet](https://docs.google.com/spreadsheets/d/18PshamVuDNyH396a7U3YDFQmCw18s4gIVZ_WrFODRd4/edit#gid=0])) and select which to install
 
 * list metanet maps, search by name and select one to put on your map levels editor folder (for practice / remixes)
 
@@ -50,7 +50,7 @@ If you just want to run it, you don't need to compile it from source, just downl
 
 * button to launch n++ from within N++ Assistant
 
-* list community map packs (from [google spreadsheet](https://docs.google.com/spreadsheets/d/18PshamVuDNyH396a7U3YDFQmCw18s4gIVZ_WrFODRd4/edit#gid=1470738075]) and select which to install
+* list community map packs (from [google spreadsheet](https://docs.google.com/spreadsheets/d/18PshamVuDNyH396a7U3YDFQmCw18s4gIVZ_WrFODRd4/edit#gid=1470738075])) and select which to install
 
 * list all map packs in backup and select one to install or delete (with optional same timestamp profile)
 
@@ -58,6 +58,8 @@ If you just want to run it, you don't need to compile it from source, just downl
 
 ## Stuff it'll eventually do:
 
+* load from github instead of google spreadsheets (links on google spreadsheets are from discord which is going to start only hosting temporary files)
+  
 * detect new N++ versions and update the backups accordingly (npp.dll most importantly)
 
 * button to load a new profile with all base levels and colors already unlocked
