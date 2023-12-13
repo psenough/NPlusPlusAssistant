@@ -8,7 +8,7 @@ If you just want to run it, you don't need to compile it from source, just downl
 
 ## Screenshots
 
-![](screen01.jpg)
+![](screen01.png)
 
 ![](screen02.jpg)
 
