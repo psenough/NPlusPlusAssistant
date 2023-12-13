@@ -4,7 +4,7 @@ N++Assistant helps with backups and installing community mod stuff for the video
 
 Only targets the Steam Windows version.
 
-## Run
+## How to Run
 
 Download the zip of the latest version from [releases](https://github.com/psenough/NPlusPlusAssistant/releases), extract that to a folder and launch the .exe inside. The first launch might take a little while to see anything happening on screen, since the application is creating missing backup directories and downloading default things from the internet that it'll only need to download once.
 
@@ -22,7 +22,7 @@ Download the zip of the latest version from [releases](https://github.com/psenou
 
 ![](screen06.jpg)
 
-## Stuff it does:
+## Stuff it does
 
 * autodetect main game asset folders and link their explorer folder paths
 
@@ -60,7 +60,7 @@ Download the zip of the latest version from [releases](https://github.com/psenou
 
 * buttons to fix common display resolution bugs
 
-## Stuff it'll eventually do:
+## Stuff it'll eventually do (if i ever find the time)
 
 * load from github instead of google spreadsheets (links on google spreadsheets are from discord which is going to start only hosting temporary files)
 
@@ -116,7 +116,7 @@ Download the zip of the latest version from [releases](https://github.com/psenou
 
 * some map level id's are wrong in co-op and race ultimate modes
 
-## Credits:
+## Credits
 
 * main development: ps
 
@@ -126,7 +126,10 @@ Download the zip of the latest version from [releases](https://github.com/psenou
 
 * other assistance: eddy
 
-## Compile Requirements
+## Dev / Compile
 
-Latest version only tested on Windows 11 using Visual Studio Community 2022 with C# .Net stuff installed.
+Latest version is only tested on Windows 11 using Visual Studio Community 2022 with C# .Net stuff installed.
 
+Last time i checked it also compiled fine on Windows 10 using Visual Studio Community 2019 with C# .Net stuff installed.
+
+PR welcome!
