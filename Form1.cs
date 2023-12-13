@@ -1861,6 +1861,35 @@ namespace N__Assistant
                     ZipFile.ExtractToDirectory(filename, steamGamePath + @"\NPP\Levels");
                     File.Delete(filename);
 
+                    if (File.Exists(steamGamePath + @"\NPP\Levels\nprofile") == true)
+                    {
+                        DialogResult dialogResult2 = MessageBox.Show("This map pack comes with a default profile, do you wish to install it? This process will backup the current active profile before replacing it.", "Install Custom Profile?", MessageBoxButtons.YesNo);
+                        if (dialogResult2 == DialogResult.Yes)
+                        {
+                            try
+                            {
+                                if (File.Exists(profilePath + @"\nprofile"))
+                                {
+                                    // backup old profile
+                                    using (FileStream fs = new FileStream(savePath + @"\Profiles\MapPack" + DateTime.Now.ToString("yyMMddHHmm") + ".zip", FileMode.Create))
+                                    using (ZipArchive arch = new ZipArchive(fs, ZipArchiveMode.Create))
+                                    {
+                                        arch.CreateEntryFromFile(profilePath + @"\nprofile", "nprofile");
+                                    }
+                                }
+
+                                // replace profile with the new
+                                if (File.Exists(profilePath + @"\nprofile"))
+                                {
+                                    File.Delete(profilePath + @"\nprofile");
+                                }
+                                if (File.Exists(steamGamePath + @"\NPP\Levels\nprofile")) {
+                                    File.Move(steamGamePath + @"\NPP\Levels\nprofile", profilePath + @"\nprofile");
+                                }
+                            } catch (Exception ex) { MessageBox.Show("Couldn't replace profile: " + ex.Message); }
+                        }
+                    }
+
                     installCommunityMapPack.Enabled = false;
                     statusLabel.Text = "Done installing map pack " + communityMapPacksList.SelectedItem.ToString();
                 }
