@@ -1,10 +1,12 @@
 # NPlusPlusAssistant
 
-N++ Assistant helps with backups and installing community mod stuff for the videogame [N++](https://store.steampowered.com/app/230270/N_NPLUSPLUS/). Only for the Steam Windows version.
+N++Assistant helps with backups and installing community mod stuff for the videogame [N++](https://store.steampowered.com/app/230270/N_NPLUSPLUS/).
 
-Needs Visual Studio Community 2019 with C# .Net stuff installed to compile from source.
+N++Assisant is only for the Steam Windows version.
 
-If you just want to run it, you don't need to compile it from source, just download the zip of the latest version from [releases](https://github.com/psenough/NPlusPlusAssistant/releases), extract that to a folder and launch the .exe inside. First launch might take a little while to see anything happening since the application is creating missing directories and downloading default things from the internet that it'll only need to download once.
+## Run
+
+Download the zip of the latest version from [releases](https://github.com/psenough/NPlusPlusAssistant/releases), extract that to a folder and launch the .exe inside. The first launch might take a little while to see anything happening on screen, since the application is creating missing backup directories and downloading default things from the internet that it'll only need to download once.
 
 ## Screenshots
 
@@ -123,3 +125,8 @@ If you just want to run it, you don't need to compile it from source, just downl
 * beta-testing: cloudead, schmole, bigblargh
 
 * other assistance: eddy
+
+## Compile Requirements
+
+Latest version only tested on Visual Studio Community 2022 with C# .Net stuff installed.
+
