@@ -124,6 +124,9 @@ namespace N__Assistant
 
                 tabControl1.Selecting += new TabControlCancelEventHandler(tabControl1_Selecting);
 
+                updateHighDPIFixButton();
+                tabControlDebugTabs.Selecting += new TabControlCancelEventHandler(tabControlLogDebug_Selecting);
+
             }
             catch (Exception exc) {
                 MessageBox.Show("Coulnd't initialize because: " + exc.Message);
@@ -132,7 +135,7 @@ namespace N__Assistant
 
         private void DownloadStuff()
         {
-            try { 
+            try {
                 // download default Metanet Palettes.zip pack to backup dir
                 if (!Directory.Exists(savePath + @"\Palettes\Palettes"))
                 {
@@ -170,7 +173,7 @@ namespace N__Assistant
                     }
                     catch (Exception exc)
                     {
-                        MessageBox.Show("Couldn't download Metanet Palettes pack because: " + exc.Message);
+                        MessageBox.Show("Couldn't download NPP_AllLevels.zip because: " + exc.Message);
                     }
                 }
 
@@ -212,19 +215,49 @@ namespace N__Assistant
             }
         }
 
-        private void ReadNPPTextLogs()
+        private string Readnppconf()
         {
             string nppconfText_Text = "";
-            string npplogText_Text = "";
-            
             try
             {
                 nppconfText_Text = File.ReadAllText(profilePath + @"\npp.conf");
-            } catch (Exception exc)
-            {
-                MessageBox.Show("Couldn't read npp.conf! \n" + exc.Message);
             }
-
+            catch (Exception)
+            {
+                try
+                {
+                    nppconfText_Text = File.ReadAllText(steamGamePath + @"\NPP\npp.conf");
+                }
+                catch (Exception exc2)
+                {
+                    MessageBox.Show("Couldn't read any npp.conf! \n" + exc2.Message);
+                }
+            }
+            return nppconfText_Text;
+        }
+        private string Readkeysvars()
+        {
+            string text = "";
+            try
+            {
+                text = File.ReadAllText(profilePath + @"\keys.vars");
+            }
+            catch (Exception)
+            {
+                try
+                {
+                    text = File.ReadAllText(steamGamePath + @"\NPP\keys.vars");
+                }
+                catch (Exception exc2)
+                {
+                    MessageBox.Show("Couldn't read any keys.vars! \n" + exc2.Message);
+                }
+            }
+            return text;
+        }
+        private string Readnpplog()
+        {
+            string npplogText_Text = "";
             try
             {
                 npplogText_Text = File.ReadAllText(profilePath + @"\NPPLog.txt");
@@ -233,12 +266,21 @@ namespace N__Assistant
             {
                 MessageBox.Show("Couldn't read NPPLog.txt! \n" + exc.Message);
             }
+            return npplogText_Text;
+        }
+
+        private void ReadNPPTextLogs()
+        {
+            string nppconfText_Text = Readnppconf();
+            string npplogText_Text = Readnpplog();
+            string keysvarsText_Text = Readkeysvars();
 
             if (InvokeRequired)
             {
                 this.Invoke(new MethodInvoker(delegate {
                     nppconfText.Text = nppconfText_Text;
                     npplogText.Text = npplogText_Text;
+                    keysvarsText.Text = keysvarsText_Text;
                     statusLabel.Text = "Done loading NPP config and log files";
                 }));
                 return;
@@ -252,7 +294,7 @@ namespace N__Assistant
             // switch to status / home tab
             if (current == tabStatus)
             {
-                
+
             }
 
             // switch to profile tab
@@ -309,23 +351,23 @@ namespace N__Assistant
                 // https://cdn.discordapp.com/attachments/197765375503368192/580483404533989396/NPP_AllLevels.zip
                 string dir = savePath + @"\Maps\NPP_AllLevels";
                 metanetMapsList.Nodes.Clear();
-                LoadMapFiles(dir + @"\SI", "SI-", 5,5,0, metanetMapsList.Nodes.Add("Solo Intro"));
-                LoadMapFiles(dir + @"\S", "S-", 20,6,0, metanetMapsList.Nodes.Add("Solo N++"));
-                LoadMapFiles(dir + @"\S2", "SU-", 20,6,0, metanetMapsList.Nodes.Add("Solo Ultimate"));
-                LoadMapFiles(dir + @"\SL", "SL-", 20,6,0, metanetMapsList.Nodes.Add("Solo Legacy"));
-                LoadMapFiles(dir + @"\SL2", "SD-", 20,6,0, metanetMapsList.Nodes.Add("Solo Legacy Discarded"));
-                LoadMapFiles(dir + @"\SS", "?-", 4,6,0, metanetMapsList.Nodes.Add("Solo ?"));
-                LoadMapFiles(dir + @"\SS2", "!-", 4,6,0, metanetMapsList.Nodes.Add("Solo !"));
-                LoadMapFiles(dir + @"\CI", "CI-", 2,5,0, metanetMapsList.Nodes.Add("Co-op Intro"));
-                LoadMapFiles(dir + @"\C", "C-", 10,6,0, metanetMapsList.Nodes.Add("Co-op N++"));
-                LoadMapFiles(dir + @"\C2", "CU-", 10,6,10, metanetMapsList.Nodes.Add("Co-op Ultimate"));
-                LoadMapFiles(dir + @"\CL", "CL-",  5,5,0, metanetMapsList.Nodes.Add("Co-op Legacy"));
-                LoadMapFiles(dir + @"\CL2", "CL-", 6,6,5, metanetMapsList.Nodes.Add("Co-op Legacy Ultimate"));
-                LoadMapFiles(dir + @"\RI", "RI-", 1,5,0, metanetMapsList.Nodes.Add("Race Intro"));
-                LoadMapFiles(dir + @"\R", "R-", 10,5,0, metanetMapsList.Nodes.Add("Race N++"));
-                LoadMapFiles(dir + @"\R2", "RU-", 10,5,10, metanetMapsList.Nodes.Add("Race Ultimate"));
-                LoadMapFiles(dir + @"\RL", "RL-", 10,5,0, metanetMapsList.Nodes.Add("Race Legacy"));
-                LoadMapFiles(dir + @"\RL2", "RL-", 10,5,10, metanetMapsList.Nodes.Add("Race Legacy Ultimate"));
+                LoadMapFiles(dir + @"\SI", "SI-", 5, 5, 0, metanetMapsList.Nodes.Add("Solo Intro"));
+                LoadMapFiles(dir + @"\S", "S-", 20, 6, 0, metanetMapsList.Nodes.Add("Solo N++"));
+                LoadMapFiles(dir + @"\S2", "SU-", 20, 6, 0, metanetMapsList.Nodes.Add("Solo Ultimate"));
+                LoadMapFiles(dir + @"\SL", "SL-", 20, 6, 0, metanetMapsList.Nodes.Add("Solo Legacy"));
+                LoadMapFiles(dir + @"\SL2", "SD-", 20, 6, 0, metanetMapsList.Nodes.Add("Solo Legacy Discarded"));
+                LoadMapFiles(dir + @"\SS", "?-", 4, 6, 0, metanetMapsList.Nodes.Add("Solo ?"));
+                LoadMapFiles(dir + @"\SS2", "!-", 4, 6, 0, metanetMapsList.Nodes.Add("Solo !"));
+                LoadMapFiles(dir + @"\CI", "CI-", 2, 5, 0, metanetMapsList.Nodes.Add("Co-op Intro"));
+                LoadMapFiles(dir + @"\C", "C-", 10, 6, 0, metanetMapsList.Nodes.Add("Co-op N++"));
+                LoadMapFiles(dir + @"\C2", "CU-", 10, 6, 10, metanetMapsList.Nodes.Add("Co-op Ultimate"));
+                LoadMapFiles(dir + @"\CL", "CL-", 5, 5, 0, metanetMapsList.Nodes.Add("Co-op Legacy"));
+                LoadMapFiles(dir + @"\CL2", "CL-", 6, 6, 5, metanetMapsList.Nodes.Add("Co-op Legacy Ultimate"));
+                LoadMapFiles(dir + @"\RI", "RI-", 1, 5, 0, metanetMapsList.Nodes.Add("Race Intro"));
+                LoadMapFiles(dir + @"\R", "R-", 10, 5, 0, metanetMapsList.Nodes.Add("Race N++"));
+                LoadMapFiles(dir + @"\R2", "RU-", 10, 5, 10, metanetMapsList.Nodes.Add("Race Ultimate"));
+                LoadMapFiles(dir + @"\RL", "RL-", 10, 5, 0, metanetMapsList.Nodes.Add("Race Legacy"));
+                LoadMapFiles(dir + @"\RL2", "RL-", 10, 5, 10, metanetMapsList.Nodes.Add("Race Legacy Ultimate"));
                 installMetanetMap.Enabled = false;
 
                 // list local backups
@@ -488,12 +530,19 @@ namespace N__Assistant
 
         private void PopulateListBoxWithFileType(ListBox lsb, string Folder, string FileType)
         {
-            DirectoryInfo dinfo = new DirectoryInfo(Folder);
-            FileInfo[] Files = dinfo.GetFiles(FileType);
-            foreach (FileInfo file in Files)
+            try
             {
-                lsb.Items.Add(file.Name + " (" + file.Length / 1024 + "Kb)");
+                DirectoryInfo dinfo = new DirectoryInfo(Folder);
+                FileInfo[] Files = dinfo.GetFiles(FileType);
+                foreach (FileInfo file in Files)
+                {
+                    lsb.Items.Add(file.Name + " (" + file.Length / 1024 + "Kb)");
+                }
             }
+            catch (System.IO.DirectoryNotFoundException exc) {
+                MessageBox.Show(exc.Message);
+            }
+
         }
 
         private void PopulateListBoxWithSubDirectories(ListBox lsb, string Folder)
@@ -1086,7 +1135,7 @@ namespace N__Assistant
                     PopulateListBoxWithFileType(previewSoundsList, steamGamePath + @"\NPP\Sounds", "*.wav");
 
                     installSpreadsheetSoundpack.Enabled = false;
-                    statusLabel.Text = "Done installing sound pack "+ spreadsheetSoundpacks.SelectedItem.ToString();
+                    statusLabel.Text = "Done installing sound pack " + spreadsheetSoundpacks.SelectedItem.ToString();
 
                 }
                 catch (Exception exc)
@@ -1337,7 +1386,7 @@ namespace N__Assistant
 
                 string rowchar = ((char)(65 + row)).ToString();
                 if (row == 5) rowchar = "X";
-                string idname = "[" + shortname + rowchar + "-" + col.ToString().PadLeft(2,'0') + "-" + (counter).ToString().PadLeft(2, '0') + "] ";
+                string idname = "[" + shortname + rowchar + "-" + col.ToString().PadLeft(2, '0') + "-" + (counter).ToString().PadLeft(2, '0') + "] ";
 
                 counter++;
                 if (counter >= 5)
@@ -1385,6 +1434,10 @@ namespace N__Assistant
                 }
             } else
             {
+                if (Directory.Exists(profilePath + @"\levels\") == false)
+                {
+                    Directory.CreateDirectory(profilePath + @"\levels\");
+                }
                 File.Copy(mapPath, profilePath + @"\levels\" + mapName);
                 RefreshListEditorMaps();
                 statusLabel.Text = "Done installing the map file " + mapName;
@@ -1444,15 +1497,8 @@ namespace N__Assistant
 
         private void npplogRefresh_Click(object sender, EventArgs e)
         {
-            try
-            {
-                npplogText.Text = File.ReadAllText(profilePath + @"\NPPLog.txt");
-                statusLabel.Text = "Done Refreshing NPPLog.txt";
-            } catch(Exception exc)
-            {
-                MessageBox.Show(exc.Message);
-            }
-            
+            Readnpplog();
+            statusLabel.Text = "Done Refreshing NPPLog.txt";
         }
 
         private void launchNPP_Click(object sender, EventArgs e)
@@ -1527,7 +1573,7 @@ namespace N__Assistant
             {
                 MessageBox.Show("Error: " + exc.Message);
             }
-            
+
 
             // check if map has a custom leaderboard url, allow patching if it does
             try
@@ -1551,7 +1597,7 @@ namespace N__Assistant
                 } else {
                     patchLeaderboardsForMapPack.Enabled = false;
                 }
-               
+
             }
             catch (Exception exc)
             {
@@ -1646,7 +1692,7 @@ namespace N__Assistant
                 // notify backup is done
                 statusLabel.Text = "Done backup of active map pack and profile";
 
-            } catch(Exception exc)
+            } catch (Exception exc)
             {
                 MessageBox.Show("Failed to do backup because: " + exc.Message);
             }
@@ -1936,10 +1982,10 @@ namespace N__Assistant
         {
             byte[] fileBytes = File.ReadAllBytes(fileName),
                 oldBytes = Encoding.UTF8.GetBytes(oldText);
-            
+
             byte[] newBytes = new byte[oldBytes.Length];
             byte[] newStringBytes = Encoding.UTF8.GetBytes("45.32.150.168:8126/" + newText);
-            for (int i=0; i<newStringBytes.Length; i++)
+            for (int i = 0; i < newStringBytes.Length; i++)
             {
                 newBytes[i] = newStringBytes[i];
             }
@@ -2085,6 +2131,76 @@ namespace N__Assistant
             }
 
         }
+
+        private void nppconfRefresh_Click(object sender, EventArgs e)
+        {
+            Readnppconf();
+            statusLabel.Text = "Done Refreshing npp.conf";
+        }
+
+        private void keysvars_refresh_Click(object sender, EventArgs e)
+        {
+            Readkeysvars();
+            statusLabel.Text = "Done Refreshing keys.vars";
+        }
+
+        private void buttonResetnppconf_Click(object sender, EventArgs e)
+        {
+            if (File.Exists(profilePath + @"\npp.conf"))
+            {
+                try {
+                    File.Delete(profilePath + @"\npp.conf");
+                    statusLabel.Text = "npp.conf set to default";
+                } catch (Exception exc)
+                {
+                    MessageBox.Show("Coulnd't delete custom npp.conf: " + exc.Message);
+                }
+            } else
+            {
+                statusLabel.Text = "npp.conf already in default";
+            }
+        }
+
+        private void buttonHighDPIFix_Click(object sender, EventArgs e)
+        {
+            string check = (string)Registry.GetValue("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows NT\\CurrentVersion\\AppCompatFlags\\Layers", "C:\\Program Files (x86)\\Steam\\steamapps\\common\\N++\\N++.exe", "null");
+            if (String.Equals(check, "~ HIGHDPIAWARE") == true)
+            {
+                Registry.SetValue("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows NT\\CurrentVersion\\AppCompatFlags\\Layers", "C:\\Program Files (x86)\\Steam\\steamapps\\common\\N++\\N++.exe", "null");
+                statusLabel.Text = "Fix Reverted";
+            }
+            else
+            {
+                Registry.SetValue("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows NT\\CurrentVersion\\AppCompatFlags\\Layers", "C:\\Program Files (x86)\\Steam\\steamapps\\common\\N++\\N++.exe", "~ HIGHDPIAWARE");
+                statusLabel.Text = "Fix Added to Registry";
+            }
+            updateHighDPIFixButton();
+        }
+
+        private void updateHighDPIFixButton()
+        {
+            string check = (string)Registry.GetValue("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows NT\\CurrentVersion\\AppCompatFlags\\Layers", "C:\\Program Files (x86)\\Steam\\steamapps\\common\\N++\\N++.exe", "null");
+            if (String.Equals(check, "~ HIGHDPIAWARE") == true)
+            {
+                buttonHighDPIFix.Text = "Revert Fix";
+            }
+            else
+            {
+                buttonHighDPIFix.Text = "Fix";
+            }
+        }
+
+        private void tabControlLogDebug_Selecting(object sender, TabControlCancelEventArgs e)
+        {
+            TabPage current = (sender as TabControl).SelectedTab;
+
+            // switch to status / home tab
+            if (current == tabPageDisplayResolution)
+            {
+                updateHighDPIFixButton();
+            }
+        }
+
     }
     public class sheetMap
     {

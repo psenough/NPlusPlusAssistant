@@ -16,9 +16,9 @@ namespace N__Assistant
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
                 Application.Run(new Form1());
-            } catch( Exception exc)
+            } catch (Exception exc)
             {
-                MessageBox.Show("Couldn't run app because: " + exc.Message);
+                MessageBox.Show("Unexpected Exception is unexpected! " + exc.Message);
             }
             
         }

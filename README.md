@@ -54,13 +54,15 @@ If you just want to run it, you don't need to compile it from source, just downl
 
 * list all map packs in backup and select one to install or delete (with optional same timestamp profile)
 
-* backup and patching of npp.dll to support custom leaderboards
+* backup and patching of npp.dll to support custom leaderboards (supported by Eddy's proxy)
+
+* buttons to fix common display resolution bugs
 
 ## Stuff it'll eventually do:
 
 * load from github instead of google spreadsheets (links on google spreadsheets are from discord which is going to start only hosting temporary files)
 
-* detect new N++ versions and update the backups accordingly (npp.dll most importantly)
+* detect new official N++ version updates and update the backups accordingly (npp.dll most importantly)
 
 * button to load a new profile with all base levels and colors already unlocked
 
@@ -94,9 +96,7 @@ If you just want to run it, you don't need to compile it from source, just downl
 
 * watchdog to auto-backup your profile everytime it detects n++ closing down
 
-* auto-extract colors from palette and change background/foreground (also update on community spreadsheet if possible and using default b/w)
-
-* button to fix the resolution high dpi setting by adding entry `C:\Program Files (x86)\Steam\steamapps\common\N++\N++.exe` with value `~ HIGHDPIAWARE` on `Computer\HKEY_CURRENT_USER\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers` (on Windows 11 atleast, need to double check if it's same on other Windows versions)
+* auto-extract colors from palette and change background/foreground in menu to reflect it (also update on community spreadsheet if possible and using default b/w)
 
 ## Known issues:
 

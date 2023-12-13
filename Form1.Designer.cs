@@ -29,20 +29,37 @@ namespace N__Assistant
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabStatus = new System.Windows.Forms.TabPage();
-            this.npplog_refresh = new System.Windows.Forms.Label();
-            this.nppconflabel = new System.Windows.Forms.Label();
-            this.npploglabel = new System.Windows.Forms.Label();
-            this.npplogText = new System.Windows.Forms.RichTextBox();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.tabControlDebugTabs = new System.Windows.Forms.TabControl();
+            this.tabPageNPPConf = new System.Windows.Forms.TabPage();
+            this.nppconf_refresh = new System.Windows.Forms.Label();
             this.nppconfText = new System.Windows.Forms.RichTextBox();
+            this.tabPageNPPLog = new System.Windows.Forms.TabPage();
+            this.npplogText = new System.Windows.Forms.RichTextBox();
+            this.npplog_refresh = new System.Windows.Forms.Label();
+            this.tabPageKeysVars = new System.Windows.Forms.TabPage();
+            this.keysvars_refresh = new System.Windows.Forms.Label();
+            this.keysvarsText = new System.Windows.Forms.RichTextBox();
+            this.tabPageDisplayResolution = new System.Windows.Forms.TabPage();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.buttonHighDPIFix = new System.Windows.Forms.Button();
+            this.buttonResetnppconf = new System.Windows.Forms.Button();
+            this.nppconflabel = new System.Windows.Forms.Label();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.backupNow = new System.Windows.Forms.Button();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.steamInstallDir = new System.Windows.Forms.LinkLabel();
+            this.profileDir = new System.Windows.Forms.LinkLabel();
+            this.label4 = new System.Windows.Forms.Label();
             this.screenshotsDir = new System.Windows.Forms.LinkLabel();
             this.backupsDir = new System.Windows.Forms.LinkLabel();
-            this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
-            this.backupNow = new System.Windows.Forms.Button();
-            this.profileDir = new System.Windows.Forms.LinkLabel();
-            this.steamInstallDir = new System.Windows.Forms.LinkLabel();
             this.tabProfile = new System.Windows.Forms.TabPage();
             this.resetGameProfile = new System.Windows.Forms.Button();
             this.profileListLabel = new System.Windows.Forms.Label();
@@ -108,6 +125,7 @@ namespace N__Assistant
             this.linkMappacksSpreadsheet = new System.Windows.Forms.LinkLabel();
             this.profilesFolderLink = new System.Windows.Forms.LinkLabel();
             this.linkMapPacksBackupFolder = new System.Windows.Forms.LinkLabel();
+            this.resetProfile = new System.Windows.Forms.Button();
             this.mapPacksFolderLink = new System.Windows.Forms.LinkLabel();
             this.backupMapPackAndProfile = new System.Windows.Forms.Button();
             this.renameProfileBackup = new System.Windows.Forms.Button();
@@ -119,10 +137,11 @@ namespace N__Assistant
             this.backupActiveProfile = new System.Windows.Forms.Button();
             this.tabControl4 = new System.Windows.Forms.TabControl();
             this.mapPackCommunity = new System.Windows.Forms.TabPage();
+            this.metanetLeaderboards = new System.Windows.Forms.Button();
+            this.originalMapPack = new System.Windows.Forms.Button();
             this.patchLeaderboardsForMapPack = new System.Windows.Forms.Button();
             this.installCommunityMapPack = new System.Windows.Forms.Button();
             this.communityMapPacksList = new System.Windows.Forms.ListBox();
-            this.resetProfile = new System.Windows.Forms.Button();
             this.mapPackLocalBackups = new System.Windows.Forms.TabPage();
             this.renameLocalBackupMapPack = new System.Windows.Forms.Button();
             this.installLocalBackupMapPackWithProfile = new System.Windows.Forms.Button();
@@ -134,10 +153,17 @@ namespace N__Assistant
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.progressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.originalMapPack = new System.Windows.Forms.Button();
-            this.metanetLeaderboards = new System.Windows.Forms.Button();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tabControl1.SuspendLayout();
             this.tabStatus.SuspendLayout();
+            this.panel3.SuspendLayout();
+            this.tabControlDebugTabs.SuspendLayout();
+            this.tabPageNPPConf.SuspendLayout();
+            this.tabPageNPPLog.SuspendLayout();
+            this.tabPageKeysVars.SuspendLayout();
+            this.tabPageDisplayResolution.SuspendLayout();
+            this.panel2.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.tabProfile.SuspendLayout();
             this.tabMaps.SuspendLayout();
             this.tabControlEditorMaps.SuspendLayout();
@@ -176,17 +202,9 @@ namespace N__Assistant
             // 
             // tabStatus
             // 
-            this.tabStatus.Controls.Add(this.npplog_refresh);
-            this.tabStatus.Controls.Add(this.nppconflabel);
-            this.tabStatus.Controls.Add(this.npploglabel);
-            this.tabStatus.Controls.Add(this.npplogText);
-            this.tabStatus.Controls.Add(this.nppconfText);
-            this.tabStatus.Controls.Add(this.screenshotsDir);
-            this.tabStatus.Controls.Add(this.backupsDir);
-            this.tabStatus.Controls.Add(this.checkedListBox1);
-            this.tabStatus.Controls.Add(this.backupNow);
-            this.tabStatus.Controls.Add(this.profileDir);
-            this.tabStatus.Controls.Add(this.steamInstallDir);
+            this.tabStatus.Controls.Add(this.panel3);
+            this.tabStatus.Controls.Add(this.panel2);
+            this.tabStatus.Controls.Add(this.panel1);
             this.tabStatus.Location = new System.Drawing.Point(4, 25);
             this.tabStatus.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabStatus.Name = "tabStatus";
@@ -196,77 +214,193 @@ namespace N__Assistant
             this.tabStatus.Text = "Status";
             this.tabStatus.UseVisualStyleBackColor = true;
             // 
+            // panel3
+            // 
+            this.panel3.BackColor = System.Drawing.Color.Gainsboro;
+            this.panel3.Controls.Add(this.tabControlDebugTabs);
+            this.panel3.Controls.Add(this.nppconflabel);
+            this.panel3.Location = new System.Drawing.Point(17, 203);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(712, 257);
+            this.panel3.TabIndex = 21;
+            // 
+            // tabControlDebugTabs
+            // 
+            this.tabControlDebugTabs.Controls.Add(this.tabPageDisplayResolution);
+            this.tabControlDebugTabs.Controls.Add(this.tabPageNPPConf);
+            this.tabControlDebugTabs.Controls.Add(this.tabPageNPPLog);
+            this.tabControlDebugTabs.Controls.Add(this.tabPageKeysVars);
+            this.tabControlDebugTabs.Location = new System.Drawing.Point(16, 35);
+            this.tabControlDebugTabs.Name = "tabControlDebugTabs";
+            this.tabControlDebugTabs.SelectedIndex = 0;
+            this.tabControlDebugTabs.Size = new System.Drawing.Size(674, 207);
+            this.tabControlDebugTabs.TabIndex = 17;
+            // 
+            // tabPageNPPConf
+            // 
+            this.tabPageNPPConf.Controls.Add(this.nppconf_refresh);
+            this.tabPageNPPConf.Controls.Add(this.nppconfText);
+            this.tabPageNPPConf.Location = new System.Drawing.Point(4, 25);
+            this.tabPageNPPConf.Name = "tabPageNPPConf";
+            this.tabPageNPPConf.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageNPPConf.Size = new System.Drawing.Size(666, 178);
+            this.tabPageNPPConf.TabIndex = 0;
+            this.tabPageNPPConf.Text = "npp.conf";
+            this.tabPageNPPConf.UseVisualStyleBackColor = true;
+            // 
+            // nppconf_refresh
+            // 
+            this.nppconf_refresh.AutoSize = true;
+            this.nppconf_refresh.Location = new System.Drawing.Point(642, 6);
+            this.nppconf_refresh.Name = "nppconf_refresh";
+            this.nppconf_refresh.Size = new System.Drawing.Size(19, 16);
+            this.nppconf_refresh.TabIndex = 17;
+            this.nppconf_refresh.Text = "🔄";
+            this.nppconf_refresh.Click += new System.EventHandler(this.nppconfRefresh_Click);
+            // 
+            // nppconfText
+            // 
+            this.nppconfText.Location = new System.Drawing.Point(4, 4);
+            this.nppconfText.Margin = new System.Windows.Forms.Padding(4);
+            this.nppconfText.Name = "nppconfText";
+            this.nppconfText.ReadOnly = true;
+            this.nppconfText.Size = new System.Drawing.Size(635, 167);
+            this.nppconfText.TabIndex = 12;
+            this.nppconfText.Text = "";
+            // 
+            // tabPageNPPLog
+            // 
+            this.tabPageNPPLog.Controls.Add(this.npplogText);
+            this.tabPageNPPLog.Controls.Add(this.npplog_refresh);
+            this.tabPageNPPLog.Location = new System.Drawing.Point(4, 25);
+            this.tabPageNPPLog.Name = "tabPageNPPLog";
+            this.tabPageNPPLog.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageNPPLog.Size = new System.Drawing.Size(666, 178);
+            this.tabPageNPPLog.TabIndex = 1;
+            this.tabPageNPPLog.Text = "NPPLog.txt";
+            this.tabPageNPPLog.UseVisualStyleBackColor = true;
+            // 
+            // npplogText
+            // 
+            this.npplogText.Location = new System.Drawing.Point(4, 4);
+            this.npplogText.Margin = new System.Windows.Forms.Padding(4);
+            this.npplogText.Name = "npplogText";
+            this.npplogText.ReadOnly = true;
+            this.npplogText.Size = new System.Drawing.Size(632, 170);
+            this.npplogText.TabIndex = 13;
+            this.npplogText.Text = "";
+            // 
             // npplog_refresh
             // 
             this.npplog_refresh.AutoSize = true;
-            this.npplog_refresh.Location = new System.Drawing.Point(411, 174);
+            this.npplog_refresh.Location = new System.Drawing.Point(643, 5);
             this.npplog_refresh.Name = "npplog_refresh";
-            this.npplog_refresh.Size = new System.Drawing.Size(24, 17);
+            this.npplog_refresh.Size = new System.Drawing.Size(19, 16);
             this.npplog_refresh.TabIndex = 16;
             this.npplog_refresh.Text = "🔄";
             this.npplog_refresh.Click += new System.EventHandler(this.npplogRefresh_Click);
             // 
+            // tabPageKeysVars
+            // 
+            this.tabPageKeysVars.Controls.Add(this.keysvars_refresh);
+            this.tabPageKeysVars.Controls.Add(this.keysvarsText);
+            this.tabPageKeysVars.Location = new System.Drawing.Point(4, 25);
+            this.tabPageKeysVars.Name = "tabPageKeysVars";
+            this.tabPageKeysVars.Size = new System.Drawing.Size(666, 178);
+            this.tabPageKeysVars.TabIndex = 3;
+            this.tabPageKeysVars.Text = "keys.vars";
+            this.tabPageKeysVars.UseVisualStyleBackColor = true;
+            // 
+            // keysvars_refresh
+            // 
+            this.keysvars_refresh.AutoSize = true;
+            this.keysvars_refresh.Location = new System.Drawing.Point(644, 7);
+            this.keysvars_refresh.Name = "keysvars_refresh";
+            this.keysvars_refresh.Size = new System.Drawing.Size(19, 16);
+            this.keysvars_refresh.TabIndex = 17;
+            this.keysvars_refresh.Text = "🔄";
+            this.keysvars_refresh.Click += new System.EventHandler(this.keysvars_refresh_Click);
+            // 
+            // keysvarsText
+            // 
+            this.keysvarsText.BackColor = System.Drawing.SystemColors.Control;
+            this.keysvarsText.Location = new System.Drawing.Point(4, 4);
+            this.keysvarsText.Name = "keysvarsText";
+            this.keysvarsText.Size = new System.Drawing.Size(637, 171);
+            this.keysvarsText.TabIndex = 0;
+            this.keysvarsText.Text = "";
+            // 
+            // tabPageDisplayResolution
+            // 
+            this.tabPageDisplayResolution.Controls.Add(this.label6);
+            this.tabPageDisplayResolution.Controls.Add(this.label3);
+            this.tabPageDisplayResolution.Controls.Add(this.buttonHighDPIFix);
+            this.tabPageDisplayResolution.Controls.Add(this.buttonResetnppconf);
+            this.tabPageDisplayResolution.Location = new System.Drawing.Point(4, 25);
+            this.tabPageDisplayResolution.Name = "tabPageDisplayResolution";
+            this.tabPageDisplayResolution.Size = new System.Drawing.Size(666, 178);
+            this.tabPageDisplayResolution.TabIndex = 2;
+            this.tabPageDisplayResolution.Text = "Buggy Display";
+            this.tabPageDisplayResolution.UseVisualStyleBackColor = true;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(19, 98);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(381, 16);
+            this.label6.TabIndex = 4;
+            this.label6.Text = "Changed display settings and now can\'t see the menu anymore";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(19, 16);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(327, 16);
+            this.label3.TabIndex = 3;
+            this.label3.Text = "Screen overflowing your desktop on high DPI monitors";
+            // 
+            // buttonHighDPIFix
+            // 
+            this.buttonHighDPIFix.Location = new System.Drawing.Point(22, 43);
+            this.buttonHighDPIFix.Name = "buttonHighDPIFix";
+            this.buttonHighDPIFix.Size = new System.Drawing.Size(148, 33);
+            this.buttonHighDPIFix.TabIndex = 1;
+            this.buttonHighDPIFix.Text = "High DPI Fix";
+            this.buttonHighDPIFix.UseVisualStyleBackColor = true;
+            this.buttonHighDPIFix.Click += new System.EventHandler(this.buttonHighDPIFix_Click);
+            // 
+            // buttonResetnppconf
+            // 
+            this.buttonResetnppconf.Location = new System.Drawing.Point(22, 127);
+            this.buttonResetnppconf.Name = "buttonResetnppconf";
+            this.buttonResetnppconf.Size = new System.Drawing.Size(148, 33);
+            this.buttonResetnppconf.TabIndex = 0;
+            this.buttonResetnppconf.Text = "Reset npp.conf";
+            this.buttonResetnppconf.UseVisualStyleBackColor = true;
+            this.buttonResetnppconf.Click += new System.EventHandler(this.buttonResetnppconf_Click);
+            // 
             // nppconflabel
             // 
             this.nppconflabel.AutoSize = true;
-            this.nppconflabel.Location = new System.Drawing.Point(27, 174);
+            this.nppconflabel.Location = new System.Drawing.Point(17, 11);
             this.nppconflabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.nppconflabel.Name = "nppconflabel";
-            this.nppconflabel.Size = new System.Drawing.Size(63, 17);
+            this.nppconflabel.Size = new System.Drawing.Size(48, 16);
             this.nppconflabel.TabIndex = 15;
-            this.nppconflabel.Text = "npp.conf";
+            this.nppconflabel.Text = "Debug";
             // 
-            // npploglabel
+            // panel2
             // 
-            this.npploglabel.AutoSize = true;
-            this.npploglabel.Location = new System.Drawing.Point(328, 174);
-            this.npploglabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.npploglabel.Name = "npploglabel";
-            this.npploglabel.Size = new System.Drawing.Size(78, 17);
-            this.npploglabel.TabIndex = 14;
-            this.npploglabel.Text = "NPPLog.txt";
-            // 
-            // npplogText
-            // 
-            this.npplogText.Location = new System.Drawing.Point(332, 198);
-            this.npplogText.Margin = new System.Windows.Forms.Padding(4);
-            this.npplogText.Name = "npplogText";
-            this.npplogText.ReadOnly = true;
-            this.npplogText.Size = new System.Drawing.Size(371, 242);
-            this.npplogText.TabIndex = 13;
-            this.npplogText.Text = "";
-            // 
-            // nppconfText
-            // 
-            this.nppconfText.Location = new System.Drawing.Point(27, 198);
-            this.nppconfText.Margin = new System.Windows.Forms.Padding(4);
-            this.nppconfText.Name = "nppconfText";
-            this.nppconfText.ReadOnly = true;
-            this.nppconfText.Size = new System.Drawing.Size(276, 242);
-            this.nppconfText.TabIndex = 12;
-            this.nppconfText.Text = "";
-            // 
-            // screenshotsDir
-            // 
-            this.screenshotsDir.AutoSize = true;
-            this.screenshotsDir.Location = new System.Drawing.Point(23, 94);
-            this.screenshotsDir.Name = "screenshotsDir";
-            this.screenshotsDir.Size = new System.Drawing.Size(201, 17);
-            this.screenshotsDir.TabIndex = 9;
-            this.screenshotsDir.TabStop = true;
-            this.screenshotsDir.Text = "Steam N++ Screenshots folder";
-            this.screenshotsDir.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.screenshotsPathLabel_LinkClicked);
-            // 
-            // backupsDir
-            // 
-            this.backupsDir.AutoSize = true;
-            this.backupsDir.Location = new System.Drawing.Point(23, 130);
-            this.backupsDir.Name = "backupsDir";
-            this.backupsDir.Size = new System.Drawing.Size(193, 17);
-            this.backupsDir.TabIndex = 7;
-            this.backupsDir.TabStop = true;
-            this.backupsDir.Text = "N++ Assistant Backups folder";
-            this.backupsDir.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.savePathLabel_LinkClicked);
+            this.panel2.BackColor = System.Drawing.Color.Gainsboro;
+            this.panel2.Controls.Add(this.checkedListBox1);
+            this.panel2.Controls.Add(this.label5);
+            this.panel2.Controls.Add(this.backupNow);
+            this.panel2.Location = new System.Drawing.Point(361, 19);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(368, 168);
+            this.panel2.TabIndex = 20;
             // 
             // checkedListBox1
             // 
@@ -279,44 +413,97 @@ namespace N__Assistant
             "attract files",
             "palettes",
             "game levels"});
-            this.checkedListBox1.Location = new System.Drawing.Point(332, 31);
+            this.checkedListBox1.Location = new System.Drawing.Point(16, 32);
             this.checkedListBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.checkedListBox1.Name = "checkedListBox1";
             this.checkedListBox1.Size = new System.Drawing.Size(144, 123);
             this.checkedListBox1.TabIndex = 5;
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(13, 10);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(90, 16);
+            this.label5.TabIndex = 19;
+            this.label5.Text = "Quick Backup";
+            // 
             // backupNow
             // 
-            this.backupNow.Location = new System.Drawing.Point(499, 31);
+            this.backupNow.Location = new System.Drawing.Point(175, 107);
             this.backupNow.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.backupNow.Name = "backupNow";
-            this.backupNow.Size = new System.Drawing.Size(205, 44);
+            this.backupNow.Size = new System.Drawing.Size(177, 48);
             this.backupNow.TabIndex = 4;
             this.backupNow.Text = "Backup Now";
             this.backupNow.UseVisualStyleBackColor = true;
             this.backupNow.Click += new System.EventHandler(this.backupNow_Click);
             // 
-            // profileDir
+            // panel1
             // 
-            this.profileDir.AutoSize = true;
-            this.profileDir.Location = new System.Drawing.Point(23, 59);
-            this.profileDir.Name = "profileDir";
-            this.profileDir.Size = new System.Drawing.Size(160, 17);
-            this.profileDir.TabIndex = 1;
-            this.profileDir.TabStop = true;
-            this.profileDir.Text = "N++ Game Profile folder";
-            this.profileDir.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.profileLink_LinkClicked);
+            this.panel1.BackColor = System.Drawing.Color.Gainsboro;
+            this.panel1.Controls.Add(this.steamInstallDir);
+            this.panel1.Controls.Add(this.profileDir);
+            this.panel1.Controls.Add(this.label4);
+            this.panel1.Controls.Add(this.screenshotsDir);
+            this.panel1.Controls.Add(this.backupsDir);
+            this.panel1.Location = new System.Drawing.Point(17, 19);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(190, 168);
+            this.panel1.TabIndex = 17;
             // 
             // steamInstallDir
             // 
             this.steamInstallDir.AutoSize = true;
-            this.steamInstallDir.Location = new System.Drawing.Point(23, 26);
+            this.steamInstallDir.Location = new System.Drawing.Point(19, 38);
             this.steamInstallDir.Name = "steamInstallDir";
-            this.steamInstallDir.Size = new System.Drawing.Size(158, 17);
+            this.steamInstallDir.Size = new System.Drawing.Size(83, 16);
             this.steamInstallDir.TabIndex = 0;
             this.steamInstallDir.TabStop = true;
-            this.steamInstallDir.Text = "Steam N++ Install folder";
+            this.steamInstallDir.Text = "Steam Install";
             this.steamInstallDir.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.steamGamePath_LinkClicked);
+            // 
+            // profileDir
+            // 
+            this.profileDir.AutoSize = true;
+            this.profileDir.Location = new System.Drawing.Point(17, 70);
+            this.profileDir.Name = "profileDir";
+            this.profileDir.Size = new System.Drawing.Size(85, 16);
+            this.profileDir.TabIndex = 1;
+            this.profileDir.TabStop = true;
+            this.profileDir.Text = "Game Profile";
+            this.profileDir.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.profileLink_LinkClicked);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(19, 10);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(80, 16);
+            this.label4.TabIndex = 18;
+            this.label4.Text = "Folder Links";
+            // 
+            // screenshotsDir
+            // 
+            this.screenshotsDir.AutoSize = true;
+            this.screenshotsDir.Location = new System.Drawing.Point(17, 100);
+            this.screenshotsDir.Name = "screenshotsDir";
+            this.screenshotsDir.Size = new System.Drawing.Size(124, 16);
+            this.screenshotsDir.TabIndex = 9;
+            this.screenshotsDir.TabStop = true;
+            this.screenshotsDir.Text = "Steam Screenshots";
+            this.screenshotsDir.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.screenshotsPathLabel_LinkClicked);
+            // 
+            // backupsDir
+            // 
+            this.backupsDir.AutoSize = true;
+            this.backupsDir.Location = new System.Drawing.Point(17, 131);
+            this.backupsDir.Name = "backupsDir";
+            this.backupsDir.Size = new System.Drawing.Size(144, 16);
+            this.backupsDir.TabIndex = 7;
+            this.backupsDir.TabStop = true;
+            this.backupsDir.Text = "N++ Assistant Backups";
+            this.backupsDir.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.savePathLabel_LinkClicked);
             // 
             // tabProfile
             // 
@@ -355,7 +542,7 @@ namespace N__Assistant
             this.profileListLabel.Location = new System.Drawing.Point(13, 73);
             this.profileListLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.profileListLabel.Name = "profileListLabel";
-            this.profileListLabel.Size = new System.Drawing.Size(148, 17);
+            this.profileListLabel.Size = new System.Drawing.Size(141, 16);
             this.profileListLabel.TabIndex = 18;
             this.profileListLabel.Text = "Game Profile Backups";
             // 
@@ -365,7 +552,7 @@ namespace N__Assistant
             this.linkProfileFolder.Location = new System.Drawing.Point(622, 28);
             this.linkProfileFolder.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.linkProfileFolder.Name = "linkProfileFolder";
-            this.linkProfileFolder.Size = new System.Drawing.Size(87, 17);
+            this.linkProfileFolder.Size = new System.Drawing.Size(81, 16);
             this.linkProfileFolder.TabIndex = 17;
             this.linkProfileFolder.TabStop = true;
             this.linkProfileFolder.Text = "profile folder";
@@ -377,7 +564,7 @@ namespace N__Assistant
             this.linkBackupProfileFolder.Location = new System.Drawing.Point(257, 71);
             this.linkBackupProfileFolder.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.linkBackupProfileFolder.Name = "linkBackupProfileFolder";
-            this.linkBackupProfileFolder.Size = new System.Drawing.Size(44, 17);
+            this.linkBackupProfileFolder.Size = new System.Drawing.Size(41, 16);
             this.linkBackupProfileFolder.TabIndex = 16;
             this.linkBackupProfileFolder.TabStop = true;
             this.linkBackupProfileFolder.Text = "folder";
@@ -460,7 +647,7 @@ namespace N__Assistant
             this.linkMapsInEditor.AutoSize = true;
             this.linkMapsInEditor.Location = new System.Drawing.Point(685, 25);
             this.linkMapsInEditor.Name = "linkMapsInEditor";
-            this.linkMapsInEditor.Size = new System.Drawing.Size(44, 17);
+            this.linkMapsInEditor.Size = new System.Drawing.Size(41, 16);
             this.linkMapsInEditor.TabIndex = 7;
             this.linkMapsInEditor.TabStop = true;
             this.linkMapsInEditor.Text = "folder";
@@ -471,7 +658,7 @@ namespace N__Assistant
             this.listEditorMapsLabel.AutoSize = true;
             this.listEditorMapsLabel.Location = new System.Drawing.Point(473, 25);
             this.listEditorMapsLabel.Name = "listEditorMapsLabel";
-            this.listEditorMapsLabel.Size = new System.Drawing.Size(98, 17);
+            this.listEditorMapsLabel.Size = new System.Drawing.Size(92, 16);
             this.listEditorMapsLabel.TabIndex = 6;
             this.listEditorMapsLabel.Text = "Maps in Editor";
             // 
@@ -664,7 +851,7 @@ namespace N__Assistant
             this.onlineEditorLink.Location = new System.Drawing.Point(633, 282);
             this.onlineEditorLink.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.onlineEditorLink.Name = "onlineEditorLink";
-            this.onlineEditorLink.Size = new System.Drawing.Size(61, 17);
+            this.onlineEditorLink.Size = new System.Drawing.Size(58, 16);
             this.onlineEditorLink.TabIndex = 9;
             this.onlineEditorLink.TabStop = true;
             this.onlineEditorLink.Text = "npc-web";
@@ -676,7 +863,7 @@ namespace N__Assistant
             this.countCustomPalettesInstalled.Location = new System.Drawing.Point(629, 418);
             this.countCustomPalettesInstalled.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.countCustomPalettesInstalled.Name = "countCustomPalettesInstalled";
-            this.countCustomPalettesInstalled.Size = new System.Drawing.Size(16, 17);
+            this.countCustomPalettesInstalled.Size = new System.Drawing.Size(14, 16);
             this.countCustomPalettesInstalled.TabIndex = 8;
             this.countCustomPalettesInstalled.Text = "0";
             // 
@@ -685,7 +872,7 @@ namespace N__Assistant
             this.palettesInstalledLinkedLabel.AutoSize = true;
             this.palettesInstalledLinkedLabel.Location = new System.Drawing.Point(579, 38);
             this.palettesInstalledLinkedLabel.Name = "palettesInstalledLinkedLabel";
-            this.palettesInstalledLinkedLabel.Size = new System.Drawing.Size(44, 17);
+            this.palettesInstalledLinkedLabel.Size = new System.Drawing.Size(41, 16);
             this.palettesInstalledLinkedLabel.TabIndex = 7;
             this.palettesInstalledLinkedLabel.TabStop = true;
             this.palettesInstalledLinkedLabel.Text = "folder";
@@ -696,7 +883,7 @@ namespace N__Assistant
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(357, 38);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(115, 17);
+            this.label2.Size = new System.Drawing.Size(109, 16);
             this.label2.TabIndex = 6;
             this.label2.Text = "Palettes Installed";
             // 
@@ -731,7 +918,7 @@ namespace N__Assistant
             this.linkPalettesSpreadsheet.AutoSize = true;
             this.linkPalettesSpreadsheet.Location = new System.Drawing.Point(217, 289);
             this.linkPalettesSpreadsheet.Name = "linkPalettesSpreadsheet";
-            this.linkPalettesSpreadsheet.Size = new System.Drawing.Size(87, 17);
+            this.linkPalettesSpreadsheet.Size = new System.Drawing.Size(83, 16);
             this.linkPalettesSpreadsheet.TabIndex = 9;
             this.linkPalettesSpreadsheet.TabStop = true;
             this.linkPalettesSpreadsheet.Text = "spreadsheet";
@@ -894,7 +1081,7 @@ namespace N__Assistant
             this.linkSoundFolder.Location = new System.Drawing.Point(675, 14);
             this.linkSoundFolder.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.linkSoundFolder.Name = "linkSoundFolder";
-            this.linkSoundFolder.Size = new System.Drawing.Size(44, 17);
+            this.linkSoundFolder.Size = new System.Drawing.Size(41, 16);
             this.linkSoundFolder.TabIndex = 10;
             this.linkSoundFolder.TabStop = true;
             this.linkSoundFolder.Text = "folder";
@@ -930,7 +1117,7 @@ namespace N__Assistant
             this.linkSoundpackSpreadsheet.AutoSize = true;
             this.linkSoundpackSpreadsheet.Location = new System.Drawing.Point(246, 291);
             this.linkSoundpackSpreadsheet.Name = "linkSoundpackSpreadsheet";
-            this.linkSoundpackSpreadsheet.Size = new System.Drawing.Size(87, 17);
+            this.linkSoundpackSpreadsheet.Size = new System.Drawing.Size(83, 16);
             this.linkSoundpackSpreadsheet.TabIndex = 7;
             this.linkSoundpackSpreadsheet.TabStop = true;
             this.linkSoundpackSpreadsheet.Text = "spreadsheet";
@@ -1011,7 +1198,7 @@ namespace N__Assistant
             this.previewSoundsLabel.Location = new System.Drawing.Point(400, 14);
             this.previewSoundsLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.previewSoundsLabel.Name = "previewSoundsLabel";
-            this.previewSoundsLabel.Size = new System.Drawing.Size(160, 17);
+            this.previewSoundsLabel.Size = new System.Drawing.Size(149, 16);
             this.previewSoundsLabel.TabIndex = 8;
             this.previewSoundsLabel.Text = "Preview Current Sounds";
             // 
@@ -1067,7 +1254,7 @@ namespace N__Assistant
             this.linkMappacksSpreadsheet.AutoSize = true;
             this.linkMappacksSpreadsheet.Location = new System.Drawing.Point(274, 76);
             this.linkMappacksSpreadsheet.Name = "linkMappacksSpreadsheet";
-            this.linkMappacksSpreadsheet.Size = new System.Drawing.Size(87, 17);
+            this.linkMappacksSpreadsheet.Size = new System.Drawing.Size(83, 16);
             this.linkMappacksSpreadsheet.TabIndex = 29;
             this.linkMappacksSpreadsheet.TabStop = true;
             this.linkMappacksSpreadsheet.Text = "spreadsheet";
@@ -1079,7 +1266,7 @@ namespace N__Assistant
             this.profilesFolderLink.Location = new System.Drawing.Point(576, 76);
             this.profilesFolderLink.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.profilesFolderLink.Name = "profilesFolderLink";
-            this.profilesFolderLink.Size = new System.Drawing.Size(151, 17);
+            this.profilesFolderLink.Size = new System.Drawing.Size(143, 16);
             this.profilesFolderLink.TabIndex = 28;
             this.profilesFolderLink.TabStop = true;
             this.profilesFolderLink.Text = "profiles backups folder";
@@ -1091,11 +1278,22 @@ namespace N__Assistant
             this.linkMapPacksBackupFolder.Location = new System.Drawing.Point(389, 76);
             this.linkMapPacksBackupFolder.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.linkMapPacksBackupFolder.Name = "linkMapPacksBackupFolder";
-            this.linkMapPacksBackupFolder.Size = new System.Drawing.Size(173, 17);
+            this.linkMapPacksBackupFolder.Size = new System.Drawing.Size(166, 16);
             this.linkMapPacksBackupFolder.TabIndex = 26;
             this.linkMapPacksBackupFolder.TabStop = true;
             this.linkMapPacksBackupFolder.Text = "map packs backups folder";
             this.linkMapPacksBackupFolder.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkMapPacksBackupFolder_LinkClicked);
+            // 
+            // resetProfile
+            // 
+            this.resetProfile.Location = new System.Drawing.Point(403, 404);
+            this.resetProfile.Margin = new System.Windows.Forms.Padding(4);
+            this.resetProfile.Name = "resetProfile";
+            this.resetProfile.Size = new System.Drawing.Size(145, 43);
+            this.resetProfile.TabIndex = 2;
+            this.resetProfile.Text = "Reset Game Profile";
+            this.resetProfile.UseVisualStyleBackColor = true;
+            this.resetProfile.Click += new System.EventHandler(this.resetProfile_Click);
             // 
             // mapPacksFolderLink
             // 
@@ -1103,7 +1301,7 @@ namespace N__Assistant
             this.mapPacksFolderLink.Location = new System.Drawing.Point(21, 76);
             this.mapPacksFolderLink.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.mapPacksFolderLink.Name = "mapPacksFolderLink";
-            this.mapPacksFolderLink.Size = new System.Drawing.Size(84, 17);
+            this.mapPacksFolderLink.Size = new System.Drawing.Size(80, 16);
             this.mapPacksFolderLink.TabIndex = 27;
             this.mapPacksFolderLink.TabStop = true;
             this.mapPacksFolderLink.Text = "levels folder";
@@ -1136,7 +1334,7 @@ namespace N__Assistant
             this.label1.Location = new System.Drawing.Point(400, 121);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(148, 17);
+            this.label1.Size = new System.Drawing.Size(141, 16);
             this.label1.TabIndex = 23;
             this.label1.Text = "Game Profile Backups";
             // 
@@ -1146,7 +1344,7 @@ namespace N__Assistant
             this.profileFolderLink.Location = new System.Drawing.Point(129, 76);
             this.profileFolderLink.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.profileFolderLink.Name = "profileFolderLink";
-            this.profileFolderLink.Size = new System.Drawing.Size(87, 17);
+            this.profileFolderLink.Size = new System.Drawing.Size(81, 16);
             this.profileFolderLink.TabIndex = 22;
             this.profileFolderLink.TabStop = true;
             this.profileFolderLink.Text = "profile folder";
@@ -1223,6 +1421,30 @@ namespace N__Assistant
             this.mapPackCommunity.Text = "Community Map Packs";
             this.mapPackCommunity.UseVisualStyleBackColor = true;
             // 
+            // metanetLeaderboards
+            // 
+            this.metanetLeaderboards.Location = new System.Drawing.Point(173, 249);
+            this.metanetLeaderboards.Margin = new System.Windows.Forms.Padding(4);
+            this.metanetLeaderboards.Name = "metanetLeaderboards";
+            this.metanetLeaderboards.Size = new System.Drawing.Size(170, 54);
+            this.metanetLeaderboards.TabIndex = 6;
+            this.metanetLeaderboards.Text = "Original Leaderboards";
+            this.metanetLeaderboards.UseVisualStyleBackColor = true;
+            this.metanetLeaderboards.Click += new System.EventHandler(this.metanetLeaderboards_Click);
+            // 
+            // originalMapPack
+            // 
+            this.originalMapPack.Cursor = System.Windows.Forms.Cursors.Default;
+            this.originalMapPack.Enabled = false;
+            this.originalMapPack.Location = new System.Drawing.Point(8, 249);
+            this.originalMapPack.Margin = new System.Windows.Forms.Padding(4);
+            this.originalMapPack.Name = "originalMapPack";
+            this.originalMapPack.Size = new System.Drawing.Size(157, 54);
+            this.originalMapPack.TabIndex = 5;
+            this.originalMapPack.Text = "Original Maps";
+            this.originalMapPack.UseVisualStyleBackColor = true;
+            this.originalMapPack.Click += new System.EventHandler(this.originalMapPack_Click);
+            // 
             // patchLeaderboardsForMapPack
             // 
             this.patchLeaderboardsForMapPack.Location = new System.Drawing.Point(173, 187);
@@ -1255,17 +1477,6 @@ namespace N__Assistant
             this.communityMapPacksList.Size = new System.Drawing.Size(335, 164);
             this.communityMapPacksList.TabIndex = 0;
             this.communityMapPacksList.SelectedIndexChanged += new System.EventHandler(this.communityMapPacksList_SelectedIndexChanged);
-            // 
-            // resetProfile
-            // 
-            this.resetProfile.Location = new System.Drawing.Point(403, 404);
-            this.resetProfile.Margin = new System.Windows.Forms.Padding(4);
-            this.resetProfile.Name = "resetProfile";
-            this.resetProfile.Size = new System.Drawing.Size(145, 43);
-            this.resetProfile.TabIndex = 2;
-            this.resetProfile.Text = "Reset Game Profile";
-            this.resetProfile.UseVisualStyleBackColor = true;
-            this.resetProfile.Click += new System.EventHandler(this.resetProfile_Click);
             // 
             // mapPackLocalBackups
             // 
@@ -1383,29 +1594,11 @@ namespace N__Assistant
             this.statusLabel.Name = "statusLabel";
             this.statusLabel.Size = new System.Drawing.Size(0, 19);
             // 
-            // originalMapPack
+            // contextMenuStrip1
             // 
-            this.originalMapPack.Cursor = System.Windows.Forms.Cursors.Default;
-            this.originalMapPack.Enabled = false;
-            this.originalMapPack.Location = new System.Drawing.Point(8, 249);
-            this.originalMapPack.Margin = new System.Windows.Forms.Padding(4);
-            this.originalMapPack.Name = "originalMapPack";
-            this.originalMapPack.Size = new System.Drawing.Size(157, 54);
-            this.originalMapPack.TabIndex = 5;
-            this.originalMapPack.Text = "Original Maps";
-            this.originalMapPack.UseVisualStyleBackColor = true;
-            this.originalMapPack.Click += new System.EventHandler(this.originalMapPack_Click);
-            // 
-            // metanetLeaderboards
-            // 
-            this.metanetLeaderboards.Location = new System.Drawing.Point(173, 249);
-            this.metanetLeaderboards.Margin = new System.Windows.Forms.Padding(4);
-            this.metanetLeaderboards.Name = "metanetLeaderboards";
-            this.metanetLeaderboards.Size = new System.Drawing.Size(170, 54);
-            this.metanetLeaderboards.TabIndex = 6;
-            this.metanetLeaderboards.Text = "Original Leaderboards";
-            this.metanetLeaderboards.UseVisualStyleBackColor = true;
-            this.metanetLeaderboards.Click += new System.EventHandler(this.metanetLeaderboards_Click);
+            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
             // Form1
             // 
@@ -1422,7 +1615,21 @@ namespace N__Assistant
             this.Text = "N++ Assistant";
             this.tabControl1.ResumeLayout(false);
             this.tabStatus.ResumeLayout(false);
-            this.tabStatus.PerformLayout();
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
+            this.tabControlDebugTabs.ResumeLayout(false);
+            this.tabPageNPPConf.ResumeLayout(false);
+            this.tabPageNPPConf.PerformLayout();
+            this.tabPageNPPLog.ResumeLayout(false);
+            this.tabPageNPPLog.PerformLayout();
+            this.tabPageKeysVars.ResumeLayout(false);
+            this.tabPageKeysVars.PerformLayout();
+            this.tabPageDisplayResolution.ResumeLayout(false);
+            this.tabPageDisplayResolution.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.tabProfile.ResumeLayout(false);
             this.tabProfile.PerformLayout();
             this.tabMaps.ResumeLayout(false);
@@ -1518,7 +1725,6 @@ namespace N__Assistant
         private System.Windows.Forms.LinkLabel linkMapsInEditor;
         private System.Windows.Forms.Label listEditorMapsLabel;
         private System.Windows.Forms.Label nppconflabel;
-        private System.Windows.Forms.Label npploglabel;
         private System.Windows.Forms.RichTextBox npplogText;
         private System.Windows.Forms.RichTextBox nppconfText;
         private System.Windows.Forms.TabControl tabControl3;
@@ -1564,6 +1770,24 @@ namespace N__Assistant
         private System.Windows.Forms.Button resetGameProfile;
         private System.Windows.Forms.Button metanetLeaderboards;
         private System.Windows.Forms.Button originalMapPack;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.TabControl tabControlDebugTabs;
+        private System.Windows.Forms.TabPage tabPageNPPConf;
+        private System.Windows.Forms.TabPage tabPageNPPLog;
+        private System.Windows.Forms.TabPage tabPageDisplayResolution;
+        private System.Windows.Forms.TabPage tabPageKeysVars;
+        private System.Windows.Forms.RichTextBox keysvarsText;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.Label nppconf_refresh;
+        private System.Windows.Forms.Label keysvars_refresh;
+        private System.Windows.Forms.Button buttonHighDPIFix;
+        private System.Windows.Forms.Button buttonResetnppconf;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label6;
     }
 }
 
