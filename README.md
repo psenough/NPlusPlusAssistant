@@ -100,7 +100,7 @@ Download the zip of the latest version from [releases](https://github.com/psenou
 
 * auto-extract colors from palette and change background/foreground in menu to reflect it (also update on community spreadsheet if possible and using default b/w)
 
-## Known issues:
+## Known issues
 
 * `Cross-thread operation not valid:` error when changing to sound packs or map packs tab too quickly right after loading
 
