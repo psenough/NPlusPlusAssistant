@@ -128,5 +128,5 @@ Download the zip of the latest version from [releases](https://github.com/psenou
 
 ## Compile Requirements
 
-Latest version only tested on Visual Studio Community 2022 with C# .Net stuff installed.
+Latest version only tested on Windows 11 using Visual Studio Community 2022 with C# .Net stuff installed.
 
