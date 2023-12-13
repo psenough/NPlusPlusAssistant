@@ -2,7 +2,7 @@
 
 N++Assistant helps with backups and installing community mod stuff for the videogame [N++](https://store.steampowered.com/app/230270/N_NPLUSPLUS/).
 
-N++Assisant is only for the Steam Windows version.
+Only targets the Steam Windows version only.
 
 ## Run
 
