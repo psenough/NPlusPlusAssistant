@@ -32,7 +32,7 @@ Download the zip of the latest version from [releases](https://github.com/psenou
 
 * list all profiles on backup and select one to replace current one or delete
 
-* list metanet palettes (auto download from discord link) and select which to install
+* list metanet palettes (auto download from discord link) and select which to install (for reference when you want to edit a palette, still doesn't show up ingame until you unlock it)
 
 * list community palettes (from [google spreadsheet](https://docs.google.com/spreadsheets/d/1I2f87Qhfs6rxzZq5dQRDbLKYyaGLqTdCkLqfNfrw1Mk/edit#gid=0])) and select which to install
 
@@ -40,9 +40,9 @@ Download the zip of the latest version from [releases](https://github.com/psenou
 
 * display number of custom palettes installed (and warn of maximum when reached)
 
-* list all soundpacks on backup and select one to install or delete
-
 * list community soundpacks (from [google spreadsheet](https://docs.google.com/spreadsheets/d/18PshamVuDNyH396a7U3YDFQmCw18s4gIVZ_WrFODRd4/edit#gid=0])) and select which to install
+
+* list all soundpacks on backup and select one to install or delete
 
 * list metanet maps, search by name and select one to put on your map levels editor folder (for practice / remixes)
 
@@ -62,11 +62,11 @@ Download the zip of the latest version from [releases](https://github.com/psenou
 
 ## Stuff it'll eventually do (if i ever find the time)
 
-* load from github instead of google spreadsheets (links on google spreadsheets are from discord which is going to start only hosting temporary files)
+* load from github instead of google spreadsheets (links on google spreadsheets are linking discord files, which are not very long term permanent)
 
 * detect new official N++ version updates and update the backups accordingly (npp.dll most importantly)
 
-* button to load a new profile with all base levels and colors already unlocked
+* button to load a new profile with all base levels and colors already unlocked (useful for speedruns, etc)
 
 * list currently install / last installed mods (soundpack, mappack, leaderboard hack) on status tab
 
@@ -84,7 +84,7 @@ Download the zip of the latest version from [releases](https://github.com/psenou
 
 * way to inject maps into map packs to facilitate composing map packs
 
-* option to change save/backup directory
+* option to change save/backup directory (settings/config file)
 
 * note mentioning metanet palettes aren't listed ingame until you unlock them, even if they are in the Palettes directory, unless you rename them to something else; they are being included as installing options as references for people who want to make their own palettes
 
@@ -92,13 +92,15 @@ Download the zip of the latest version from [releases](https://github.com/psenou
 
 * multi-select install metanet palettes
 
-* expose the different spreadsheet url and ids on a default xml (and editable on the GUI) to avoid recompiling the app to alter them
+* expose the different spreadsheet url and ids on a default xml (and editable on the GUI) to avoid recompiling the app to alter them (could also store app config settings)
 
 * button to backup all maps in editor (coherence between tabs)
 
 * watchdog to auto-backup your profile everytime it detects n++ closing down
 
 * auto-extract colors from palette and change background/foreground in menu to reflect it (also update on community spreadsheet if possible and using default b/w)
+  
+* keep track of quick backup settings after closing the app, useful for people who prefer other default settings
 
 ## Known issues
 
@@ -108,7 +110,7 @@ Download the zip of the latest version from [releases](https://github.com/psenou
 
 * some palettes installation don't work because they're not packed cleanly (need to repack, code smarter extractor or create a new column on spreadsheet)
 
-* missing some confirmations on critical stuff that can't be reverted
+* missing some confirmation menus on critical stuff that can't be reverted
 
 * missing some checks if npp is running on critical stuff that requires npp to be closed to take effect
 
