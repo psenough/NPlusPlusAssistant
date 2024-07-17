@@ -62,6 +62,8 @@ Download the zip of the latest version from [releases](https://github.com/psenou
 
 ## Stuff it'll eventually do (if i ever find the time)
 
+* button to run Eddy installer on mappacks that have one (instead of having to install things seperately)
+  
 * load from github instead of google spreadsheets (links on google spreadsheets are linking discord files, which are not very long term permanent)
 
 * detect new official N++ version updates and update the backups accordingly (npp.dll most importantly)
